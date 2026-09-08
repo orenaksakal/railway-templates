@@ -2,11 +2,11 @@
 
 Novu Community Edition 3.19.0 supplies an API, worker, WebSocket service, and dashboard with MongoDB, authenticated Redis, and private S3-compatible storage. The four application images use the same version from the current Community Edition deployment source.
 
-> Unpublished draft. This template is prepared for review; it has not been deployed on Railway or certified for production. See the validation scope below.
+Release tested on Railway. See the validation scope below for verified workflows and remaining limitations.
 
 ## About Hosting Novu Community Edition
 
-The template defines 7 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently, so cold-start and migration behavior must be verified in a new test project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
+The template defines 7 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Fresh initialization was tested in an isolated Railway project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
 
 ## Common Use Cases
 
@@ -46,11 +46,11 @@ Back up MongoDB, object storage, Redis if pending jobs matter, and all encryptio
 
 ## Validation Scope
 
-The current CE topology and consistent 3.19.0 image tags were verified. Startup, dashboard login, provider encryption, in-app delivery, retry handling, S3 behavior, and recovery remain untested. Full Railway startup and product workflows remain release gates.
+Fresh Railway startup, account signup/login, organization/environment selection, workflow and subscriber creation, worker delivery of rendered in-app notifications, restart and volume-preserving redeploy passed. MongoDB was dumped and restored into a separate namespace and delivered messages were verified. The dashboard sign-in page rendered. External email/SMS/chat delivery, retry failure injection, authenticated browser workflows, attachment delivery, load testing and complete separate-project disaster recovery are not verified.
 
 ## Why Deploy Novu Community Edition on Railway?
 
-Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This draft supplies a reviewable starting configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
+Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This template supplies the tested service configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
 
 ## Support and Upstream
 

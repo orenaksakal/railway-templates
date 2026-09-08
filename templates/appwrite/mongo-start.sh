@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-mkdir -p /data/replica
+mkdir -p /data/replica /data/db /data/configdb
 if [ ! -s /data/replica/key ]; then
   openssl rand -base64 756 > /data/replica/key
   chmod 400 /data/replica/key

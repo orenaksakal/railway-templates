@@ -1,12 +1,12 @@
 # Deploy and Host Frappe Helpdesk on Railway
 
-Frappe Helpdesk v1.30.1 provides customer support ticket management. The draft installs Helpdesk and its required pinned Telephony dependency into the framework image and runs all site-file consumers together in one application service.
+Frappe Helpdesk v1.30.1 provides customer support ticket management. The template installs Helpdesk and its required pinned Telephony dependency into the framework image and runs all site-file consumers together in one application service.
 
-> Unpublished draft. This template is prepared for review; it has not been deployed on Railway or certified for production. See the validation scope below.
+Release tested on Railway. See the validation scope below for verified workflows and remaining limitations.
 
 ## About Hosting Frappe Helpdesk
 
-The template defines 3 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently, so cold-start and migration behavior must be verified in a new test project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
+The template defines 3 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Fresh initialization was tested in an isolated Railway project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
 
 ## Common Use Cases
 
@@ -34,7 +34,7 @@ Open the frappe-helpdesk domain after initialization. Sign in as `Administrator`
 
 ## Scope and Limitations
 
-The required Telephony source commit is pinned. The resulting image must still be built and checked for Frappe and Helpdesk compatibility. One application replica is supported; this is not an HA or shared-volume cluster.
+The required Telephony source commit is pinned. The pinned application image built and installed successfully on Railway. One application replica is supported; this is not an HA or shared-volume cluster.
 
 ## Backups and Upgrades
 
@@ -42,11 +42,11 @@ Back up MariaDB, the complete /data site volume, and encryption keys. Explicitly
 
 ## Validation Scope
 
-Dependency metadata and static configuration were checked. Build, site installation, ticket creation/assignment, configured mail delivery, SLA/background processing, attachments, and restore remain unverified. Full Railway startup and product workflows remain release gates.
+Fresh Railway build and site installation, Administrator login, ticket creation/read/update, private attachment upload/download, online background worker, restart and volume-preserving redeploy passed. MariaDB was dumped and restored into a separate database on the test service; archived attachment files were restored into a separate directory and compared byte-for-byte. Email delivery, SLA behavior, load testing, high availability and complete separate-project disaster recovery are not verified.
 
 ## Why Deploy Frappe Helpdesk on Railway?
 
-Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This draft supplies a reviewable starting configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
+Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This template supplies the tested service configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
 
 ## Support and Upstream
 
