@@ -6,6 +6,7 @@ ARG TELEPHONY_COMMIT=unused
 ENV FRAPPE_APP=${APP_NAME} TEMPLATE_RELEASE=${APP_VERSION}
 WORKDIR /home/frappe/frappe-bench
 # Upstream's tagged image contains the framework only. Install the actual app at build time.
+RUN bench set-config -g socketio_port 9000
 RUN if [ "$APP_NAME" = helpdesk ]; then \
       test -n "$TELEPHONY_COMMIT" && \
       git clone https://github.com/frappe/telephony.git apps/telephony && \

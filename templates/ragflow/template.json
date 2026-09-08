@@ -30,7 +30,7 @@
       "deploy": {
         "restartPolicyType": "ON_FAILURE",
         "restartPolicyMaxRetries": 10,
-        "startCommand": "mysqld --max-connections=150 --max-allowed-packet=1073741824 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password --binlog-expire-logs-seconds=604800",
+        "startCommand": "docker-entrypoint.sh mysqld --max-connections=150 --max-allowed-packet=1073741824 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password --binlog-expire-logs-seconds=604800",
         "requiredMountPath": "/var/lib/mysql"
       },
       "networking": {

@@ -20,7 +20,7 @@
       "deploy": {
         "restartPolicyType": "ON_FAILURE",
         "restartPolicyMaxRetries": 10,
-        "startCommand": "mariadbd --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --skip-character-set-client-handshake",
+        "startCommand": "docker-entrypoint.sh mariadbd --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --skip-character-set-client-handshake",
         "requiredMountPath": "/var/lib/mysql"
       },
       "networking": {
