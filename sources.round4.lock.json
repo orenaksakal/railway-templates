@@ -1,0 +1,42 @@
+{
+  "fastgpt": {
+    "repo": "labring/FastGPT",
+    "commit": "0058e223edfcb1035b437cadb9370462b562f685"
+  },
+  "dolt": {
+    "repo": "dolthub/dolt",
+    "commit": "329729ad14a7c5239f54f1f185cd5c38ac765ce0"
+  },
+  "xberg": {
+    "repo": "xberg-io/xberg",
+    "commit": "e19378401a562ae88e81a60454e05d4f838ac8ee"
+  },
+  "agentscope": {
+    "repo": "agentscope-ai/agentscope",
+    "commit": "7e614306296233e502b9278f53649acad988aa9f"
+  },
+  "coze-studio": {
+    "repo": "coze-dev/coze-studio",
+    "commit": "fefb05ff27be1da939612fbf9faf5db62583b8ae"
+  },
+  "bettafish": {
+    "repo": "666ghj/BettaFish",
+    "commit": "c4ca6360489b53c38d3d41d213a67b50d2fcb883"
+  },
+  "openrag": {
+    "repo": "langflow-ai/openrag",
+    "commit": "1e228bb0ef7e45959f241a6f3163fb2182303785"
+  },
+  "marker": {
+    "repo": "datalab-to/marker",
+    "commit": "36b3947d05b16787937fc77db47422c9a6bc0e29"
+  },
+  "acontext": {
+    "repo": "memodb-io/Acontext",
+    "commit": "259d73bfdebeed35ec2d4211ddc060a2d4126bc6"
+  },
+  "seekdb": {
+    "repo": "oceanbase/seekdb",
+    "commit": "31a5fa633f1d34fd8892e937339e2dffb14adc69"
+  }
+}

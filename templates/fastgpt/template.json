@@ -1,0 +1,584 @@
+{
+  "services": {
+    "8b72bae3-a49f-5b58-8e3a-753c9a8214f1": {
+      "name": "vector",
+      "source": {
+        "image": "pgvector/pgvector:0.8.0-pg15@sha256:1dec32aaba982ea73c51e93bee0319abf54150110321e24101c3d9de0b88db98"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "fastgpt"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "fastgpt"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://fastgpt:${{vector.POSTGRES_PASSWORD}}@${{vector.RAILWAY_PRIVATE_DOMAIN}}:5432/fastgpt"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "68d27e97-bc6f-5624-8130-cc9078b724de": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "bed38310-0397-54e8-b0a7-646504891958": {
+      "name": "mongo",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "MONGO_INITDB_ROOT_USERNAME": {
+          "isOptional": false,
+          "description": "Mongo initdb root username for mongo. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "fastgpt"
+        },
+        "MONGO_INITDB_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mongo initdb root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "MONGO_PRIVATE_HOST": {
+          "isOptional": false,
+          "description": "Mongo private host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mongo.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/fastgpt/Mongo.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/fastgpt/Mongo.Dockerfile"
+      },
+      "volumeMounts": {
+        "e66a46ee-a3d3-5534-9a10-bec16655860c": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "52517fc9-0492-50a8-b922-3a8e569c3989": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "6bd828c6-1e33-5e17-b1e9-6272ecdfd9f1": {
+      "name": "storage",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "MINIO_ROOT_USER": {
+          "isOptional": false,
+          "description": "Generated minio root user. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(20, \"abcdef0123456789\")}}"
+        },
+        "MINIO_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated minio root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "S3_BUCKETS": {
+          "isOptional": false,
+          "description": "S3 buckets for storage. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "fastgpt-public fastgpt-private"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round4-storage/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round4-storage/Dockerfile"
+      },
+      "volumeMounts": {
+        "d2311c1b-a75d-5436-8bbb-3a030b29a229": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "e3e7892a-8f37-5d8f-bfa1-427870c9f4ba": {
+      "name": "aiproxy-db",
+      "source": {
+        "image": "postgres:15@sha256:9b1d34adbce1dd07ee6e94b4a2cf698884b89bd44a6c9c12f5da8f3acbfe4957"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "aiproxy"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "aiproxy"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://aiproxy:${{aiproxy-db.POSTGRES_PASSWORD}}@${{aiproxy-db.RAILWAY_PRIVATE_DOMAIN}}:5432/aiproxy"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "a4c72fce-36ea-5ce4-a0cf-a27c5eaea3fd": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "a1ee3e38-79ae-5dc6-9337-cd115d56290f": {
+      "name": "fastgpt",
+      "source": {
+        "image": "ghcr.io/labring/fastgpt:v4.16.2@sha256:23f0f23e69d8c22f547bc8887d7089a87bbef10e67fa239489bcc241cff6ee1e"
+      },
+      "variables": {
+        "PG_URL": {
+          "isOptional": false,
+          "description": "Pg url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{vector.DATABASE_URL}}"
+        },
+        "MONGODB_URI": {
+          "isOptional": false,
+          "description": "Mongodb uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "mongodb://fastgpt:${{mongo.MONGO_INITDB_ROOT_PASSWORD}}@${{mongo.RAILWAY_PRIVATE_DOMAIN}}:27017/fastgpt?authSource=admin&replicaSet=rs0"
+        },
+        "DB_MAX_LINK": {
+          "isOptional": false,
+          "description": "Db max link for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "20"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "${{redis.REDIS_URL}}"
+        },
+        "STORAGE_VENDOR": {
+          "isOptional": false,
+          "description": "Storage vendor for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "minio"
+        },
+        "STORAGE_REGION": {
+          "isOptional": false,
+          "description": "Storage region for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "us-east-1"
+        },
+        "STORAGE_ACCESS_KEY_ID": {
+          "isOptional": false,
+          "description": "Storage access key id resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "STORAGE_SECRET_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Storage secret access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "STORAGE_PUBLIC_BUCKET": {
+          "isOptional": false,
+          "description": "Storage public bucket for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "fastgpt-public"
+        },
+        "STORAGE_PRIVATE_BUCKET": {
+          "isOptional": false,
+          "description": "Storage private bucket for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "fastgpt-private"
+        },
+        "STORAGE_DOWNLOAD_URL_MODE": {
+          "isOptional": false,
+          "description": "Storage download url mode for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "short-proxy"
+        },
+        "STORAGE_S3_ENDPOINT": {
+          "isOptional": false,
+          "description": "Storage s3 endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "STORAGE_S3_FORCE_PATH_STYLE": {
+          "isOptional": false,
+          "description": "Storage s3 force path style for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "HOSTNAME": {
+          "isOptional": false,
+          "description": "Application bind address. Keep 0.0.0.0 for container networking.",
+          "defaultValue": "0.0.0.0"
+        },
+        "FE_DOMAIN": {
+          "isOptional": false,
+          "description": "Fe domain resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{fastgpt.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "SYNC_INDEX": {
+          "isOptional": false,
+          "description": "Sync index for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "LOG_ENABLE_CONSOLE": {
+          "isOptional": false,
+          "description": "Log enable console for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "LOG_CONSOLE_LEVEL": {
+          "isOptional": false,
+          "description": "Log console level for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "info"
+        },
+        "LOG_ENABLE_OTEL": {
+          "isOptional": false,
+          "description": "Log enable otel for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "ROOT_KEY": {
+          "isOptional": false,
+          "description": "Generated root key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "DEFAULT_ROOT_PSW": {
+          "isOptional": false,
+          "description": "Generated initial root password; upstream may reapply this value on restart. Keep in sync with your intended root login.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "FILE_TOKEN_KEY": {
+          "isOptional": false,
+          "description": "Generated file token key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "AES256_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Generated aes256 secret key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "INVOKE_TOKEN_SECRET": {
+          "isOptional": false,
+          "description": "Generated invoke token secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PLUGIN_TOKEN": {
+          "isOptional": false,
+          "description": "Generated plugin token. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "CODE_SANDBOX_TOKEN": {
+          "isOptional": false,
+          "description": "Generated code sandbox token. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "AIPROXY_API_TOKEN": {
+          "isOptional": false,
+          "description": "Generated aiproxy api token. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PLUGIN_BASE_URL": {
+          "isOptional": false,
+          "description": "Plugin base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{plugin.RAILWAY_PRIVATE_DOMAIN}}:3000"
+        },
+        "CODE_SANDBOX_URL": {
+          "isOptional": false,
+          "description": "Code sandbox url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{code-sandbox.RAILWAY_PRIVATE_DOMAIN}}:3000"
+        },
+        "AIPROXY_API_ENDPOINT": {
+          "isOptional": false,
+          "description": "Aiproxy api endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{aiproxy.RAILWAY_PRIVATE_DOMAIN}}:3000"
+        },
+        "DATASET_PARSE_MAX_PROCESS": {
+          "isOptional": false,
+          "description": "Dataset parse max process for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2"
+        },
+        "VECTOR_MAX_PROCESS": {
+          "isOptional": false,
+          "description": "Vector max process for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2"
+        },
+        "QA_MAX_PROCESS": {
+          "isOptional": false,
+          "description": "Qa max process for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2"
+        },
+        "VLM_MAX_PROCESS": {
+          "isOptional": false,
+          "description": "Vlm max process for fastgpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:3000": {
+            "port": 3000
+          }
+        }
+      }
+    },
+    "75d23def-4be7-5817-ba36-5339b369db04": {
+      "name": "plugin",
+      "source": {
+        "image": "ghcr.io/labring/fastgpt-plugin:v1.1.2@sha256:80049419369c7c8ad207acc09d7df0a62fdeafcb489651d3b2bdad769f6dc6a2"
+      },
+      "variables": {
+        "MONGODB_URI": {
+          "isOptional": false,
+          "description": "Mongodb uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.MONGODB_URI}}"
+        },
+        "DB_MAX_LINK": {
+          "isOptional": false,
+          "description": "Db max link resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.DB_MAX_LINK}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "${{fastgpt.REDIS_URL}}"
+        },
+        "STORAGE_VENDOR": {
+          "isOptional": false,
+          "description": "Storage vendor resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.STORAGE_VENDOR}}"
+        },
+        "STORAGE_REGION": {
+          "isOptional": false,
+          "description": "Storage region resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.STORAGE_REGION}}"
+        },
+        "STORAGE_ACCESS_KEY_ID": {
+          "isOptional": false,
+          "description": "Storage access key id resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.STORAGE_ACCESS_KEY_ID}}"
+        },
+        "STORAGE_SECRET_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Storage secret access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.STORAGE_SECRET_ACCESS_KEY}}"
+        },
+        "STORAGE_PUBLIC_BUCKET": {
+          "isOptional": false,
+          "description": "Storage public bucket resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.STORAGE_PUBLIC_BUCKET}}"
+        },
+        "STORAGE_PRIVATE_BUCKET": {
+          "isOptional": false,
+          "description": "Storage private bucket resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.STORAGE_PRIVATE_BUCKET}}"
+        },
+        "STORAGE_DOWNLOAD_URL_MODE": {
+          "isOptional": false,
+          "description": "Storage download url mode resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.STORAGE_DOWNLOAD_URL_MODE}}"
+        },
+        "STORAGE_S3_ENDPOINT": {
+          "isOptional": false,
+          "description": "Storage s3 endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.STORAGE_S3_ENDPOINT}}"
+        },
+        "STORAGE_S3_FORCE_PATH_STYLE": {
+          "isOptional": false,
+          "description": "Storage s3 force path style resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.STORAGE_S3_FORCE_PATH_STYLE}}"
+        },
+        "AUTH_TOKEN": {
+          "isOptional": false,
+          "description": "Auth token resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.PLUGIN_TOKEN}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "d009848f-bc39-5f23-91dd-592f22043d95": {
+      "name": "code-sandbox",
+      "source": {
+        "image": "ghcr.io/labring/fastgpt-code-sandbox:v4.16.0@sha256:4ba4613d7fa6534e72a3adbfe3cd26f6617ba55df99e21d71a8fe7c6ebff36ab"
+      },
+      "variables": {
+        "SANDBOX_TOKEN": {
+          "isOptional": false,
+          "description": "Sandbox token resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.CODE_SANDBOX_TOKEN}}"
+        },
+        "SANDBOX_API_MAX_BODY_MB": {
+          "isOptional": false,
+          "description": "Sandbox api max body mb for code-sandbox. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8"
+        },
+        "SANDBOX_MAX_TIMEOUT": {
+          "isOptional": false,
+          "description": "Sandbox max timeout for code-sandbox. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "60000"
+        },
+        "SANDBOX_MAX_MEMORY_MB": {
+          "isOptional": false,
+          "description": "Sandbox max memory mb for code-sandbox. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "256"
+        },
+        "SANDBOX_MAX_OUTPUT_MB": {
+          "isOptional": false,
+          "description": "Sandbox max output mb for code-sandbox. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "10"
+        },
+        "SANDBOX_POOL_SIZE": {
+          "isOptional": false,
+          "description": "Sandbox pool size for code-sandbox. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2"
+        },
+        "CHECK_INTERNAL_IP": {
+          "isOptional": false,
+          "description": "Check internal ip for code-sandbox. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "SANDBOX_REQUEST_MAX_COUNT": {
+          "isOptional": false,
+          "description": "Sandbox request max count for code-sandbox. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "30"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "4d654ef9-b600-5e69-b991-b9890911013a": {
+      "name": "aiproxy",
+      "source": {
+        "image": "ghcr.io/labring/aiproxy:v0.6.5@sha256:9b2d9148c8d8a09d2e70577b492b7b32aab5877fe48c2c78a6d300005f4d42bb"
+      },
+      "variables": {
+        "ADMIN_KEY": {
+          "isOptional": false,
+          "description": "Admin key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{fastgpt.AIPROXY_API_TOKEN}}"
+        },
+        "SQL_DSN": {
+          "isOptional": false,
+          "description": "Sql dsn resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{aiproxy-db.DATABASE_URL}}"
+        },
+        "BILLING_ENABLED": {
+          "isOptional": false,
+          "description": "Billing enabled for aiproxy. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "DISABLE_MODEL_CONFIG": {
+          "isOptional": false,
+          "description": "Disable model config for aiproxy. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "LOG_DETAIL_STORAGE_HOURS": {
+          "isOptional": false,
+          "description": "Log detail storage hours for aiproxy. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    }
+  }
+}

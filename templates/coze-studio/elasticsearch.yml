@@ -1,0 +1,6 @@
+cluster.name: coze
+network.host: 0.0.0.0
+discovery.type: single-node
+path.data: /bitnami/elasticsearch/data
+xpack.security.enabled: false
+node.store.allow_mmap: false

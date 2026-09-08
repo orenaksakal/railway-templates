@@ -1,0 +1,466 @@
+{
+  "services": {
+    "0ddda606-1cd1-514f-ab3e-ec3d95fbbe42": {
+      "name": "opensearch",
+      "source": {
+        "image": "langflowai/openrag-opensearch:0.7.1@sha256:e63b97ec056022048229befdb7a13a487c006efdca2dc9e2a5ff3884c945e2ba"
+      },
+      "variables": {
+        "discovery.type": {
+          "isOptional": false,
+          "description": "Discovery.type for opensearch. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "single-node"
+        },
+        "OPENSEARCH_INITIAL_ADMIN_PASSWORD": {
+          "isOptional": false,
+          "description": "Opensearch initial admin password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "Aa9!${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "OPENSEARCH_JAVA_OPTS": {
+          "isOptional": false,
+          "description": "Opensearch java opts for opensearch. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "-Xms1g -Xmx1g"
+        },
+        "OPENRAG_BACKEND_INTERNAL_URL": {
+          "isOptional": false,
+          "description": "Openrag backend internal url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{backend.RAILWAY_PRIVATE_DOMAIN}}:8000"
+        },
+        "node.store.allow_mmap": {
+          "isOptional": false,
+          "description": "Node.store.allow mmap for opensearch. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/usr/share/opensearch/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "bdd2aaf7-a118-5d2e-8e80-490a13441ca0": {
+          "mountPath": "/usr/share/opensearch/data"
+        }
+      }
+    },
+    "36d3cd73-c09b-5f74-a534-2524ae948b3d": {
+      "name": "backend",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "OPENSEARCH_HOST": {
+          "isOptional": false,
+          "description": "Opensearch host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{opensearch.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "OPENSEARCH_PORT": {
+          "isOptional": false,
+          "description": "Opensearch port for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "9200"
+        },
+        "OPENSEARCH_USERNAME": {
+          "isOptional": false,
+          "description": "Opensearch username for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "OPENSEARCH_PASSWORD": {
+          "isOptional": false,
+          "description": "Opensearch password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{opensearch.OPENSEARCH_INITIAL_ADMIN_PASSWORD}}"
+        },
+        "OPENSEARCH_INDEX_NAME": {
+          "isOptional": false,
+          "description": "Opensearch index name for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "documents"
+        },
+        "DOCLING_SERVE_URL": {
+          "isOptional": false,
+          "description": "Docling serve url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{docling.RAILWAY_PRIVATE_DOMAIN}}:5001"
+        },
+        "DOCLING_SERVE_VERIFY_SSL": {
+          "isOptional": false,
+          "description": "Docling serve verify ssl for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "LANGFLOW_AUTO_LOGIN": {
+          "isOptional": false,
+          "description": "Langflow auto login for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LANGFLOW_SUPERUSER": {
+          "isOptional": false,
+          "description": "Langflow superuser for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "LANGFLOW_SUPERUSER_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated langflow superuser password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "LANGFLOW_URL": {
+          "isOptional": false,
+          "description": "Langflow url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{langflow.RAILWAY_PRIVATE_DOMAIN}}:7860"
+        },
+        "LANGFLOW_PUBLIC_URL": {
+          "isOptional": false,
+          "description": "Langflow public url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{langflow.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "OPENRAG_BACKEND_INTERNAL_URL": {
+          "isOptional": false,
+          "description": "Openrag backend internal url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{backend.RAILWAY_PRIVATE_DOMAIN}}:8000"
+        },
+        "OPENSEARCH_NODE_COUNT_CHECK_ENABLED": {
+          "isOptional": false,
+          "description": "Opensearch node count check enabled for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "OPENRAG_OPENSEARCH_NUMBER_OF_SHARDS": {
+          "isOptional": false,
+          "description": "Openrag opensearch number of shards for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "OPENRAG_OPENSEARCH_NUMBER_OF_REPLICAS": {
+          "isOptional": false,
+          "description": "Openrag opensearch number of replicas for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0"
+        },
+        "OPENRAG_AZURE_BLOB_ENABLED": {
+          "isOptional": false,
+          "description": "Openrag azure blob enabled for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "INGEST_SAMPLE_DATA": {
+          "isOptional": false,
+          "description": "Ingest sample data for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "OPENAI_API_KEY": {
+          "isOptional": false,
+          "description": "Required operator-supplied openai api key. Enter your own value before deployment."
+        },
+        "SESSION_SECRET": {
+          "isOptional": false,
+          "description": "Generated session secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "OPENRAG_ENCRYPTION_KEY": {
+          "isOptional": false,
+          "description": "Required Fernet key: generate with Python cryptography.fernet.Fernet.generate_key().decode(). Preserve with backups."
+        },
+        "CORS_ALLOWED_ORIGINS": {
+          "isOptional": false,
+          "description": "Cors allowed origins resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{openrag.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "ENVIRONMENT": {
+          "isOptional": false,
+          "description": "Environment for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "production"
+        },
+        "MAX_WORKERS": {
+          "isOptional": false,
+          "description": "Max workers for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "INSTANA_ENABLED": {
+          "isOptional": false,
+          "description": "Instana enabled for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/openrag/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/openrag/Dockerfile"
+      },
+      "volumeMounts": {
+        "4b0c4205-6278-5614-9686-f575d049d574": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "b5191ea1-28b3-5b60-b519-fa52f5ee81c2": {
+      "name": "langflow",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "OPENSEARCH_HOST": {
+          "isOptional": false,
+          "description": "Opensearch host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{opensearch.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "OPENSEARCH_PORT": {
+          "isOptional": false,
+          "description": "Opensearch port for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "9200"
+        },
+        "OPENSEARCH_USERNAME": {
+          "isOptional": false,
+          "description": "Opensearch username for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "OPENSEARCH_PASSWORD": {
+          "isOptional": false,
+          "description": "Opensearch password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{opensearch.OPENSEARCH_INITIAL_ADMIN_PASSWORD}}"
+        },
+        "OPENSEARCH_INDEX_NAME": {
+          "isOptional": false,
+          "description": "Opensearch index name for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "documents"
+        },
+        "DOCLING_SERVE_URL": {
+          "isOptional": false,
+          "description": "Docling serve url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{docling.RAILWAY_PRIVATE_DOMAIN}}:5001"
+        },
+        "DOCLING_SERVE_VERIFY_SSL": {
+          "isOptional": false,
+          "description": "Docling serve verify ssl for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "LANGFLOW_AUTO_LOGIN": {
+          "isOptional": false,
+          "description": "Langflow auto login for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LANGFLOW_SUPERUSER": {
+          "isOptional": false,
+          "description": "Langflow superuser for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "LANGFLOW_SUPERUSER_PASSWORD": {
+          "isOptional": false,
+          "description": "Langflow superuser password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{backend.LANGFLOW_SUPERUSER_PASSWORD}}"
+        },
+        "LANGFLOW_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Generated langflow secret key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "LANGFLOW_CONFIG_DIR": {
+          "isOptional": false,
+          "description": "Langflow config dir for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/app/langflow-data"
+        },
+        "LANGFLOW_DATABASE_URL": {
+          "isOptional": false,
+          "description": "Langflow database url for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "sqlite:////app/langflow-data/langflow.db?timeout=60"
+        },
+        "LANGFLOW_WORKERS": {
+          "isOptional": false,
+          "description": "Langflow workers for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "LANGFLOW_NEW_USER_IS_ACTIVE": {
+          "isOptional": false,
+          "description": "Langflow new user is active for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LANGFLOW_ENABLE_SUPERUSER_CLI": {
+          "isOptional": false,
+          "description": "Langflow enable superuser cli for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "LANGFLOW_ALLOW_CUSTOM_COMPONENTS": {
+          "isOptional": false,
+          "description": "Langflow allow custom components for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LANGFLOW_COMPONENTS_INDEX_PATH": {
+          "isOptional": false,
+          "description": "Langflow components index path for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/app/flows/component_index.json"
+        },
+        "LANGFLOW_SSRF_ALLOWED_HOSTS": {
+          "isOptional": false,
+          "description": "Langflow ssrf allowed hosts resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{backend.RAILWAY_PRIVATE_DOMAIN}},${{docling.RAILWAY_PRIVATE_DOMAIN}},${{opensearch.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "OPENAI_API_KEY": {
+          "isOptional": false,
+          "description": "Openai api key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{backend.OPENAI_API_KEY}}"
+        },
+        "OPENRAG_LLM_BASE_URL": {
+          "isOptional": false,
+          "description": "Openrag llm base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{backend.RAILWAY_PRIVATE_DOMAIN}}:8000"
+        },
+        "OPENSEARCH_URL": {
+          "isOptional": false,
+          "description": "Opensearch url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{opensearch.RAILWAY_PRIVATE_DOMAIN}}:9200"
+        },
+        "LANGFLOW_LOG_LEVEL": {
+          "isOptional": false,
+          "description": "Langflow log level for langflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "info"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/openrag/Langflow.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/app/langflow-data"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:7860": {
+            "port": 7860
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/openrag/Langflow.Dockerfile"
+      },
+      "volumeMounts": {
+        "a66b65e5-83b6-50c2-8354-07ccd2e0a339": {
+          "mountPath": "/app/langflow-data"
+        }
+      }
+    },
+    "e2116e20-6670-50a9-b03e-f13050369705": {
+      "name": "frontend",
+      "source": {
+        "image": "langflowai/openrag-frontend:0.7.1@sha256:b85c0f3b8c9c3cd4417ae422d36e61814c04e011942cf50596887844a220d740"
+      },
+      "variables": {
+        "OPENRAG_BACKEND_HOST": {
+          "isOptional": false,
+          "description": "Openrag backend host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{backend.RAILWAY_PRIVATE_DOMAIN}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "bd744d66-ab0d-57f5-bdc6-f7a2335efa80": {
+      "name": "docling",
+      "source": {
+        "image": "ghcr.io/docling-project/docling-serve-cpu:latest@sha256:576fc2074ac77bcfbf3fe27633aa0dd89b452a170b2cd31689c8751e94d60f7a"
+      },
+      "variables": {
+        "DOCLING_SERVE_ENABLE_UI": {
+          "isOptional": false,
+          "description": "Docling serve enable ui for docling. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "DOCLING_SERVE_MAX_NUM_CONCURRENT_JOBS": {
+          "isOptional": false,
+          "description": "Docling serve max num concurrent jobs for docling. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "HF_HOME": {
+          "isOptional": false,
+          "description": "Hf home for docling. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/huggingface"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "91742c78-d878-5ace-8405-2c435eb61831": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "464d7088-9342-5e8c-a9d3-b843a2dd0f94": {
+      "name": "openrag",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{frontend.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for openrag. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "3000"
+        },
+        "ACCESS_USER": {
+          "isOptional": false,
+          "description": "Access user for openrag. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round4-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round4-gateway/Dockerfile"
+      }
+    }
+  }
+}

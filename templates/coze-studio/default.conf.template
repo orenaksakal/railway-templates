@@ -1,0 +1,24 @@
+server {
+ listen 80;
+ resolver ${DNS_RESOLVER} valid=10s;
+ client_max_body_size 32m;
+ location / { root /usr/share/nginx/html; try_files $uri $uri/ /index.html; }
+ location ~ ^/(api|v[1-3]|admin)(/|$) {
+  set $backend "${BACKEND_HOST}:8888";
+  proxy_pass http://$backend;
+  proxy_set_header Host $http_host;
+  proxy_set_header X-Forwarded-Proto https;
+  proxy_set_header Accept-Encoding "";
+  proxy_buffering off;
+  proxy_read_timeout 600s;
+  sub_filter '${STORAGE_HOST}:9000' '$http_host/local_storage';
+  sub_filter_once off;
+  sub_filter_types application/json text/event-stream;
+ }
+ location /local_storage/ {
+  rewrite ^/local_storage/(.*)$ /$1 break;
+  set $storage "${STORAGE_HOST}:9000";
+  proxy_pass http://$storage;
+  proxy_set_header Host ${STORAGE_HOST}:9000;
+ }
+}

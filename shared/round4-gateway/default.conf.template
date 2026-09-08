@@ -1,0 +1,22 @@
+map $http_upgrade $connection_upgrade { default upgrade; '' close; }
+server {
+ listen 8080;
+ listen [::]:8080;
+ resolver ${DNS_RESOLVER} valid=10s;
+ client_max_body_size 32m;
+ auth_basic "Private draft instance";
+ auth_basic_user_file /etc/nginx/htpasswd;
+ location = /healthz { auth_basic off; access_log off; return 200 'gateway ready'; }
+ location / {
+  set $upstream "${UPSTREAM_HOST}:${UPSTREAM_PORT}";
+  proxy_pass http://$upstream;
+  proxy_http_version 1.1;
+  proxy_set_header Host $host;
+  proxy_set_header X-Forwarded-Proto https;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection $connection_upgrade;
+  proxy_buffering off;
+  proxy_read_timeout 600s;
+ }
+}

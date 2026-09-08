@@ -1,0 +1,48 @@
+# Acontext Agent Context Platform
+
+Acontext API, core and UI with PostgreSQL, Redis, RabbitMQ and S3-compatible asset storage.
+
+**Unpublished draft — not runtime-validated or approved for release.** Saving this template does not deploy services. Deployment later incurs Railway and provider charges.
+
+## Setup
+
+Enter core.LLM_API_KEY and core.CLOUDFLARE_WORKER_URL for an existing Acontext sandbox Worker. Worker deployment is a separate prerequisite. Open acontext with the gateway access credentials. API clients use api.ROOT_API_BEARER_TOKEN; never put this root token into browser code.
+
+### Deployment Dependencies
+
+| Service | Source | Persistent volume | Public HTTP |
+|---|---|---|---|
+| postgres | pgvector/pgvector:pg16 (digest pinned) | /var/lib/postgresql/data | Private only |
+| redis | redis:7.4 (digest pinned) | /data | Private only |
+| rabbitmq | rabbitmq:4-management (digest pinned) | /var/lib/rabbitmq | Private only |
+| storage | repository adapter: shared/round4-storage/Dockerfile | /data | 9000 |
+| jaeger | jaegertracing/all-in-one:1.75.0 (digest pinned) | None | Private only |
+| core | repository adapter: templates/acontext/Core.Dockerfile | None | Private only |
+| api | ghcr.io/memodb-io/acontext-api:latest (digest pinned) | None | 8029 |
+| ui | ghcr.io/memodb-io/acontext-ui:latest (digest pinned) | None | Private only |
+| acontext | repository adapter: shared/round4-gateway/Dockerfile | None | 8080 |
+
+## Required inputs
+
+`core.LLM_API_KEY`, `core.CLOUDFLARE_WORKER_URL`
+
+Generated credentials: `postgres.POSTGRES_PASSWORD`, `redis.REDIS_PASSWORD`, `rabbitmq.RABBITMQ_DEFAULT_PASS`, `storage.MINIO_ROOT_USER`, `storage.MINIO_ROOT_PASSWORD`, `api.ROOT_API_BEARER_TOKEN`, `api.ROOT_SECRET_PEPPER`, `acontext.ACCESS_PASSWORD`. Keep them private and preserve relevant encryption keys with backups. Every editor variable includes a description.
+
+## Scope and limitations
+
+Nine services. MinIO replaces upstream SeaweedFS for S3-compatible storage; bucket initialization is included. Public S3 endpoint supports signed asset URLs while the core uses the private endpoint. Jaeger is private, memory-only and capped at 10,000 traces; traces are intentionally ephemeral. Core config is an empty mapping so environment variables supply credentials. Sandbox execution cannot work until the external Worker is configured. Validate current UI/API root-token and pepper handling before release.
+
+## Release gates
+
+Clean image builds; DB migrations and vector extension; API auth; context/session lifecycle; worker queue processing; S3 upload and signed download; Cloudflare sandbox execution; UI login; private trace access; persistence and restore.
+
+## Operations
+
+Keep database and internal service endpoints private. Railway provides HTTPS for the explicitly exposed HTTP services. Back up the listed persistent volumes and database exports, preserve encryption keys, and test a restore before relying on this instance. Review upstream migrations before upgrades. Single-volume services use one replica; no multi-region or high-availability guarantee is made. A gateway health response only proves the gateway is alive.
+
+## Sources
+
+- [Upstream project](https://github.com/memodb-io/Acontext)
+- [Reviewed source snapshot](https://github.com/memodb-io/Acontext/tree/259d73bfdebeed35ec2d4211ddc060a2d4126bc6)
+- Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
+- Build and runtime verification remain pending. Base-image pins do not lock packages installed by apt/apk/pip.

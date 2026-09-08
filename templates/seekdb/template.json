@@ -1,0 +1,49 @@
+{
+  "services": {
+    "4d8f0c1a-6fc9-5722-b011-d5882ad2ee42": {
+      "name": "seekdb",
+      "source": {
+        "image": "oceanbase/seekdb:1.4.0-100000172026082615@sha256:00d7a1e22220d4bf12c8dacfb1bf5723e5cf5670078b1ce28b41015f4d833b18"
+      },
+      "variables": {
+        "ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "CPU_COUNT": {
+          "isOptional": false,
+          "description": "Cpu count for seekdb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2"
+        },
+        "MEMORY_LIMIT": {
+          "isOptional": false,
+          "description": "Memory limit for seekdb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2G"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "mysql://root:${{seekdb.ROOT_PASSWORD}}@${{seekdb.RAILWAY_PRIVATE_DOMAIN}}:2881/test"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/oceanbase"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:2886": {
+            "port": 2886
+          }
+        }
+      },
+      "volumeMounts": {
+        "ec14a082-8e04-5c66-bfe3-89434c727d8a": {
+          "mountPath": "/var/lib/oceanbase"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "services": {
+    "6603d854-c531-5d4a-a62d-f4c540ec86ad": {
+      "name": "dolt",
+      "source": {
+        "image": "dolthub/dolt-sql-server:2.3.2@sha256:38d5e900583267f35e36ad738e13f202e62860b351aa4c088dceaf7dbaed7ab6"
+      },
+      "variables": {
+        "DOLT_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated dolt root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "DOLT_ROOT_HOST": {
+          "isOptional": false,
+          "description": "Dolt root host for dolt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "localhost"
+        },
+        "DOLT_USER": {
+          "isOptional": false,
+          "description": "Dolt user for dolt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "dolt"
+        },
+        "DOLT_USER_HOST": {
+          "isOptional": false,
+          "description": "Dolt user host for dolt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "%"
+        },
+        "DOLT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated dolt password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "DOLT_DATABASE": {
+          "isOptional": false,
+          "description": "Dolt database for dolt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "app"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "mysql://dolt:${{dolt.DOLT_PASSWORD}}@${{dolt.RAILWAY_PRIVATE_DOMAIN}}:3306/app"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/dolt"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "7b7247ee-0e4a-557b-b0ed-01229b980bb1": {
+          "mountPath": "/var/lib/dolt"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+FROM ghcr.io/666ghj/bettafish:latest@sha256:38939ef54ef33ca9cee4285436111424ebe826366f63275a910f7044c15529ce
+USER root
+RUN printf "# Runtime variables are supplied by Railway\n" > /app/.env
+RUN mkdir -p /seed && if [ -d /app/logs ]; then cp -a /app/logs /seed/logs; fi && rm -rf /app/logs && ln -s /data/logs /app/logs && if [ -d /app/final_reports ]; then cp -a /app/final_reports /seed/final_reports; fi && rm -rf /app/final_reports && ln -s /data/final_reports /app/final_reports && if [ -d /app/insight_engine_streamlit_reports ]; then cp -a /app/insight_engine_streamlit_reports /seed/insight_engine_streamlit_reports; fi && rm -rf /app/insight_engine_streamlit_reports && ln -s /data/insight_engine_streamlit_reports /app/insight_engine_streamlit_reports && if [ -d /app/media_engine_streamlit_reports ]; then cp -a /app/media_engine_streamlit_reports /seed/media_engine_streamlit_reports; fi && rm -rf /app/media_engine_streamlit_reports && ln -s /data/media_engine_streamlit_reports /app/media_engine_streamlit_reports && if [ -d /app/query_engine_streamlit_reports ]; then cp -a /app/query_engine_streamlit_reports /seed/query_engine_streamlit_reports; fi && rm -rf /app/query_engine_streamlit_reports && ln -s /data/query_engine_streamlit_reports /app/query_engine_streamlit_reports
+COPY --chmod=755 templates/bettafish/start.sh /railway-start.sh
+ENTRYPOINT ["/railway-start.sh"]
+CMD ["python", "app.py"]

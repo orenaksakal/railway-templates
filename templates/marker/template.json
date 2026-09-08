@@ -1,0 +1,111 @@
+{
+  "services": {
+    "51ea2caf-818b-5021-84c3-a50c4cc71937": {
+      "name": "marker",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "API_KEY": {
+          "isOptional": false,
+          "description": "Generated API authentication key, or a reference to the shared internal API key. Keep private and preserve matching references.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "HF_HOME": {
+          "isOptional": false,
+          "description": "Hf home for marker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/huggingface"
+        },
+        "XDG_CACHE_HOME": {
+          "isOptional": false,
+          "description": "Xdg cache home for marker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/cache"
+        },
+        "TORCH_DEVICE": {
+          "isOptional": false,
+          "description": "Torch device for marker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "cpu"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/marker/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/marker/Dockerfile"
+      },
+      "volumeMounts": {
+        "cda445ed-9a90-5e9b-a407-4eb3a54d28ae": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "b834f996-8a2d-51cb-ad71-181143083e56": {
+      "name": "marker-api",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{marker.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for marker-api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8000"
+        },
+        "ACCESS_USER": {
+          "isOptional": false,
+          "description": "Access user for marker-api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round4-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round4-gateway/Dockerfile"
+      }
+    }
+  }
+}

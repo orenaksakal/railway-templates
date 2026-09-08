@@ -1,0 +1,571 @@
+{
+  "services": {
+    "0c8c37f1-b3e2-5e35-bfda-ae7aa35b02b9": {
+      "name": "postgres",
+      "source": {
+        "image": "pgvector/pgvector:pg16@sha256:ccc6e83d6e35e931dc7c5def2022729d5a6c370318d099181995567ff1fb4d6b"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "acontext"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "acontext"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://acontext:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/acontext"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "fb5a4898-f40d-5f41-9a89-bcf3f85963ba": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "01e6b046-bcc9-5d42-8a7e-125270df0725": {
+      "name": "rabbitmq",
+      "source": {
+        "image": "rabbitmq:4-management@sha256:ffd1b50c522ad20172ffd6716a2f41db375c7269560c8f3fb9a694e210ef0852"
+      },
+      "variables": {
+        "RABBITMQ_DEFAULT_USER": {
+          "isOptional": false,
+          "description": "RabbitMQ user created on first initialization. Keep aligned with the NuQ connection URL.",
+          "defaultValue": "acontext"
+        },
+        "RABBITMQ_DEFAULT_PASS": {
+          "isOptional": false,
+          "description": "Generated RabbitMQ password. Preserve it with the persistent broker data.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RABBITMQ_DEFAULT_VHOST": {
+          "isOptional": false,
+          "description": "Rabbitmq default vhost for rabbitmq. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/"
+        },
+        "RABBITMQ_NODENAME": {
+          "isOptional": false,
+          "description": "Stable RabbitMQ node identity for persisted queue data. Keep rabbit@localhost across redeployments.",
+          "defaultValue": "rabbit@localhost"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/rabbitmq"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "b8cbd873-6090-55dc-bfcd-1c4f9ee0a3dd": {
+          "mountPath": "/var/lib/rabbitmq"
+        }
+      }
+    },
+    "b4e8d4f9-2803-50c5-9349-cb78dd131cc9": {
+      "name": "storage",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "MINIO_ROOT_USER": {
+          "isOptional": false,
+          "description": "Generated minio root user. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(20, \"abcdef0123456789\")}}"
+        },
+        "MINIO_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated minio root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "S3_BUCKETS": {
+          "isOptional": false,
+          "description": "S3 buckets for storage. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "acontext-assets"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round4-storage/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:9000": {
+            "port": 9000
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round4-storage/Dockerfile"
+      },
+      "volumeMounts": {
+        "d2311c1b-a75d-5436-8bbb-3a030b29a229": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "ccf7ceca-7ea1-5bd1-ac12-e0a51c395aae": {
+      "name": "jaeger",
+      "source": {
+        "image": "jaegertracing/all-in-one:1.75.0@sha256:e493bff54e457ba5827f82418d744a322165cd5d46146607fb76489bfb2a8885"
+      },
+      "variables": {
+        "COLLECTOR_OTLP_ENABLED": {
+          "isOptional": false,
+          "description": "Collector otlp enabled for jaeger. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "SPAN_STORAGE_TYPE": {
+          "isOptional": false,
+          "description": "Span storage type for jaeger. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "memory"
+        },
+        "MEMORY_MAX_TRACES": {
+          "isOptional": false,
+          "description": "Memory max traces for jaeger. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "10000"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "dd40ac38-b024-5bbc-b8f0-9546091448ce": {
+      "name": "core",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "LLM_API_KEY": {
+          "isOptional": false,
+          "description": "Required operator-supplied llm api key. Enter your own value before deployment."
+        },
+        "LLM_BASE_URL": {
+          "isOptional": false,
+          "description": "Llm base url for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "https://api.openai.com/v1"
+        },
+        "LLM_SDK": {
+          "isOptional": false,
+          "description": "Llm sdk for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "openai"
+        },
+        "LLM_SIMPLE_MODEL": {
+          "isOptional": false,
+          "description": "Llm simple model for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "gpt-4.1"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "${{postgres.DATABASE_URL}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "${{redis.REDIS_URL}}"
+        },
+        "MQ_URL": {
+          "isOptional": false,
+          "description": "Mq url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "amqp://acontext:${{rabbitmq.RABBITMQ_DEFAULT_PASS}}@${{rabbitmq.RAILWAY_PRIVATE_DOMAIN}}:5672/%2F"
+        },
+        "S3_ENDPOINT": {
+          "isOptional": false,
+          "description": "S3 endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "S3_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "S3 access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "S3_SECRET_KEY": {
+          "isOptional": false,
+          "description": "S3 secret key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "S3_BUCKET": {
+          "isOptional": false,
+          "description": "S3 bucket for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "acontext-assets"
+        },
+        "S3_REGION": {
+          "isOptional": false,
+          "description": "S3 region for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "us-east-1"
+        },
+        "OTEL_EXPORTER_OTLP_ENDPOINT": {
+          "isOptional": false,
+          "description": "Otel exporter otlp endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{jaeger.RAILWAY_PRIVATE_DOMAIN}}:4317"
+        },
+        "SANDBOX_TYPE": {
+          "isOptional": false,
+          "description": "Sandbox type for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "cloudflare"
+        },
+        "CLOUDFLARE_WORKER_URL": {
+          "isOptional": false,
+          "description": "Required URL of your separately deployed Acontext Cloudflare sandbox Worker. This template does not deploy the Worker."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/acontext/Core.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/acontext/Core.Dockerfile"
+      }
+    },
+    "774c5d30-bc6c-543e-9ffd-c0b9bb3e8ddf": {
+      "name": "api",
+      "source": {
+        "image": "ghcr.io/memodb-io/acontext-api:latest@sha256:e6e6b4a15999db7447fc9e460b4e18400c742e1bf1989d9bc29abd030ccd9341"
+      },
+      "variables": {
+        "APP_ENV": {
+          "isOptional": false,
+          "description": "App env for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "release"
+        },
+        "API_EXPORT_PORT": {
+          "isOptional": false,
+          "description": "Api export port for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8029"
+        },
+        "ROOT_API_BEARER_TOKEN": {
+          "isOptional": false,
+          "description": "Generated root api bearer token. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "ROOT_SECRET_PEPPER": {
+          "isOptional": false,
+          "description": "Generated root secret pepper. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "DATABASE_HOST": {
+          "isOptional": false,
+          "description": "Database host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "DATABASE_USER": {
+          "isOptional": false,
+          "description": "Database user for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "acontext"
+        },
+        "DATABASE_PASSWORD": {
+          "isOptional": false,
+          "description": "Database password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}"
+        },
+        "DATABASE_NAME": {
+          "isOptional": false,
+          "description": "Database name for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "acontext"
+        },
+        "DATABASE_EXPORT_PORT": {
+          "isOptional": false,
+          "description": "Database export port for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5432"
+        },
+        "REDIS_HOST": {
+          "isOptional": false,
+          "description": "Private Redis/Valkey hostname supplied by the redis service reference.",
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{redis.REDIS_PASSWORD}}"
+        },
+        "REDIS_EXPORT_PORT": {
+          "isOptional": false,
+          "description": "Redis export port for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "6379"
+        },
+        "RABBITMQ_HOST": {
+          "isOptional": false,
+          "description": "Rabbitmq host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{rabbitmq.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "RABBITMQ_USER": {
+          "isOptional": false,
+          "description": "Rabbitmq user for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "acontext"
+        },
+        "RABBITMQ_PASSWORD": {
+          "isOptional": false,
+          "description": "Rabbitmq password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{rabbitmq.RABBITMQ_DEFAULT_PASS}}"
+        },
+        "RABBITMQ_VHOST": {
+          "isOptional": false,
+          "description": "Rabbitmq vhost for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/"
+        },
+        "RABBITMQ_VHOST_ENCODED": {
+          "isOptional": false,
+          "description": "Rabbitmq vhost encoded for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "%2F"
+        },
+        "RABBITMQ_EXPORT_PORT": {
+          "isOptional": false,
+          "description": "Rabbitmq export port for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5672"
+        },
+        "S3_ENDPOINT": {
+          "isOptional": false,
+          "description": "S3 endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{storage.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "S3_INTERNAL_ENDPOINT": {
+          "isOptional": false,
+          "description": "S3 internal endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "S3_REGION": {
+          "isOptional": false,
+          "description": "S3 region for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "us-east-1"
+        },
+        "S3_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "S3 access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "S3_SECRET_KEY": {
+          "isOptional": false,
+          "description": "S3 secret key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "S3_BUCKET": {
+          "isOptional": false,
+          "description": "S3 bucket for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "acontext-assets"
+        },
+        "CORE_BASE_URL": {
+          "isOptional": false,
+          "description": "Core base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{core.RAILWAY_PRIVATE_DOMAIN}}:8000"
+        },
+        "OTEL_EXPORTER_OTLP_ENDPOINT": {
+          "isOptional": false,
+          "description": "Otel exporter otlp endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{jaeger.RAILWAY_PRIVATE_DOMAIN}}:4317"
+        },
+        "APP_EXTERNALURL": {
+          "isOptional": false,
+          "description": "App externalurl resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{api.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "ARTIFACT_MAX_UPLOAD_SIZE_BYTES": {
+          "isOptional": false,
+          "description": "Artifact max upload size bytes for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "16777216"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8029": {
+            "port": 8029
+          }
+        }
+      }
+    },
+    "3364179d-d318-57a5-9758-eec3b84ea5d1": {
+      "name": "ui",
+      "source": {
+        "image": "ghcr.io/memodb-io/acontext-ui:latest@sha256:b303d1f1894bbe356e4f70483c06a7bfe9c38bcf46a5fff5de2d8826e87ef436"
+      },
+      "variables": {
+        "NODE_ENV": {
+          "isOptional": false,
+          "description": "Node.js runtime mode. Keep production for hosted deployments.",
+          "defaultValue": "production"
+        },
+        "NEXT_PUBLIC_BASE_URL": {
+          "isOptional": false,
+          "description": "Next public base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{acontext.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "NEXT_PUBLIC_BASE_PATH": {
+          "isOptional": false,
+          "description": "Next public base path for ui. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": ""
+        },
+        "API_SERVER_URL": {
+          "isOptional": false,
+          "description": "Api server url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8029"
+        },
+        "ROOT_API_BEARER_TOKEN": {
+          "isOptional": false,
+          "description": "Root api bearer token resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.ROOT_API_BEARER_TOKEN}}"
+        },
+        "ROOT_SECRET_PEPPER": {
+          "isOptional": false,
+          "description": "Root secret pepper resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.ROOT_SECRET_PEPPER}}"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "${{postgres.DATABASE_URL}}"
+        },
+        "JAEGER_INTERNAL_URL": {
+          "isOptional": false,
+          "description": "Jaeger internal url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{jaeger.RAILWAY_PRIVATE_DOMAIN}}:16686"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "021f7d34-5f6a-57a3-872c-ee0109931ddc": {
+      "name": "acontext",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{ui.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for acontext. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "3000"
+        },
+        "ACCESS_USER": {
+          "isOptional": false,
+          "description": "Access user for acontext. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round4-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round4-gateway/Dockerfile"
+      }
+    }
+  }
+}

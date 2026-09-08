@@ -1,0 +1,652 @@
+{
+  "services": {
+    "f6dd2090-cd3b-52f0-905d-07d44fd2dc43": {
+      "name": "mysql",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "MYSQL_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mysql root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "MYSQL_DATABASE": {
+          "isOptional": false,
+          "description": "Mysql database for mysql. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "opencoze"
+        },
+        "MYSQL_USER": {
+          "isOptional": false,
+          "description": "Mysql user for mysql. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "coze"
+        },
+        "MYSQL_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mysql password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/coze-studio/MySQL.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "docker-entrypoint.sh mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci",
+        "requiredMountPath": "/var/lib/mysql"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/coze-studio/MySQL.Dockerfile"
+      },
+      "volumeMounts": {
+        "6caa3481-2c0f-5d50-9480-904c57280752": {
+          "mountPath": "/var/lib/mysql"
+        }
+      }
+    },
+    "0d7ef753-f1ba-5edc-8b67-d5dab6fe239a": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "174cebd5-87f1-5d8b-9228-f8be28592c90": {
+      "name": "elasticsearch",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "ES_JAVA_OPTS": {
+          "isOptional": false,
+          "description": "Es java opts for elasticsearch. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "-Xms1g -Xmx1g"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/coze-studio/Elasticsearch.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/bitnami/elasticsearch/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/coze-studio/Elasticsearch.Dockerfile"
+      },
+      "volumeMounts": {
+        "0a9ff90f-73e3-5bde-bb16-b2079f160a17": {
+          "mountPath": "/bitnami/elasticsearch/data"
+        }
+      }
+    },
+    "ffca0264-2d9b-5afa-8857-8c14841c9d35": {
+      "name": "storage",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "MINIO_ROOT_USER": {
+          "isOptional": false,
+          "description": "Generated minio root user. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(20, \"abcdef0123456789\")}}"
+        },
+        "MINIO_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated minio root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "S3_BUCKETS": {
+          "isOptional": false,
+          "description": "S3 buckets for storage. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "opencoze milvus"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/coze-studio/Storage.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/coze-studio/Storage.Dockerfile"
+      },
+      "volumeMounts": {
+        "d2311c1b-a75d-5436-8bbb-3a030b29a229": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "40d710e5-e356-52b1-a6b8-3d172089d37f": {
+      "name": "etcd",
+      "source": {
+        "image": "bitnamilegacy/etcd:3.5@sha256:1b9977cf4cce7546873e0ee50e684c38a38a4e7a27d22086fbd2b8a1b44a69d0"
+      },
+      "variables": {
+        "ALLOW_NONE_AUTHENTICATION": {
+          "isOptional": false,
+          "description": "Allow none authentication for etcd. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "yes"
+        },
+        "ETCD_LISTEN_CLIENT_URLS": {
+          "isOptional": false,
+          "description": "Etcd listen client urls for etcd. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "http://0.0.0.0:2379"
+        },
+        "ETCD_ADVERTISE_CLIENT_URLS": {
+          "isOptional": false,
+          "description": "Etcd advertise client urls resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{etcd.RAILWAY_PRIVATE_DOMAIN}}:2379"
+        },
+        "ETCD_AUTO_COMPACTION_MODE": {
+          "isOptional": false,
+          "description": "Etcd auto compaction mode for etcd. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "revision"
+        },
+        "ETCD_AUTO_COMPACTION_RETENTION": {
+          "isOptional": false,
+          "description": "Etcd auto compaction retention for etcd. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1000"
+        },
+        "ETCD_QUOTA_BACKEND_BYTES": {
+          "isOptional": false,
+          "description": "Etcd quota backend bytes for etcd. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "4294967296"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/bitnami/etcd"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "5eddb2af-a26e-5e39-a721-4401452ff2e4": {
+          "mountPath": "/bitnami/etcd"
+        }
+      }
+    },
+    "2d9a2284-b680-5342-b471-fbd4a14127c7": {
+      "name": "milvus",
+      "source": {
+        "image": "milvusdb/milvus:v2.5.10@sha256:02e1d60d71ab60f435c60076f4fed2abe59602ecd5e18dcfe229c8c558c4379d"
+      },
+      "variables": {
+        "ETCD_ENDPOINTS": {
+          "isOptional": false,
+          "description": "Etcd endpoints resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{etcd.RAILWAY_PRIVATE_DOMAIN}}:2379"
+        },
+        "MINIO_ADDRESS": {
+          "isOptional": false,
+          "description": "Minio address resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "MINIO_BUCKET_NAME": {
+          "isOptional": false,
+          "description": "Minio bucket name for milvus. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "milvus"
+        },
+        "MINIO_ACCESS_KEY_ID": {
+          "isOptional": false,
+          "description": "Minio access key id resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "MINIO_SECRET_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Minio secret access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "MINIO_USE_SSL": {
+          "isOptional": false,
+          "description": "Minio use ssl for milvus. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LOG_LEVEL": {
+          "isOptional": false,
+          "description": "Log level for milvus. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "info"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "milvus run standalone",
+        "requiredMountPath": "/var/lib/milvus"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "df1d0e1f-8259-5bc8-b770-ab990725a31f": {
+          "mountPath": "/var/lib/milvus"
+        }
+      }
+    },
+    "265c6d44-7418-5936-805d-986ee4a2deef": {
+      "name": "nsqlookupd",
+      "source": {
+        "image": "nsqio/nsq:v1.2.1@sha256:aa1ac075d45fc3dccaafbe180b8dea5421bfc17df7a9699693987ef35b5be4ad"
+      },
+      "variables": {},
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "/nsqlookupd"
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "b1e0d3c9-c096-574f-90de-fd7ec634e005": {
+      "name": "nsqd",
+      "source": {
+        "image": "nsqio/nsq:v1.2.1@sha256:aa1ac075d45fc3dccaafbe180b8dea5421bfc17df7a9699693987ef35b5be4ad"
+      },
+      "variables": {
+        "LOOKUP_HOST": {
+          "isOptional": false,
+          "description": "Lookup host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{nsqlookupd.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "BROADCAST_HOST": {
+          "isOptional": false,
+          "description": "Broadcast host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{nsqd.RAILWAY_PRIVATE_DOMAIN}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec /nsqd --data-path=/data --lookupd-tcp-address=\"$LOOKUP_HOST:4160\" --broadcast-address=\"$BROADCAST_HOST\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "2ddfaf0d-47a3-5460-ac76-8792e0e43d33": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "3bbaf87a-b53e-5e68-a9c4-f59d880ebe57": {
+      "name": "backend",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "LISTEN_ADDR": {
+          "isOptional": false,
+          "description": "Listen addr for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": ":8888"
+        },
+        "WEB_LISTEN_ADDR": {
+          "isOptional": false,
+          "description": "Web listen addr for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0.0.0.0:8888"
+        },
+        "LOG_LEVEL": {
+          "isOptional": false,
+          "description": "Log level for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "info"
+        },
+        "SERVER_HOST": {
+          "isOptional": false,
+          "description": "Server host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{coze-studio.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "USE_SSL": {
+          "isOptional": false,
+          "description": "Use ssl for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0"
+        },
+        "MAX_REQUEST_BODY_SIZE": {
+          "isOptional": false,
+          "description": "Max request body size for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "33554432"
+        },
+        "MYSQL_DSN": {
+          "isOptional": false,
+          "description": "Mysql dsn resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "coze:${{mysql.MYSQL_PASSWORD}}@tcp(${{mysql.RAILWAY_PRIVATE_DOMAIN}}:3306)/opencoze?charset=utf8mb4&parseTime=True"
+        },
+        "MYSQL_MAX_IDLE_CONNS": {
+          "isOptional": false,
+          "description": "Mysql max idle conns for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5"
+        },
+        "MYSQL_MAX_OPEN_CONNS": {
+          "isOptional": false,
+          "description": "Mysql max open conns for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "30"
+        },
+        "REDIS_ADDR": {
+          "isOptional": false,
+          "description": "Redis addr resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        },
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{redis.REDIS_PASSWORD}}"
+        },
+        "FILE_UPLOAD_COMPONENT_TYPE": {
+          "isOptional": false,
+          "description": "File upload component type for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "storage"
+        },
+        "STORAGE_TYPE": {
+          "isOptional": false,
+          "description": "Storage type for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "minio"
+        },
+        "STORAGE_UPLOAD_HTTP_SCHEME": {
+          "isOptional": false,
+          "description": "Storage upload http scheme for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "https"
+        },
+        "STORAGE_BUCKET": {
+          "isOptional": false,
+          "description": "Storage bucket for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "opencoze"
+        },
+        "MINIO_AK": {
+          "isOptional": false,
+          "description": "Minio ak resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "MINIO_SK": {
+          "isOptional": false,
+          "description": "Minio sk resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "MINIO_ENDPOINT": {
+          "isOptional": false,
+          "description": "Minio endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "MINIO_API_HOST": {
+          "isOptional": false,
+          "description": "Minio api host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "MINIO_USE_SSL": {
+          "isOptional": false,
+          "description": "Minio use ssl for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "ES_ADDR": {
+          "isOptional": false,
+          "description": "Es addr resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{elasticsearch.RAILWAY_PRIVATE_DOMAIN}}:9200"
+        },
+        "ES_VERSION": {
+          "isOptional": false,
+          "description": "Es version for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "v8"
+        },
+        "ES_NUMBER_OF_SHARDS": {
+          "isOptional": false,
+          "description": "Es number of shards for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "ES_NUMBER_OF_REPLICAS": {
+          "isOptional": false,
+          "description": "Es number of replicas for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0"
+        },
+        "COZE_MQ_TYPE": {
+          "isOptional": false,
+          "description": "Coze mq type for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "nsq"
+        },
+        "MQ_NAME_SERVER": {
+          "isOptional": false,
+          "description": "Mq name server resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{nsqd.RAILWAY_PRIVATE_DOMAIN}}:4150"
+        },
+        "VECTOR_STORE_TYPE": {
+          "isOptional": false,
+          "description": "Vector store type for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "milvus"
+        },
+        "MILVUS_ADDR": {
+          "isOptional": false,
+          "description": "Milvus addr resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{milvus.RAILWAY_PRIVATE_DOMAIN}}:19530"
+        },
+        "EMBEDDING_TYPE": {
+          "isOptional": false,
+          "description": "Embedding type for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "openai"
+        },
+        "OPENAI_EMBEDDING_API_KEY": {
+          "isOptional": false,
+          "description": "Required operator-supplied openai embedding api key. Enter your own value before deployment."
+        },
+        "OPENAI_EMBEDDING_BASE_URL": {
+          "isOptional": false,
+          "description": "Openai embedding base url for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "https://api.openai.com/v1"
+        },
+        "OPENAI_EMBEDDING_MODEL": {
+          "isOptional": false,
+          "description": "Openai embedding model for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "text-embedding-3-small"
+        },
+        "OPENAI_EMBEDDING_DIMS": {
+          "isOptional": false,
+          "description": "Openai embedding dims for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1536"
+        },
+        "OPENAI_EMBEDDING_REQUEST_DIMS": {
+          "isOptional": false,
+          "description": "Openai embedding request dims for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1536"
+        },
+        "MODEL_PROTOCOL_0": {
+          "isOptional": false,
+          "description": "Model protocol 0 for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "openai"
+        },
+        "MODEL_ID_0": {
+          "isOptional": false,
+          "description": "Required operator-supplied model id 0. Enter your own value before deployment."
+        },
+        "MODEL_NAME_0": {
+          "isOptional": false,
+          "description": "Required operator-supplied model name 0. Enter your own value before deployment."
+        },
+        "MODEL_API_KEY_0": {
+          "isOptional": false,
+          "description": "Required operator-supplied model api key 0. Enter your own value before deployment."
+        },
+        "MODEL_BASE_URL_0": {
+          "isOptional": false,
+          "description": "Model base url 0 for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "https://api.openai.com/v1"
+        },
+        "MODEL_OPENCOZE_ID_0": {
+          "isOptional": false,
+          "description": "Model opencoze id 0 for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "100001"
+        },
+        "PLUGIN_AES_AUTH_SECRET": {
+          "isOptional": false,
+          "description": "Generated plugin aes auth secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(16, \"abcdef0123456789\")}}"
+        },
+        "PLUGIN_AES_STATE_SECRET": {
+          "isOptional": false,
+          "description": "Generated plugin aes state secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(16, \"abcdef0123456789\")}}"
+        },
+        "PLUGIN_AES_OAUTH_TOKEN_SECRET": {
+          "isOptional": false,
+          "description": "Generated plugin aes oauth token secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(16, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/coze-studio/Backend.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/coze-studio/Backend.Dockerfile"
+      }
+    },
+    "0ed0df88-2fbb-5110-83e1-15755175b7dd": {
+      "name": "web",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "BACKEND_HOST": {
+          "isOptional": false,
+          "description": "Backend host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{backend.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "STORAGE_HOST": {
+          "isOptional": false,
+          "description": "Storage host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/coze-studio/Web.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/coze-studio/Web.Dockerfile"
+      }
+    },
+    "bc6fe15a-9ae0-5c84-960e-8a2ebea4e1bc": {
+      "name": "coze-studio",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{web.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for coze-studio. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "80"
+        },
+        "ACCESS_USER": {
+          "isOptional": false,
+          "description": "Access user for coze-studio. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round4-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round4-gateway/Dockerfile"
+      }
+    }
+  }
+}

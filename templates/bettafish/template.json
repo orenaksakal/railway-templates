@@ -1,0 +1,322 @@
+{
+  "services": {
+    "fcdf65ff-431f-5a81-9cf3-4fde5fdf3c46": {
+      "name": "postgres",
+      "source": {
+        "image": "postgres:15@sha256:9b1d34adbce1dd07ee6e94b4a2cf698884b89bd44a6c9c12f5da8f3acbfe4957"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "bettafish"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "bettafish"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://bettafish:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/bettafish"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "55039027-59c8-5931-aea7-32db7d4d934a": {
+      "name": "app",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "PYTHONUNBUFFERED": {
+          "isOptional": false,
+          "description": "Pythonunbuffered for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "STREAMLIT_SERVER_ENABLE_FILE_WATCHER": {
+          "isOptional": false,
+          "description": "Streamlit server enable file watcher for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "DB_DIALECT": {
+          "isOptional": false,
+          "description": "Db dialect for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "postgresql"
+        },
+        "DB_HOST": {
+          "isOptional": false,
+          "description": "Db host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "DB_PORT": {
+          "isOptional": false,
+          "description": "Db port for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5432"
+        },
+        "DB_USER": {
+          "isOptional": false,
+          "description": "Db user for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "bettafish"
+        },
+        "DB_PASSWORD": {
+          "isOptional": false,
+          "description": "Db password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}"
+        },
+        "DB_NAME": {
+          "isOptional": false,
+          "description": "Db name for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "bettafish"
+        },
+        "MODEL_API_KEY": {
+          "isOptional": false,
+          "description": "Required OpenAI-compatible provider API key, shared by the report engines. Provider usage is billed separately."
+        },
+        "MODEL_BASE_URL": {
+          "isOptional": false,
+          "description": "Required OpenAI-compatible API base URL, including /v1 where your provider requires it."
+        },
+        "MODEL_NAME": {
+          "isOptional": false,
+          "description": "Required model ID supported by your provider; verify tool calling and structured output."
+        },
+        "TAVILY_API_KEY": {
+          "isOptional": false,
+          "description": "Required Tavily search API key for web research; billed separately."
+        },
+        "SEARCH_TOOL_TYPE": {
+          "isOptional": false,
+          "description": "Search tool type for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "AnspireAPI"
+        },
+        "ANSPIRE_API_KEY": {
+          "isOptional": false,
+          "description": "Required Anspire search API key for the upstream AnspireAPI search integration."
+        },
+        "ANSPIRE_BASE_URL": {
+          "isOptional": false,
+          "description": "Anspire base url for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "https://plugin.anspire.cn/api/ntsearch/search"
+        },
+        "HOST": {
+          "isOptional": false,
+          "description": "HTTP bind address. Keep 0.0.0.0 so Railway can reach the service.",
+          "defaultValue": "0.0.0.0"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "5000"
+        },
+        "INSIGHT_ENGINE_API_KEY": {
+          "isOptional": false,
+          "description": "Insight engine api key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_API_KEY}}"
+        },
+        "INSIGHT_ENGINE_BASE_URL": {
+          "isOptional": false,
+          "description": "Insight engine base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_BASE_URL}}"
+        },
+        "INSIGHT_ENGINE_MODEL_NAME": {
+          "isOptional": false,
+          "description": "Insight engine model name resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_NAME}}"
+        },
+        "MEDIA_ENGINE_API_KEY": {
+          "isOptional": false,
+          "description": "Media engine api key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_API_KEY}}"
+        },
+        "MEDIA_ENGINE_BASE_URL": {
+          "isOptional": false,
+          "description": "Media engine base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_BASE_URL}}"
+        },
+        "MEDIA_ENGINE_MODEL_NAME": {
+          "isOptional": false,
+          "description": "Media engine model name resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_NAME}}"
+        },
+        "QUERY_ENGINE_API_KEY": {
+          "isOptional": false,
+          "description": "Query engine api key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_API_KEY}}"
+        },
+        "QUERY_ENGINE_BASE_URL": {
+          "isOptional": false,
+          "description": "Query engine base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_BASE_URL}}"
+        },
+        "QUERY_ENGINE_MODEL_NAME": {
+          "isOptional": false,
+          "description": "Query engine model name resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_NAME}}"
+        },
+        "REPORT_ENGINE_API_KEY": {
+          "isOptional": false,
+          "description": "Report engine api key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_API_KEY}}"
+        },
+        "REPORT_ENGINE_BASE_URL": {
+          "isOptional": false,
+          "description": "Report engine base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_BASE_URL}}"
+        },
+        "REPORT_ENGINE_MODEL_NAME": {
+          "isOptional": false,
+          "description": "Report engine model name resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_NAME}}"
+        },
+        "MINDSPIDER_API_KEY": {
+          "isOptional": false,
+          "description": "Mindspider api key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_API_KEY}}"
+        },
+        "MINDSPIDER_BASE_URL": {
+          "isOptional": false,
+          "description": "Mindspider base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_BASE_URL}}"
+        },
+        "MINDSPIDER_MODEL_NAME": {
+          "isOptional": false,
+          "description": "Mindspider model name resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_NAME}}"
+        },
+        "FORUM_HOST_API_KEY": {
+          "isOptional": false,
+          "description": "Forum host api key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_API_KEY}}"
+        },
+        "FORUM_HOST_BASE_URL": {
+          "isOptional": false,
+          "description": "Forum host base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_BASE_URL}}"
+        },
+        "FORUM_HOST_MODEL_NAME": {
+          "isOptional": false,
+          "description": "Forum host model name resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_NAME}}"
+        },
+        "KEYWORD_OPTIMIZER_API_KEY": {
+          "isOptional": false,
+          "description": "Keyword optimizer api key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_API_KEY}}"
+        },
+        "KEYWORD_OPTIMIZER_BASE_URL": {
+          "isOptional": false,
+          "description": "Keyword optimizer base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_BASE_URL}}"
+        },
+        "KEYWORD_OPTIMIZER_MODEL_NAME": {
+          "isOptional": false,
+          "description": "Keyword optimizer model name resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.MODEL_NAME}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/bettafish/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/bettafish/Dockerfile"
+      },
+      "volumeMounts": {
+        "37bc6bd2-0c0e-51a4-9c99-cfa3cbed2f7f": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "503ad733-bddd-5743-8998-3b3c889983e4": {
+      "name": "bettafish",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for bettafish. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5000"
+        },
+        "ACCESS_USER": {
+          "isOptional": false,
+          "description": "Access user for bettafish. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round4-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round4-gateway/Dockerfile"
+      }
+    }
+  }
+}
