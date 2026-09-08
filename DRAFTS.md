@@ -2,7 +2,7 @@
 
 These are reviewable draft configurations, not deploy-ready or production-certified releases. No paid deployments or marketplace publication are authorized for this batch. The original five marketplace listings are kept separate.
 
-The batch contains 48 services across Appwrite 2 Core, AppFlowy Cloud, DBOS Durable Webhooks, SpiceDB with PostgreSQL, Frappe CRM, Frappe Helpdesk, Matrix Synapse with MAS, Immich with Machine Learning, Novu Community Edition, and RAGFlow CPU. Each has a structured overview, icon, category, variable descriptions, generated secrets, source pins, networking, and a persistence layout.
+The batch contains 49 services across Appwrite 2 Core, AppFlowy Cloud, DBOS Durable Webhooks, SpiceDB with PostgreSQL, Frappe CRM, Frappe Helpdesk, Matrix Synapse with MAS, Immich with Machine Learning, Novu Community Edition, and RAGFlow CPU. Each has a structured overview, icon, category, variable descriptions, generated secrets, source pins, networking, and a persistence layout.
 
 ## Saved Railway drafts
 

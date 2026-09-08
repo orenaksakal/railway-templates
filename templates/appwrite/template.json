@@ -281,10 +281,15 @@
           "description": "Generated  app executor secret. Keep private and preserve with backups.",
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
         },
-        "_APP_GEO_ADDRESS": {
+        "_APP_GEO_ENDPOINT": {
           "isOptional": false,
-          "description": " app geo address resolved automatically from the linked service. Keep this reference when using the included topology.",
-          "defaultValue": "http://${{geo.RAILWAY_PRIVATE_DOMAIN}}:80"
+          "description": " app geo endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{geo.RAILWAY_PRIVATE_DOMAIN}}:80/v1"
+        },
+        "_APP_GEO_SECRET": {
+          "isOptional": false,
+          "description": "Generated  app geo secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
         },
         "_APP_WORKERS_NUM": {
           "isOptional": false,
@@ -325,12 +330,219 @@
         }
       }
     },
+    "32b1b226-34bb-533f-b295-48da5855a6b8": {
+      "name": "realtime",
+      "source": {
+        "image": "appwrite/appwrite:2.0.0@sha256:27ca3f70d06fb0f4751e93cba03c49f96562236986f9b688185ee1c0e1f7e9aa"
+      },
+      "variables": {
+        "_APP_ENV": {
+          "isOptional": false,
+          "description": " app env resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_ENV}}"
+        },
+        "_APP_EDITION": {
+          "isOptional": false,
+          "description": " app edition resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_EDITION}}"
+        },
+        "_APP_DOMAIN": {
+          "isOptional": false,
+          "description": " app domain resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DOMAIN}}"
+        },
+        "_APP_CONSOLE_DOMAIN": {
+          "isOptional": false,
+          "description": " app console domain resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_CONSOLE_DOMAIN}}"
+        },
+        "_APP_CONSOLE_HOSTNAMES": {
+          "isOptional": false,
+          "description": " app console hostnames resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_CONSOLE_HOSTNAMES}}"
+        },
+        "_APP_OPTIONS_FORCE_HTTPS": {
+          "isOptional": false,
+          "description": " app options force https resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_OPTIONS_FORCE_HTTPS}}"
+        },
+        "_APP_OPTIONS_ABUSE": {
+          "isOptional": false,
+          "description": " app options abuse resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_OPTIONS_ABUSE}}"
+        },
+        "_APP_OPENSSL_KEY_V1": {
+          "isOptional": false,
+          "description": " app openssl key v1 resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_OPENSSL_KEY_V1}}"
+        },
+        "_APP_NOTIFICATIONS_TRACKING_SECRET": {
+          "isOptional": false,
+          "description": " app notifications tracking secret resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_NOTIFICATIONS_TRACKING_SECRET}}"
+        },
+        "_APP_DB_ADAPTER": {
+          "isOptional": false,
+          "description": " app db adapter resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_ADAPTER}}"
+        },
+        "_APP_DB_HOST": {
+          "isOptional": false,
+          "description": " app db host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_HOST}}"
+        },
+        "_APP_DB_PORT": {
+          "isOptional": false,
+          "description": " app db port resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_PORT}}"
+        },
+        "_APP_DB_SCHEMA": {
+          "isOptional": false,
+          "description": " app db schema resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_SCHEMA}}"
+        },
+        "_APP_DB_USER": {
+          "isOptional": false,
+          "description": " app db user resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_USER}}"
+        },
+        "_APP_DB_PASS": {
+          "isOptional": false,
+          "description": " app db pass resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_PASS}}"
+        },
+        "_APP_DB_ROOT_PASS": {
+          "isOptional": false,
+          "description": " app db root pass resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_ROOT_PASS}}"
+        },
+        "_APP_DB_ADAPTER_DOCUMENTSDB": {
+          "isOptional": false,
+          "description": " app db adapter documentsdb resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_ADAPTER_DOCUMENTSDB}}"
+        },
+        "_APP_DB_HOST_DOCUMENTSDB": {
+          "isOptional": false,
+          "description": " app db host documentsdb resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_HOST_DOCUMENTSDB}}"
+        },
+        "_APP_DB_PORT_DOCUMENTSDB": {
+          "isOptional": false,
+          "description": " app db port documentsdb resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_PORT_DOCUMENTSDB}}"
+        },
+        "_APP_DB_ADAPTER_VECTORSDB": {
+          "isOptional": false,
+          "description": " app db adapter vectorsdb resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_ADAPTER_VECTORSDB}}"
+        },
+        "_APP_DB_HOST_VECTORSDB": {
+          "isOptional": false,
+          "description": " app db host vectorsdb resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_HOST_VECTORSDB}}"
+        },
+        "_APP_DB_PORT_VECTORSDB": {
+          "isOptional": false,
+          "description": " app db port vectorsdb resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_DB_PORT_VECTORSDB}}"
+        },
+        "_APP_REDIS_HOST": {
+          "isOptional": false,
+          "description": " app redis host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_REDIS_HOST}}"
+        },
+        "_APP_REDIS_PORT": {
+          "isOptional": false,
+          "description": " app redis port resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_REDIS_PORT}}"
+        },
+        "_APP_REDIS_PASS": {
+          "isOptional": false,
+          "description": " app redis pass resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_REDIS_PASS}}"
+        },
+        "_APP_STORAGE_DEVICE": {
+          "isOptional": false,
+          "description": " app storage device resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_STORAGE_DEVICE}}"
+        },
+        "_APP_STORAGE_ANTIVIRUS": {
+          "isOptional": false,
+          "description": " app storage antivirus resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_STORAGE_ANTIVIRUS}}"
+        },
+        "_APP_USAGE_STATS": {
+          "isOptional": false,
+          "description": " app usage stats resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_USAGE_STATS}}"
+        },
+        "_APP_FUNCTIONS_RUNTIMES": {
+          "isOptional": false,
+          "description": " app functions runtimes resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_FUNCTIONS_RUNTIMES}}"
+        },
+        "_APP_EXECUTOR_SECRET": {
+          "isOptional": false,
+          "description": " app executor secret resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_EXECUTOR_SECRET}}"
+        },
+        "_APP_GEO_ENDPOINT": {
+          "isOptional": false,
+          "description": " app geo endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_GEO_ENDPOINT}}"
+        },
+        "_APP_GEO_SECRET": {
+          "isOptional": false,
+          "description": " app geo secret resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_GEO_SECRET}}"
+        },
+        "_APP_WORKERS_NUM": {
+          "isOptional": false,
+          "description": " app workers num resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_WORKERS_NUM}}"
+        },
+        "_APP_WORKER_PER_CORE": {
+          "isOptional": false,
+          "description": " app worker per core resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_WORKER_PER_CORE}}"
+        },
+        "ALLOW_MIGRATION": {
+          "isOptional": false,
+          "description": "Allow migration resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.ALLOW_MIGRATION}}"
+        },
+        "_APP_POOL_ADAPTER": {
+          "isOptional": false,
+          "description": " app pool adapter for realtime. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "swoole"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "realtime"
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
     "0abda70e-4618-5d7b-9f3d-10bd218ecb57": {
       "name": "console",
       "source": {
         "image": "appwrite/new:1.1.16@sha256:28d528e6f02c00d369baf44ee56dea153bd7cc6bf7bcb33961349eb7ad7a44d8"
       },
-      "variables": {},
+      "variables": {
+        "VITE_CONSOLE_PROFILE": {
+          "isOptional": false,
+          "description": "Vite console profile for console. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "self-hosted"
+        },
+        "APPWRITE_ENDPOINT_SAME_ORIGIN": {
+          "isOptional": false,
+          "description": "Appwrite endpoint same origin for console. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        }
+      },
       "deploy": {
         "restartPolicyType": "ON_FAILURE",
         "restartPolicyMaxRetries": 10
@@ -344,7 +556,13 @@
       "source": {
         "image": "appwrite/geo:0.3.1@sha256:df3751399945ec22661f23d745d66ed3b06a61f70ac4d77a1e9011ea17797653"
       },
-      "variables": {},
+      "variables": {
+        "GEO_SECRET": {
+          "isOptional": false,
+          "description": "Geo secret resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_GEO_SECRET}}"
+        }
+      },
       "deploy": {
         "restartPolicyType": "ON_FAILURE",
         "restartPolicyMaxRetries": 10
@@ -374,6 +592,11 @@
           "isOptional": false,
           "description": "Console host resolved automatically from the linked service. Keep this reference when using the included topology.",
           "defaultValue": "${{console.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REALTIME_HOST": {
+          "isOptional": false,
+          "description": "Realtime host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{realtime.RAILWAY_PRIVATE_DOMAIN}}"
         },
         "RAILWAY_DOCKERFILE_PATH": {
           "defaultValue": "templates/appwrite/Gateway.Dockerfile",

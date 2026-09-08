@@ -1,12 +1,12 @@
 # Deploy and Host Appwrite 2 Core on Railway
 
-An Appwrite 2.0.0 core-services draft with its console, PostgreSQL, a MongoDB replica-set adapter, Redis, geolocation service, and a public routing gateway. API, realtime, combined workers, and scheduled tasks share one persistent /storage volume inside a supervised core service.
+An Appwrite 2.0.0 core-services draft with its console, PostgreSQL, a MongoDB replica-set adapter, Redis, geolocation service, and a public routing gateway. API, combined workers, and scheduled tasks share one persistent /storage volume inside a supervised core service. Realtime runs privately in its own service to avoid conflicting with the API listener.
 
 > Unpublished draft. This template is prepared for review; it has not been deployed on Railway or certified for production. See the validation scope below.
 
 ## About Hosting Appwrite 2 Core
 
-The template defines 7 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently, so cold-start and migration behavior must be verified in a new test project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
+The template defines 8 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently, so cold-start and migration behavior must be verified in a new test project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
 
 ## Common Use Cases
 
@@ -22,6 +22,7 @@ The template defines 7 services with pinned container digests, generated deploym
 | mongodb | `templates/appwrite/Mongo.Dockerfile` | `/data` |
 | redis | `redis:7.4` | `/data` |
 | core | `templates/appwrite/Dockerfile` | `/storage` |
+| realtime | `appwrite/appwrite:2.0.0` | `None` |
 | console | `appwrite/new:1.1.16` | `None` |
 | geo | `appwrite/geo:0.3.1` | `None` |
 | appwrite | `templates/appwrite/Gateway.Dockerfile` | `None` |

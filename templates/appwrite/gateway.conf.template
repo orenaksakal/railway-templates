@@ -12,9 +12,10 @@ server {
  proxy_set_header Connection $connection_upgrade;
  proxy_read_timeout 3600s;
 set $api "http://${API_HOST}:80";
-set $realtime "http://${API_HOST}:8080";
-set $console "http://${CONSOLE_HOST}:80";
+set $realtime "http://${REALTIME_HOST}:80";
+set $console "http://${CONSOLE_HOST}:3000";
 location /v1/realtime { proxy_pass $realtime; }
+location /.well-known { proxy_pass $api; }
 location /v1 { proxy_pass $api; }
 location = /healthz { proxy_pass $api/v1/health/version; }
 location / { proxy_pass $console; }

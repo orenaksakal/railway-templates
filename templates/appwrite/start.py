@@ -7,7 +7,7 @@ if marker.exists() and marker.read_text()!='2.0.0':
     if os.environ.get('ALLOW_MIGRATION')!='true':raise SystemExit('Back up all stores before enabling ALLOW_MIGRATION for this upgrade')
     subprocess.run(['migrate'],check=True)
 marker.write_text('2.0.0')
-commands=[['php','app/http.php'],['realtime'],['worker'],['schedule'],['maintenance'],['interval']]
+commands=[['php','app/http.php'],['worker'],['schedule'],['maintenance'],['interval']]
 children=[];stopping=False;status=0
 
 def stop(*_):
