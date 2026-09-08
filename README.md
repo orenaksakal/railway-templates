@@ -21,7 +21,8 @@ These are release candidates. Local checks are documented in [VALIDATION.md](VAL
 ```sh
 python3 scripts/catalog.py
 python3 scripts/validate.py
-node --test tests/gateway.test.mjs
+node --test tests/*.test.mjs
+python3 -m unittest discover -s tests -p 'test_*.py'
 
 python3 scripts/prepare-local.py formbricks --port 18081
 docker compose -f .local/formbricks/compose.json up -d --build
@@ -37,13 +38,34 @@ docker compose -f .local/formbricks/compose.json stop
 
 ## Railway drafts
 
-The [draft creation script](scripts/create-drafts.py) configures separate private source projects and creates unpublished templates in your chosen workspace. It does not invoke deployment or publication commands. It creates services, volume attachments, and generated domain reservations; review workspace billing rules before running it. Receipt files allow a partially completed run to resume.
+All five unpublished drafts now match the local definitions exactly; see [the validation record](VALIDATION.md) for editor links and release limitations. They were completed through the editor’s template-only save flow without new deployments. The source-project script below is an alternative workflow and can start deployments.
+
+The [draft creation script](scripts/create-drafts.py) configures separate private source projects and creates unpublished templates in your chosen workspace. It creates services, connects their sources, attaches volumes, and reserves application domains. **Railway can start billable deployments during source connection and volume attachment.** It never publishes templates. Review workspace billing rules before running it. Receipt files allow a partially completed run to resume. Railway generation removes constant variable defaults and build settings; the script fails verification until the editor repair below is completed.
 
 ```sh
-python3 scripts/create-drafts.py --workspace YOUR_WORKSPACE_ID
+python3 scripts/create-drafts.py --workspace YOUR_WORKSPACE_ID --stage-only
 ```
 
-The Dockerfile sources expect `orenaksakal/railway-templates`, branch `main`. A fork should change `REPO` in `scripts/catalog.py` and regenerate before creating drafts. Review the generated draft's variables and volume mounts in Railway before publishing. New credentials must be generated for every deployment, never copied from a test instance.
+The Dockerfile sources expect `orenaksakal/railway-templates`, branch `codex/railway-template-release`. A fork should change `REPO` in `scripts/catalog.py` and regenerate before creating drafts. Review the generated draft's variables and volume mounts in Railway before publishing. New credentials must be generated for every deployment, never copied from a test instance.
+
+In each draft, open each service's **Variables → Raw Editor → JSON** and restore the exact variable defaults from its local `template.json`. Keep generated-secret expressions symbolic. **Update Variables** stages changes; return to the canvas and click **Apply** to save them. Then verify the persisted result:
+
+```sh
+python3 scripts/create-drafts.py --workspace YOUR_WORKSPACE_ID --verify-only
+```
+
+The Formbricks bootstrap also has an opt-in integration check using cached images and a temporary in-memory database:
+
+```sh
+docker build --pull=false -t railway-templates/formbricks-hub:bootstrap-test -f templates/formbricks/Hub.Dockerfile .
+python3 tests/formbricks-bootstrap.py
+```
+
+Run it after preparing the local Formbricks images with `prepare-local.py` and Compose. It removes its own test containers and network and exposes no ports.
+
+The verification checks configuration fidelity; it does not establish a successful application deployment. `--stage-only` explicitly allows incomplete generated drafts and must never be used as release evidence.
+
+A direct template-editor Compose import is also being evaluated to avoid source-project deployments. `python3 scripts/export-compose.py` writes symbolic import files under `.local/imports/`. Their local content is checked, but Railway's import behavior has **not** been verified; do not treat those files as a proven substitute for the native catalog.
 
 See [PUBLISHING.md](PUBLISHING.md) for the final deployment and marketplace checks.
 

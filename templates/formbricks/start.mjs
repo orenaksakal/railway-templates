@@ -1,15 +1,8 @@
 import { spawn } from 'node:child_process';
-import http from 'node:http';
 
-// Hub's migrations depend on Formbricks tables. Railway has no Compose depends_on.
-// This private listener reports readiness only after application migrations finish.
-let migrated = false;
+// Publish completed migrations through PostgreSQL before waiting for Hub. Hub
+// must not depend on this service's DNS or HTTP readiness during deployment.
 let child;
-const coordinator = http.createServer((req, res) => {
-  res.writeHead(req.url === '/migrations' && migrated ? 200 : 503);
-  res.end(migrated ? 'ready' : 'migrating');
-});
-coordinator.listen(3001, '::');
 const run = (args) => new Promise((resolve, reject) => {
   child = spawn('node', args, { stdio: 'inherit' });
   child.once('error', reject);
@@ -17,14 +10,13 @@ const run = (args) => new Promise((resolve, reject) => {
 });
 for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, () => {
   child?.kill(signal);
-  coordinator.close();
   setTimeout(() => process.exit(0), 1000).unref();
 });
 try {
   await run(['/home/nextjs/wait-for-dependencies.mjs']);
   await run(['/home/nextjs/validate-env.mjs']);
   await run(['packages/database/dist/scripts/apply-migrations.js']);
-  migrated = true;
+  await run(['/home/nextjs/record-migrations.mjs']);
   const deadline = Date.now() + 300_000;
   let ready = false;
   while (Date.now() < deadline) {
@@ -38,9 +30,8 @@ try {
   await run(['packages/database/dist/scripts/create-saml-database.js']);
   child = spawn('node', ['apps/web/server.js'], { stdio: 'inherit' });
   child.once('error', error => { console.error(error.message); process.exit(1); });
-  child.once('exit', code => { coordinator.close(); process.exit(code ?? 1); });
+  child.once('exit', code => process.exit(code ?? 1));
 } catch (error) {
   console.error(error.message);
-  coordinator.close();
   process.exit(1);
 }

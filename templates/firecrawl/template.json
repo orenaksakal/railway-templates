@@ -8,19 +8,23 @@
       "variables": {
         "POSTGRES_USER": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database."
         },
         "POSTGRES_DB": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application."
         },
         "POSTGRES_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private."
         },
         "PGDATA": {
           "defaultValue": "/var/lib/postgresql/data/pgdata",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database."
         }
       },
       "deploy": {
@@ -45,11 +49,13 @@
       "variables": {
         "REDIS_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret."
         },
         "REDIS_URL": {
           "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references."
         }
       },
       "deploy": {
@@ -75,15 +81,18 @@
       "variables": {
         "RABBITMQ_DEFAULT_USER": {
           "defaultValue": "firecrawl",
-          "isOptional": false
+          "isOptional": false,
+          "description": "RabbitMQ user created on first initialization. Keep aligned with the NuQ connection URL."
         },
         "RABBITMQ_DEFAULT_PASS": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated RabbitMQ password. Preserve it with the persistent broker data."
         },
         "RABBITMQ_NODENAME": {
           "defaultValue": "rabbit@localhost",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Stable RabbitMQ node identity for persisted queue data. Keep rabbit@localhost across redeployments."
         }
       },
       "deploy": {
@@ -108,19 +117,23 @@
       "variables": {
         "PORT": {
           "defaultValue": "3000",
-          "isOptional": false
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check."
         },
         "MAX_CONCURRENT_PAGES": {
           "defaultValue": "2",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Maximum concurrent renderer pages. Starts at 2 to limit browser memory usage."
         },
         "ALLOW_LOCAL_WEBHOOKS": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Allow webhook requests to local/private targets. Keep false to restrict access to internal networks."
         },
         "BLOCK_MEDIA": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Block browser media downloads to reduce resource usage during scraping."
         }
       },
       "deploy": {
@@ -139,91 +152,113 @@
       "variables": {
         "HOST": {
           "defaultValue": "0.0.0.0",
-          "isOptional": false
+          "isOptional": false,
+          "description": "HTTP bind address. Keep 0.0.0.0 so Railway can reach the service."
         },
         "PORT": {
           "defaultValue": "3002",
-          "isOptional": false
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check."
         },
         "ENV": {
           "defaultValue": "local",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Firecrawl runtime mode. Keep local for this self-hosted deployment."
         },
         "USE_DB_AUTHENTICATION": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Internal Firecrawl database authentication toggle. Keep false with this private API and authenticated public gateway."
         },
         "REDIS_URL": {
           "defaultValue": "${{redis.REDIS_URL}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references."
         },
         "REDIS_RATE_LIMIT_URL": {
           "defaultValue": "${{redis.REDIS_URL}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private Redis URL used for Firecrawl rate limiting. References the authenticated redis service."
         },
         "POSTGRES_HOST": {
           "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL hostname. Automatically resolved from the postgres service."
         },
         "POSTGRES_PORT": {
           "defaultValue": "5432",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL TCP port. Keep 5432."
         },
         "POSTGRES_DB": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application."
         },
         "POSTGRES_USER": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database."
         },
         "POSTGRES_PASSWORD": {
           "defaultValue": "${{postgres.POSTGRES_PASSWORD}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private."
         },
         "NUQ_RABBITMQ_URL": {
           "defaultValue": "amqp://firecrawl:${{rabbitmq.RABBITMQ_DEFAULT_PASS}}@${{rabbitmq.RAILWAY_PRIVATE_DOMAIN}}:5672",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private RabbitMQ connection URL for the NuQ queue, using generated broker credentials."
         },
         "PLAYWRIGHT_MICROSERVICE_URL": {
           "defaultValue": "http://${{browser.RAILWAY_PRIVATE_DOMAIN}}:3000/scrape",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private browser renderer scrape endpoint. Automatically references the browser service."
         },
         "NUM_WORKERS_PER_QUEUE": {
           "defaultValue": "2",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Workers per Firecrawl queue. Increase after measuring CPU, memory, and queue latency."
         },
         "CRAWL_CONCURRENT_REQUESTS": {
           "defaultValue": "2",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Concurrent requests per crawl. Starts at 2; respect target-site rate limits."
         },
         "MAX_CONCURRENT_JOBS": {
           "defaultValue": "2",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Maximum simultaneous Firecrawl jobs. Increase only when memory and queue latency permit."
         },
         "BROWSER_POOL_SIZE": {
           "defaultValue": "2",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Firecrawl browser pool size. Starts at 2; increase only after measuring memory use."
         },
         "EXTRACT_WORKER_PORT": {
           "defaultValue": "3004",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Internal extraction-worker port. Keep the supplied port and leave it private."
         },
         "WORKER_PORT": {
           "defaultValue": "3005",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Internal Firecrawl worker HTTP port. Keep the supplied port and do not expose it publicly."
         },
         "HARNESS_STARTUP_TIMEOUT_MS": {
           "defaultValue": "180000",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Maximum Firecrawl harness startup wait in milliseconds. Increase if cold starts need more time."
         },
         "BULL_AUTH_KEY": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated secret protecting Firecrawl queue administration. Keep private."
         },
         "ALLOW_LOCAL_WEBHOOKS": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Allow webhook requests to local/private targets. Keep false to restrict access to internal networks."
         }
       },
       "deploy": {
@@ -239,20 +274,28 @@
       "name": "firecrawl",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "main"
+        "branch": "codex/railway-template-release"
       },
       "variables": {
         "PORT": {
           "defaultValue": "8080",
-          "isOptional": false
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check."
         },
         "API_KEY": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated API authentication key, or a reference to the shared internal API key. Keep private and preserve matching references."
         },
         "UPSTREAM_URL": {
           "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:3002",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private Firecrawl API URL used by the public gateway. Keep the api service reference."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/firecrawl/Gateway.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -269,7 +312,7 @@
         }
       },
       "build": {
-        "builder": "DOCKERFILE",
+        "builder": "RAILPACK",
         "dockerfilePath": "templates/firecrawl/Gateway.Dockerfile"
       }
     }

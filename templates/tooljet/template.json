@@ -4,48 +4,63 @@
       "name": "postgres",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "main"
+        "branch": "codex/railway-template-release"
       },
       "variables": {
         "POSTGRES_USER": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database."
         },
         "POSTGRES_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private."
         },
         "POSTGRES_DB": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application."
         },
         "APP_USER": {
           "defaultValue": "tooljet",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Dedicated application database role created during first initialization."
         },
         "APP_DB": {
           "defaultValue": "tooljet",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Application database created during first initialization of an empty PostgreSQL volume."
         },
         "APP_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated password for the application database role. Preserve it with your backups."
         },
         "PGDATA": {
           "defaultValue": "/var/lib/postgresql/data/pgdata",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database."
         },
         "ENABLE_VECTOR": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Initialize the pgvector extension for applications that require vector storage. Keep the supplied value."
         },
         "ALLOW_APP_DATABASE_CREATION": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Grant database and role creation privileges required by ToolJet. Keep false for other applications."
         },
         "DATABASE_URL": {
           "defaultValue": "postgresql://tooljet:${{postgres.APP_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/tooljet",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/tooljet/Postgres.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -57,7 +72,7 @@
         "serviceDomains": {}
       },
       "build": {
-        "builder": "DOCKERFILE",
+        "builder": "RAILPACK",
         "dockerfilePath": "templates/tooljet/Postgres.Dockerfile"
       },
       "volumeMounts": {
@@ -74,11 +89,13 @@
       "variables": {
         "REDIS_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret."
         },
         "REDIS_URL": {
           "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references."
         }
       },
       "deploy": {
@@ -100,132 +117,168 @@
       "name": "tooljet",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "main"
+        "branch": "codex/railway-template-release"
       },
       "variables": {
         "NODE_ENV": {
           "defaultValue": "production",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Node.js runtime mode. Keep production for hosted deployments."
         },
         "TOOLJET_EDITION": {
           "defaultValue": "ce",
-          "isOptional": false
+          "isOptional": false,
+          "description": "ToolJet edition selector. Keep ce for this Community Edition image."
         },
         "PORT": {
           "defaultValue": "3000",
-          "isOptional": false
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check."
         },
         "SERVE_CLIENT": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Serve the ToolJet web client from the application service."
         },
         "TOOLJET_HOST": {
           "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Public ToolJet HTTPS URL. Automatically generated; update for a custom domain."
         },
         "LOCKBOX_MASTER_KEY": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated encryption key for saved ToolJet data-source credentials. Preserve securely with database backups."
         },
         "SECRET_KEY_BASE": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated application signing secret. Preserve across restarts and backup restores."
         },
         "PG_HOST": {
           "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL hostname for ToolJet application metadata."
         },
         "PG_PORT": {
           "defaultValue": "5432",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL port for ToolJet application metadata. Keep 5432."
         },
         "PG_USER": {
           "defaultValue": "tooljet",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Dedicated PostgreSQL application role used by ToolJet."
         },
         "PG_PASS": {
           "defaultValue": "${{postgres.APP_PASSWORD}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Reference to the generated PostgreSQL application password used by ToolJet."
         },
         "PG_DB": {
           "defaultValue": "tooljet",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Database name for ToolJet application metadata."
         },
         "PG_SSL": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL TLS toggle for ToolJet metadata. The default uses Railway private networking."
         },
         "TOOLJET_DB_HOST": {
           "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL hostname for ToolJet Database."
         },
         "TOOLJET_DB_PORT": {
           "defaultValue": "5432",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL port for ToolJet Database. Keep 5432."
         },
         "TOOLJET_DB_USER": {
           "defaultValue": "tooljet",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Dedicated PostgreSQL application role used for ToolJet Database."
         },
         "TOOLJET_DB_PASS": {
           "defaultValue": "${{postgres.APP_PASSWORD}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Reference to the generated PostgreSQL application password for ToolJet Database."
         },
         "TOOLJET_DB": {
           "defaultValue": "tooljet_data",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Database name for built-in ToolJet Database storage."
         },
         "TOOLJET_DB_SSL": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL TLS toggle for ToolJet Database. The default uses Railway private networking."
         },
         "TOOLJET_DB_RECONFIG": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Enable ToolJet Database configuration for the selected upstream startup flow. Keep the supplied value."
         },
         "ENABLE_TOOLJET_DB": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Enable the built-in ToolJet Database backed by the private PostgreSQL and PostgREST services."
         },
         "PGRST_HOST": {
           "defaultValue": "${{postgrest.RAILWAY_PRIVATE_DOMAIN}}:3000",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgREST base URL. Automatically references the postgrest service."
         },
         "PGRST_JWT_SECRET": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated JWT secret shared between ToolJet and PostgREST. Preserve matching references and keep private."
         },
         "REDIS_HOST": {
           "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private Redis/Valkey hostname supplied by the redis service reference."
         },
         "REDIS_PORT": {
           "defaultValue": "6379",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private Redis/Valkey port. Keep 6379."
         },
         "REDIS_PASSWORD": {
           "defaultValue": "${{redis.REDIS_PASSWORD}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret."
         },
         "WORKER": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Enable the ToolJet background worker in the application service."
         },
         "TOOLJET_QUEUE_DASH_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated password for ToolJet queue administration. Keep private."
         },
         "TOOLJET_WORKFLOW_SANDBOX_BYPASS": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Python sandbox bypass. Keep false; this template does not advertise Python workflow execution support."
         },
         "DISABLE_TOOLJET_TELEMETRY": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Disable ToolJet telemetry. Keep the supplied privacy default."
         },
         "SMTP_DISABLED": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "SMTP starts disabled. Configure upstream SMTP settings and enable delivery before using invitations or password resets."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/tooljet/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -242,7 +295,7 @@
         }
       },
       "build": {
-        "builder": "DOCKERFILE",
+        "builder": "RAILPACK",
         "dockerfilePath": "templates/tooljet/Dockerfile"
       }
     },
@@ -254,19 +307,23 @@
       "variables": {
         "PGRST_DB_URI": {
           "defaultValue": "postgresql://tooljet:${{postgres.APP_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/tooljet_data",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL used by PostgREST for ToolJet Database."
         },
         "PGRST_JWT_SECRET": {
           "defaultValue": "${{tooljet.PGRST_JWT_SECRET}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated JWT secret shared between ToolJet and PostgREST. Preserve matching references and keep private."
         },
         "PGRST_DB_PRE_CONFIG": {
           "defaultValue": "postgrest.pre_config",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Upstream ToolJet pre-configuration function invoked by PostgREST. Keep the supplied function name."
         },
         "PGRST_SERVER_PORT": {
           "defaultValue": "3000",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgREST HTTP port. Keep aligned with the ToolJet reference."
         }
       },
       "deploy": {

@@ -13,6 +13,8 @@ for name in CATALOG:
     for service, value in services.items():
         assert value['source'].get('image') or value['source'].get('repo'), (name, service, 'missing source')
         if 'repo' in value['source']:
+            assert value['variables']['RAILWAY_DOCKERFILE_PATH']['defaultValue'] == value['build']['dockerfilePath'], (name, service, 'Dockerfile path must survive template generation')
+            assert value['build'].get('builder') in ('RAILPACK', 'NIXPACKS', 'HEROKU', 'PAKETO'), (name, service, 'unsupported Railway builder')
             assert (ROOT / value['build']['dockerfilePath']).is_file(), (name, service, 'missing Dockerfile')
         domains = value['networking']['serviceDomains']
         if domains:

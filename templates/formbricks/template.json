@@ -4,48 +4,63 @@
       "name": "postgres",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "main"
+        "branch": "codex/railway-template-release"
       },
       "variables": {
         "POSTGRES_USER": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database."
         },
         "POSTGRES_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private."
         },
         "POSTGRES_DB": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application."
         },
         "APP_USER": {
           "defaultValue": "formbricks",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Dedicated application database role created during first initialization."
         },
         "APP_DB": {
           "defaultValue": "formbricks",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Application database created during first initialization of an empty PostgreSQL volume."
         },
         "APP_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated password for the application database role. Preserve it with your backups."
         },
         "PGDATA": {
           "defaultValue": "/var/lib/postgresql/data/pgdata",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database."
         },
         "ENABLE_VECTOR": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Initialize the pgvector extension for applications that require vector storage. Keep the supplied value."
         },
         "ALLOW_APP_DATABASE_CREATION": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Grant database and role creation privileges required by ToolJet. Keep false for other applications."
         },
         "DATABASE_URL": {
           "defaultValue": "postgresql://formbricks:${{postgres.APP_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/formbricks",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/formbricks/Postgres.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -57,7 +72,7 @@
         "serviceDomains": {}
       },
       "build": {
-        "builder": "DOCKERFILE",
+        "builder": "RAILPACK",
         "dockerfilePath": "templates/formbricks/Postgres.Dockerfile"
       },
       "volumeMounts": {
@@ -74,11 +89,13 @@
       "variables": {
         "REDIS_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret."
         },
         "REDIS_URL": {
           "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references."
         }
       },
       "deploy": {
@@ -100,84 +117,108 @@
       "name": "formbricks",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "main"
+        "branch": "codex/railway-template-release"
       },
       "variables": {
         "NODE_ENV": {
           "defaultValue": "production",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Node.js runtime mode. Keep production for hosted deployments."
         },
         "PORT": {
           "defaultValue": "3000",
-          "isOptional": false
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check."
         },
         "HOSTNAME": {
           "defaultValue": "0.0.0.0",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Application bind address. Keep 0.0.0.0 for container networking."
         },
         "WEBAPP_URL": {
           "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Public Formbricks HTTPS URL. Update together with NEXTAUTH_URL when changing domains."
         },
         "NEXTAUTH_URL": {
           "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Public authentication callback base URL. Keep equal to WEBAPP_URL."
         },
         "NEXTAUTH_SECRET": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated authentication signing secret. Preserve across restarts and backup restores."
         },
         "ENCRYPTION_KEY": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated Formbricks encryption key. Back it up securely; changing it can make encrypted data unreadable."
         },
         "CRON_SECRET": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated secret authorizing Formbricks scheduled maintenance endpoints. Keep private."
         },
         "DATABASE_URL": {
           "defaultValue": "${{postgres.DATABASE_URL}}?schema=public",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed."
         },
         "REDIS_URL": {
           "defaultValue": "${{redis.REDIS_URL}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references."
         },
         "HUB_API_KEY": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated authentication key shared with the private Hub service. Keep the service references aligned."
         },
         "HUB_API_URL": {
           "defaultValue": "http://${{hub.RAILWAY_PRIVATE_DOMAIN}}:8080",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private Hub API base URL. Automatically references the hub service."
         },
         "CUBEJS_API_URL": {
           "defaultValue": "http://${{cube.RAILWAY_PRIVATE_DOMAIN}}:4000",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private Cube analytics API URL. Automatically references the cube service."
         },
         "CUBEJS_API_SECRET": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Shared generated Cube analytics signing secret. Preserve the matching app and Cube references."
         },
         "CUBEJS_JWT_ISSUER": {
           "defaultValue": "formbricks-web",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Expected issuer for Formbricks analytics tokens. Keep the app and Cube values identical."
         },
         "CUBEJS_JWT_AUDIENCE": {
           "defaultValue": "formbricks-cube",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Expected audience for Formbricks analytics tokens. Keep the app and Cube values identical."
         },
         "EMAIL_VERIFICATION_DISABLED": {
           "defaultValue": "1",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Email verification is initially disabled. Set to 0 only after configuring and testing SMTP delivery."
         },
         "PASSWORD_RESET_DISABLED": {
           "defaultValue": "1",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Password reset is initially disabled. Set to 0 after configuring and testing SMTP delivery."
         },
         "TELEMETRY_DISABLED": {
           "defaultValue": "1",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Disable application telemetry. Keep 1 to retain this privacy default."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/formbricks/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -195,7 +236,7 @@
         }
       },
       "build": {
-        "builder": "DOCKERFILE",
+        "builder": "RAILPACK",
         "dockerfilePath": "templates/formbricks/Dockerfile"
       },
       "volumeMounts": {
@@ -208,20 +249,23 @@
       "name": "hub",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "main"
+        "branch": "codex/railway-template-release"
       },
       "variables": {
         "API_KEY": {
           "defaultValue": "${{formbricks.HUB_API_KEY}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated API authentication key, or a reference to the shared internal API key. Keep private and preserve matching references."
         },
         "DATABASE_URL": {
           "defaultValue": "${{postgres.DATABASE_URL}}?sslmode=disable",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed."
         },
-        "FORMBRICKS_MIGRATIONS_URL": {
-          "defaultValue": "http://${{formbricks.RAILWAY_PRIVATE_DOMAIN}}:3001/migrations",
-          "isOptional": false
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/formbricks/Hub.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -232,7 +276,7 @@
         "serviceDomains": {}
       },
       "build": {
-        "builder": "DOCKERFILE",
+        "builder": "RAILPACK",
         "dockerfilePath": "templates/formbricks/Hub.Dockerfile"
       }
     },
@@ -240,56 +284,73 @@
       "name": "cube",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "main"
+        "branch": "codex/railway-template-release"
       },
       "variables": {
         "CUBEJS_DB_TYPE": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Cube database driver. Keep postgres for this deployment."
         },
         "CUBEJS_DB_HOST": {
           "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL hostname used by Cube analytics."
         },
         "CUBEJS_DB_NAME": {
           "defaultValue": "formbricks",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Formbricks database queried by Cube analytics."
         },
         "CUBEJS_DB_USER": {
           "defaultValue": "formbricks",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Application database role used by Cube analytics."
         },
         "CUBEJS_DB_PASS": {
           "defaultValue": "${{postgres.APP_PASSWORD}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Reference to the generated application database password used by Cube."
         },
         "CUBEJS_DB_PORT": {
           "defaultValue": "5432",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL port used by Cube. Keep 5432."
         },
         "CUBEJS_API_SECRET": {
           "defaultValue": "${{formbricks.CUBEJS_API_SECRET}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Shared generated Cube analytics signing secret. Preserve the matching app and Cube references."
         },
         "CUBEJS_JWT_ISSUER": {
           "defaultValue": "formbricks-web",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Expected issuer for Formbricks analytics tokens. Keep the app and Cube values identical."
         },
         "CUBEJS_JWT_AUDIENCE": {
           "defaultValue": "formbricks-cube",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Expected audience for Formbricks analytics tokens. Keep the app and Cube values identical."
         },
         "CUBEJS_DEFAULT_API_SCOPES": {
           "defaultValue": "meta,data",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Cube API scopes enabled for analytics requests. Keep the upstream-compatible default."
         },
         "CUBEJS_EXTERNAL_DEFAULT": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Cube external pre-aggregation storage toggle. Keep the supplied default for this topology."
         },
         "CUBEJS_CACHE_AND_QUEUE_DRIVER": {
           "defaultValue": "memory",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Cube cache/queue driver. Uses memory in this single-service deployment."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/formbricks/Cube.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -300,7 +361,7 @@
         "serviceDomains": {}
       },
       "build": {
-        "builder": "DOCKERFILE",
+        "builder": "RAILPACK",
         "dockerfilePath": "templates/formbricks/Cube.Dockerfile"
       }
     }

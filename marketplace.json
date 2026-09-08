@@ -1,0 +1,32 @@
+{
+  "formbricks": {
+    "name": "Formbricks",
+    "category": "Analytics",
+    "description": "Surveys and feedback analytics with private PostgreSQL, Hub, and Cube.",
+    "image": "https://github.com/formbricks.png"
+  },
+  "firecrawl": {
+    "name": "Firecrawl",
+    "category": "AI/ML",
+    "description": "Web scraping and crawling API with authentication and persistent queues.",
+    "image": "https://github.com/firecrawl.png"
+  },
+  "affine": {
+    "name": "AFFiNE",
+    "category": "CMS",
+    "description": "Collaborative docs and whiteboards with PostgreSQL and persistent storage.",
+    "image": "https://github.com/toeverything.png"
+  },
+  "openproject": {
+    "name": "OpenProject",
+    "category": "Other",
+    "description": "Project management with private PostgreSQL and persistent attachments.",
+    "image": "https://github.com/opf.png"
+  },
+  "tooljet": {
+    "name": "ToolJet",
+    "category": "Automation",
+    "description": "Build internal tools with ToolJet CE, PostgreSQL, PostgREST, and Valkey.",
+    "image": "https://github.com/ToolJet.png"
+  }
+}

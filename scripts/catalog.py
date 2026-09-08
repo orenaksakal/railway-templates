@@ -2,9 +2,11 @@
 from pathlib import Path
 import json
 import uuid
+from variable_descriptions import DESCRIPTIONS
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = 'orenaksakal/railway-templates'
+REPO_BRANCH = 'codex/railway-template-release'
 LOCK_PATH = ROOT / 'images.lock.json'
 IMAGE_LOCK = json.loads(LOCK_PATH.read_text()) if LOCK_PATH.exists() else {}
 SECRET = '${{secret(64, "abcdef0123456789")}}'
@@ -16,12 +18,13 @@ def ref(service, variable):
 
 def service(name, *, image=None, dockerfile=None, env=None, port=None, volume=None, health=None, command=None):
     image = IMAGE_LOCK.get(image, image)
-    value = {'name': name, 'source': {'image': image} if image else {'repo': REPO, 'branch': 'main'},
+    value = {'name': name, 'source': {'image': image} if image else {'repo': REPO, 'branch': REPO_BRANCH},
              'variables': {k: {'defaultValue': str(v), 'isOptional': False} for k, v in (env or {}).items()},
              'deploy': {'restartPolicyType': 'ON_FAILURE', 'restartPolicyMaxRetries': 5},
              'networking': {'serviceDomains': {}}}
     if dockerfile:
-        value['build'] = {'builder': 'DOCKERFILE', 'dockerfilePath': dockerfile}
+        value['build'] = {'builder': 'RAILPACK', 'dockerfilePath': dockerfile}
+        value['variables']['RAILWAY_DOCKERFILE_PATH'] = {'defaultValue': dockerfile, 'isOptional': False}
     if port:
         value['networking']['serviceDomains'] = {f'<hasDomain>:{port}': {'port': port}}
     if health:
@@ -32,6 +35,8 @@ def service(name, *, image=None, dockerfile=None, env=None, port=None, volume=No
         key = str(uuid.uuid5(uuid.NAMESPACE_URL, name + volume))
         value['volumeMounts'] = {key: {'mountPath': volume}}
         value['deploy']['requiredMountPath'] = volume
+    for key, variable in value['variables'].items():
+        variable['description'] = DESCRIPTIONS[key]
     return value
 
 def database(app, *, version=16, vector=False, tooljet=False):
@@ -68,8 +73,7 @@ def formbricks():
     app = service('formbricks', dockerfile='templates/formbricks/Dockerfile', env=env,
                   port=3000, volume='/home/nextjs/apps/web/uploads', health='/health')
     hub = service('hub', dockerfile='templates/formbricks/Hub.Dockerfile', env={
-        'API_KEY': ref('formbricks', 'HUB_API_KEY'), 'DATABASE_URL': ref('postgres', 'DATABASE_URL') + '?sslmode=disable',
-        'FORMBRICKS_MIGRATIONS_URL': 'http://' + ref('formbricks', 'RAILWAY_PRIVATE_DOMAIN') + ':3001/migrations'})
+        'API_KEY': ref('formbricks', 'HUB_API_KEY'), 'DATABASE_URL': ref('postgres', 'DATABASE_URL') + '?sslmode=disable'})
     cube = service('cube', dockerfile='templates/formbricks/Cube.Dockerfile', env={
         'CUBEJS_DB_TYPE': 'postgres', 'CUBEJS_DB_HOST': ref('postgres', 'RAILWAY_PRIVATE_DOMAIN'),
         'CUBEJS_DB_NAME': 'formbricks', 'CUBEJS_DB_USER': 'formbricks', 'CUBEJS_DB_PASS': ref('postgres', 'APP_PASSWORD'),

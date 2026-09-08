@@ -1,8 +1,10 @@
 """Create unpublished Railway templates through the authenticated CLI public API.
 
-No deployment or publication mutation is invoked. Never prints variable values.
+Source connection and volume creation can start billable deployments.
+Templates remain unpublished. Never prints variable values.
 """
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -11,16 +13,42 @@ from catalog import ROOT, CATALOG
 
 def api(document, variables):
     result = subprocess.run(['railway', 'api', document, '--variables', json.dumps(variables), '--compact'],
-                            text=True, capture_output=True, check=True)
+                            text=True, capture_output=True)
+    if result.returncode:
+        # CLI errors can echo variables, including credentials. Never include args/output.
+        raise RuntimeError(f"Railway API request failed (exit {result.returncode}); configuration values suppressed")
     response = json.loads(result.stdout)
     if response.get('errors'):
-        raise RuntimeError(json.dumps(response['errors']))
+        raise RuntimeError('Railway API returned GraphQL errors; configuration values suppressed')
     return response['data']
+
+def verify_draft(expected, template):
+    actual = template['serializedConfig']
+    actual = json.loads(actual) if isinstance(actual, str) else actual
+    expected_services = {s['name']: s for s in expected['services'].values()}
+    actual_services = {s['name']: s for s in actual['services'].values()}
+    assert actual_services.keys() == expected_services.keys(), 'Draft service set differs'
+    for name, source in expected_services.items():
+        target = actual_services[name]
+        for key, value in source['variables'].items():
+            assert target.get('variables', {}).get(key, {}).get('defaultValue') == value['defaultValue'], f'{name}: variable {key} changed during generation'
+        for key in ('image', 'repo'):
+            if key in source['source']:
+                assert target['source'].get(key, '').removeprefix('https://github.com/') == source['source'][key], f'{name}: source changed'
+        paths = lambda s: sorted(v['mountPath'] for v in s.get('volumeMounts', {}).values())
+        assert paths(source) == paths(target), f'{name}: volume mounts changed'
+        domains = lambda s: sorted(v['port'] for v in s.get('networking', {}).get('serviceDomains', {}).values())
+        assert domains(source) == domains(target), f'{name}: public ports changed'
+        assert not target.get('networking', {}).get('tcpProxies'), f'{name}: unexpected public TCP proxy'
+        for key in ('healthcheckPath', 'startCommand', 'restartPolicyType', 'restartPolicyMaxRetries'):
+            assert source['deploy'].get(key) == target.get('deploy', {}).get(key), f'{name}: {key} changed'
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--workspace', required=True)
     parser.add_argument('--template', choices=CATALOG)
+    parser.add_argument('--stage-only', action='store_true', help='Create drafts requiring editor repair; do not claim validation')
+    parser.add_argument('--verify-only', action='store_true', help='Read and verify existing drafts without cloud mutations')
     args = parser.parse_args()
     os.umask(0o077)
     receipt_path = ROOT / '.local' / 'drafts.json'
@@ -36,12 +64,29 @@ def main():
         receipt = receipts.setdefault(name, {'workspaceId': args.workspace, 'services': {}})
         if receipt['workspaceId'] != args.workspace:
             raise SystemExit(f'{name}: receipt belongs to another workspace')
-        if receipt.get('templateId'):
-            print(name, 'draft already created:', receipt['templateId'])
+        fingerprint = hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()
+        if args.verify_only or (receipt.get('templateId') and receipt.get('configHash') == fingerprint):
+            if not receipt.get('templateId'):
+                raise SystemExit(f'{name}: no draft exists')
+            template = api('query($id:String!) { template(id:$id) { id code status name serializedConfig } }',
+                           {'id': receipt['templateId']})['template']
+            (ROOT / '.local' / f'{name}-railway-draft.json').write_text(json.dumps(template, indent=2) + '\n')
+            try:
+                verify_draft(config, template)
+            except AssertionError as error:
+                receipt['verified'] = False
+                save()
+                if not args.stage_only:
+                    raise SystemExit(f'{name}: draft needs editor repair: {error}') from None
+                print(name, 'UNVERIFIED: editor repair required')
+            else:
+                receipt['verified'] = True
+                save()
+                print(name, 'configuration verified:', receipt['templateId'])
             continue
         if not receipt.get('projectId'):
             project = api('mutation($input: ProjectCreateInput!) { projectCreate(input:$input) { id environments { edges { node { id name } } } } }',
-                          {'input': {'name': 'template-' + name, 'workspaceId': args.workspace, 'isPublic': False, 'description': 'Unpublished template source; no deployments requested.'}})['projectCreate']
+                          {'input': {'name': 'template-' + name, 'workspaceId': args.workspace, 'isPublic': False, 'description': 'Unpublished template source and deployment validation project.'}})['projectCreate']
             receipt['projectId'] = project['id']
             receipt['environmentId'] = project['environments']['edges'][0]['node']['id']
             save()
@@ -58,7 +103,7 @@ def main():
             sname = service['name']
             state = receipt['services'][sname]
             service_id = state['id']
-            if not state.get('configured'):
+            if not state.get('configured') or receipt.get('configHash') != fingerprint:
                 variables = {k: v.get('defaultValue', '') for k, v in service['variables'].items()}
                 api('mutation($input: VariableCollectionUpsertInput!) { variableCollectionUpsert(input:$input) }',
                     {'input': {'projectId': project_id, 'environmentId': environment_id, 'serviceId': service_id,
@@ -69,6 +114,11 @@ def main():
                 api('mutation($serviceId:String!, $environmentId:String!, $input:ServiceInstanceUpdateInput!) { serviceInstanceUpdate(serviceId:$serviceId, environmentId:$environmentId, input:$input) }',
                     {'serviceId': service_id, 'environmentId': environment_id, 'input': settings})
                 state['configured'] = True
+                save()
+            if not state.get('connected'):
+                api('mutation($id:String!, $input:ServiceConnectInput!) { serviceConnect(id:$id, input:$input) { id } }',
+                    {'id': service_id, 'input': service['source']})
+                state['connected'] = True
                 save()
             if service.get('volumeMounts') and not state.get('volumeId'):
                 mount = next(iter(service['volumeMounts'].values()))['mountPath']
@@ -84,10 +134,23 @@ def main():
                 save()
         template = api('mutation($input:TemplateGenerateInput!) { templateGenerate(input:$input) { id code status name serializedConfig } }',
                        {'input': {'projectId': project_id, 'environmentId': environment_id}})['templateGenerate']
-        receipt.update(templateId=template['id'], templateCode=template['code'], status=template['status'])
+        if receipt.get('templateId'):
+            receipt.setdefault('supersededTemplateIds', []).append(receipt['templateId'])
+        receipt.update(templateId=template['id'], templateCode=template['code'], status=template['status'], configHash=fingerprint)
         save()
         (ROOT / '.local' / f'{name}-railway-draft.json').write_text(json.dumps(template, indent=2) + '\n')
-        print(name, template['status'], template['id'])
+        try:
+            verify_draft(config, template)
+        except AssertionError as error:
+            receipt['verified'] = False
+            save()
+            if not args.stage_only:
+                raise SystemExit(f'{name}: draft needs editor repair: {error}') from None
+            print(name, template['status'], template['id'], 'UNVERIFIED: editor repair required')
+        else:
+            receipt['verified'] = True
+            save()
+            print(name, template['status'], template['id'], 'configuration verified')
 
 if __name__ == '__main__':
     main()

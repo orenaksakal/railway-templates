@@ -4,48 +4,63 @@
       "name": "postgres",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "main"
+        "branch": "codex/railway-template-release"
       },
       "variables": {
         "POSTGRES_USER": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database."
         },
         "POSTGRES_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private."
         },
         "POSTGRES_DB": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application."
         },
         "APP_USER": {
           "defaultValue": "openproject",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Dedicated application database role created during first initialization."
         },
         "APP_DB": {
           "defaultValue": "openproject",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Application database created during first initialization of an empty PostgreSQL volume."
         },
         "APP_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated password for the application database role. Preserve it with your backups."
         },
         "PGDATA": {
           "defaultValue": "/var/lib/postgresql/data/pgdata",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database."
         },
         "ENABLE_VECTOR": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Initialize the pgvector extension for applications that require vector storage. Keep the supplied value."
         },
         "ALLOW_APP_DATABASE_CREATION": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Grant database and role creation privileges required by ToolJet. Keep false for other applications."
         },
         "DATABASE_URL": {
           "defaultValue": "postgresql://openproject:${{postgres.APP_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/openproject",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/openproject/Postgres.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -57,7 +72,7 @@
         "serviceDomains": {}
       },
       "build": {
-        "builder": "DOCKERFILE",
+        "builder": "RAILPACK",
         "dockerfilePath": "templates/openproject/Postgres.Dockerfile"
       },
       "volumeMounts": {
@@ -70,56 +85,73 @@
       "name": "openproject",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "main"
+        "branch": "codex/railway-template-release"
       },
       "variables": {
         "DATABASE_URL": {
           "defaultValue": "${{postgres.DATABASE_URL}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed."
         },
         "SECRET_KEY_BASE": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated application signing secret. Preserve across restarts and backup restores."
         },
         "OPENPROJECT_HOST__NAME": {
           "defaultValue": "${{RAILWAY_PUBLIC_DOMAIN}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Public OpenProject hostname without a scheme. Update when assigning a custom domain."
         },
         "OPENPROJECT_HTTPS": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generate HTTPS application URLs behind Railway TLS termination. Keep true."
         },
         "OPENPROJECT_HSTS": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Enable HTTP Strict Transport Security for the public HTTPS deployment."
         },
         "PORT": {
           "defaultValue": "8080",
-          "isOptional": false
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check."
         },
         "OPENPROJECT_SEED__ADMIN__USER__PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated initial password for the admin account. Read it after deployment, sign in, and change it promptly."
         },
         "OPENPROJECT_SEED__ADMIN__USER__PASSWORD__RESET": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Require the seeded administrator to change the initial password at first login."
         },
         "OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL": {
           "defaultValue": "auto",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Public secure WebSocket URL for collaborative editing. Update with the application domain."
         },
         "PG_STARTUP_WAIT_TIME": {
           "defaultValue": "60",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Time allowed for PostgreSQL startup before OpenProject initialization. Keep the supplied default unless startup logs require more time."
         },
         "RAILS_MIN_THREADS": {
           "defaultValue": "2",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Minimum Rails request threads. Keep at or below RAILS_MAX_THREADS."
         },
         "RAILS_MAX_THREADS": {
           "defaultValue": "8",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Maximum Rails request threads. Tune with available memory and database capacity."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/openproject/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -137,7 +169,7 @@
         }
       },
       "build": {
-        "builder": "DOCKERFILE",
+        "builder": "RAILPACK",
         "dockerfilePath": "templates/openproject/Dockerfile"
       },
       "volumeMounts": {

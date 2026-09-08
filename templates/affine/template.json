@@ -4,48 +4,63 @@
       "name": "postgres",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "main"
+        "branch": "codex/railway-template-release"
       },
       "variables": {
         "POSTGRES_USER": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database."
         },
         "POSTGRES_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private."
         },
         "POSTGRES_DB": {
           "defaultValue": "postgres",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application."
         },
         "APP_USER": {
           "defaultValue": "affine",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Dedicated application database role created during first initialization."
         },
         "APP_DB": {
           "defaultValue": "affine",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Application database created during first initialization of an empty PostgreSQL volume."
         },
         "APP_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated password for the application database role. Preserve it with your backups."
         },
         "PGDATA": {
           "defaultValue": "/var/lib/postgresql/data/pgdata",
-          "isOptional": false
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database."
         },
         "ENABLE_VECTOR": {
           "defaultValue": "true",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Initialize the pgvector extension for applications that require vector storage. Keep the supplied value."
         },
         "ALLOW_APP_DATABASE_CREATION": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Grant database and role creation privileges required by ToolJet. Keep false for other applications."
         },
         "DATABASE_URL": {
           "defaultValue": "postgresql://affine:${{postgres.APP_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/affine",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/affine/Postgres.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -57,7 +72,7 @@
         "serviceDomains": {}
       },
       "build": {
-        "builder": "DOCKERFILE",
+        "builder": "RAILPACK",
         "dockerfilePath": "templates/affine/Postgres.Dockerfile"
       },
       "volumeMounts": {
@@ -74,11 +89,13 @@
       "variables": {
         "REDIS_PASSWORD": {
           "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret."
         },
         "REDIS_URL": {
           "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references."
         }
       },
       "deploy": {
@@ -100,44 +117,58 @@
       "name": "affine",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "main"
+        "branch": "codex/railway-template-release"
       },
       "variables": {
         "DATABASE_URL": {
           "defaultValue": "${{postgres.DATABASE_URL}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed."
         },
         "REDIS_SERVER_HOST": {
           "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private Redis/Valkey hostname supplied by the redis service reference."
         },
         "REDIS_SERVER_PORT": {
           "defaultValue": "6379",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Private Redis/Valkey port. Keep 6379."
         },
         "REDIS_SERVER_PASSWORD": {
           "defaultValue": "${{redis.REDIS_PASSWORD}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret."
         },
         "AFFINE_SERVER_EXTERNAL_URL": {
           "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
-          "isOptional": false
+          "isOptional": false,
+          "description": "Public AFFiNE HTTPS URL. Generated from the Railway domain; update when assigning a custom domain."
         },
         "AFFINE_SERVER_HOST": {
           "defaultValue": "0.0.0.0",
-          "isOptional": false
+          "isOptional": false,
+          "description": "AFFiNE bind address. Keep 0.0.0.0 for container networking."
         },
         "AFFINE_SERVER_PORT": {
           "defaultValue": "3010",
-          "isOptional": false
+          "isOptional": false,
+          "description": "AFFiNE HTTP port. Keep aligned with PORT and Railway networking."
         },
         "PORT": {
           "defaultValue": "3010",
-          "isOptional": false
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check."
         },
         "AFFINE_INDEXER_ENABLED": {
           "defaultValue": "false",
-          "isOptional": false
+          "isOptional": false,
+          "description": "AFFiNE indexer toggle. Disabled in this deployment; enabling it requires separate upstream setup."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/affine/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -155,7 +186,7 @@
         }
       },
       "build": {
-        "builder": "DOCKERFILE",
+        "builder": "RAILPACK",
         "dockerfilePath": "templates/affine/Dockerfile"
       },
       "volumeMounts": {
