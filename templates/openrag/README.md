@@ -6,7 +6,7 @@ OpenRAG with OpenSearch, Langflow, CPU Docling and an authenticated frontend.
 
 ## Setup
 
-Enter OPENAI_API_KEY and a Fernet OPENRAG_ENCRYPTION_KEY. Generate the latter using cryptography.fernet.Fernet.generate_key().decode() on a trusted machine. Open the openrag gateway with its generated access credentials. Langflow has its own generated admin password, automatic login disabled and a separate authenticated public domain.
+Enter OPENAI_API_KEY. OPENRAG_ENCRYPTION_KEY is generated for the upstream AES-256-GCM key derivation; preserve it with backups. Open the openrag gateway with its generated access credentials. Langflow has its own generated admin password, automatic login disabled and a separate authenticated public domain.
 
 ### Deployment Dependencies
 
@@ -21,9 +21,9 @@ Enter OPENAI_API_KEY and a Fernet OPENRAG_ENCRYPTION_KEY. Generate the latter us
 
 ## Required inputs
 
-`backend.OPENAI_API_KEY`, `backend.OPENRAG_ENCRYPTION_KEY`
+`backend.OPENAI_API_KEY`
 
-Generated credentials: `opensearch.OPENSEARCH_INITIAL_ADMIN_PASSWORD`, `backend.LANGFLOW_SUPERUSER_PASSWORD`, `backend.SESSION_SECRET`, `langflow.LANGFLOW_SECRET_KEY`, `openrag.ACCESS_PASSWORD`. Keep them private and preserve relevant encryption keys with backups. Every editor variable includes a description.
+Generated credentials: `backend.OPENRAG_ENCRYPTION_KEY`, `opensearch.OPENSEARCH_INITIAL_ADMIN_PASSWORD`, `backend.LANGFLOW_SUPERUSER_PASSWORD`, `backend.SESSION_SECRET`, `langflow.LANGFLOW_SECRET_KEY`, `openrag.ACCESS_PASSWORD`. Keep them private and preserve relevant encryption keys with backups. Every editor variable includes a description.
 
 ## Scope and limitations
 

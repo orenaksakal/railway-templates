@@ -154,7 +154,13 @@
         },
         "OPENRAG_ENCRYPTION_KEY": {
           "isOptional": false,
-          "description": "Required Fernet key: generate with Python cryptography.fernet.Fernet.generate_key().decode(). Preserve with backups."
+          "description": "Generated master secret for upstream AES-256-GCM key derivation. Preserve with backups and never rotate without a reviewed re-encryption procedure.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "OPENRAG_ENFORCE_PREREQUISITES": {
+          "isOptional": false,
+          "description": "Openrag enforce prerequisites for backend. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
         },
         "CORS_ALLOWED_ORIGINS": {
           "isOptional": false,
