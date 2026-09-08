@@ -1,44 +1,8 @@
-# Ten additional Railway templates: release progress
+# Ten additional Railway templates
 
-The owner authorized release validation and publication for this batch on September 7, 2026. DBOS and SpiceDB are published after Railway workflow, restart, redeploy, and separate-database restoration checks. The other eight remain unpublished while runtime validation and fixes continue. The original five marketplace listings are kept separate.
+This batch contains 49 services across ten community integrations. Release and publication were authorized September 7, 2026. Current evidence and marketplace links are in [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md). Each product README documents setup, dependencies, persistence, tested workflows and limitations.
 
-The batch contains 49 services across Appwrite 2 Core, AppFlowy Cloud, DBOS Durable Webhooks, SpiceDB with PostgreSQL, Frappe CRM, Frappe Helpdesk, Matrix Synapse with MAS, Immich with Machine Learning, Novu Community Edition, and RAGFlow CPU. Each has a structured overview, icon, category, variable descriptions, generated secrets, source pins, networking, and a persistence layout.
-
-## Saved Railway drafts
-
-All ten were initially saved and verified as unpublished drafts. Isolated Railway test projects now exist for all ten. Current release evidence is recorded in [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md).
-
-| Draft | Railway editor |
-| --- | --- |
-| DBOS Durable Webhooks | [Open draft](https://railway.com/workspace/templates/a2eee399-4860-4bf4-bdce-a851c50cfa8a) |
-| SpiceDB with PostgreSQL | [Open draft](https://railway.com/workspace/templates/31ae0705-f6a2-4d6d-8041-75c7d71d1936) |
-| Frappe CRM | [Open draft](https://railway.com/workspace/templates/336656df-5fad-436b-b5c7-c330348b6a78) |
-| Frappe Helpdesk | [Open draft](https://railway.com/workspace/templates/dfa5186a-16c2-46eb-bc98-94167f09e737) |
-| Immich with Machine Learning | [Open draft](https://railway.com/workspace/templates/7e9083c3-7059-4b9e-a941-d9d3df70bc87) |
-| Matrix Synapse with MAS | [Open draft](https://railway.com/workspace/templates/60df14e4-960e-4f48-9030-04f1adbfe214) |
-| Novu Community Edition | [Open draft](https://railway.com/workspace/templates/5b26c62d-104c-4127-a571-af630e286afb) |
-| AppFlowy Cloud | [Open draft](https://railway.com/workspace/templates/0748d7a5-cb4a-4c19-b082-ec3d251c2ec4) |
-| Appwrite 2 Core | [Open draft](https://railway.com/workspace/templates/eedeedb8-cc79-4b7a-9cab-19adf83ab1b9) |
-| RAGFlow CPU | [Open draft](https://railway.com/workspace/templates/d03cbd2c-5d2a-4594-b87d-835d4d9c85f6) |
-
-## Readiness and remaining gates
-
-| Draft | Evidence completed | Remaining release gate |
-| --- | --- | --- |
-| DBOS | Real PostgreSQL test: authentication, idempotency, forced process termination, recovered workflow result | Railway deployment and database restore |
-| SpiceDB | Pinned image, migration wrapper, private gRPC/public authenticated HTTP configuration | Build, migration, schema/relationship/permission checks, recovery |
-| Frappe CRM | Cached upstream image inspected; it contains only Frappe; explicit app-install adapter added | Build CRM, initialize site, lead/deal and attachment workflow, scheduler, recovery |
-| Frappe Helpdesk | Helpdesk and pinned Telephony dependency included | Build, compatibility, site creation, ticket/mail/SLA workflow, recovery |
-| Immich | Matching v3.1.0 server/ML images; supported vector database and persistent media layout | Build, mobile upload, CPU ML, video processing, restart, recovery |
-| Matrix | Current MAS integration and Element runtime configuration paths verified | Builds, domain ownership, account login, encrypted messaging, media, federation, recovery |
-| Novu | Current 3.19.0 CE topology, exact encryption-key length, separate public endpoints | Startup, dashboard/provider setup, in-app notification, object delivery, retries, recovery |
-| AppFlowy | 0.9.64 backend/worker/admin and authenticated public S3 URLs | Web/GoTrue compatibility is unverified; the matching web tag does not exist. Verify the digest-pinned upstream web image before any deployment claim |
-| Appwrite | 2.0.0 core commands, shared-storage constraint, database adapters inspected | Highest-risk draft: build/startup, database compatibility, auth/CRUD/storage/realtime, background tasks. Functions/Sites executor is excluded |
-| RAGFlow | CPU topology, private dependencies, mmap-independent Elasticsearch configuration | Large-image build/startup and realistic resource test; parsing, model/provider setup, retrieval/citations, recovery |
-
-Optional Docker-socket executors, GPU services, and TURN/UDP voice infrastructure are not supplied. Each product README states its exact exclusions and operator setup. AppFlowy requires `gotrue.GOTRUE_ADMIN_EMAIL`; Matrix requires a deliberate server-name/domain choice before initializing persistent data. Draft completeness must not be confused with runtime correctness.
-
-## Reproduction
+## Reproduce static validation
 
 ```sh
 python3 scripts/catalog_round3.py
@@ -49,22 +13,8 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 node --test tests/*.test.mjs
 ```
 
-The new catalog uses `codex/remaining-template-drafts` and `images.round3.lock.json`. It does not regenerate or update the five published templates. `marketplace.round3.json` and each product's README are the listing sources. The editor tooling only creates or updates unpublished templates, then verifies complete configuration and metadata equality; it has no deployment or publication operation.
+The additional catalog uses `codex/remaining-template-drafts` and `images.round3.lock.json`. It does not regenerate the original five templates. Repository-backed adapters build from this branch; retain it for deployed consumers. `marketplace.round3.json` and each README are the listing sources. The editor tool creates/updates unpublished templates and can verify published templates without changing them.
 
-Local Compose generation supports these drafts without launching them:
+Images and application revisions are pinned. Large images were built/tested on Railway rather than pulled locally. Static checks establish configuration consistency; live workflow evidence is separately recorded. AppFlowy requires the operator's GoTrue administrator email and is subject to upstream license limits. Matrix requires a deliberate server-name/domain choice before first use. No Docker-socket executor, GPU service or TURN infrastructure is supplied.
 
-```sh
-python3 scripts/prepare-local.py novu --port 18200
-python3 scripts/prepare-local.py appflowy --port 18300 --input gotrue.GOTRUE_ADMIN_EMAIL=YOUR_EMAIL
-```
-
-Multiple public endpoints receive consecutive loopback ports. Required operator values fail closed when absent; no fake account email is inserted. Secrets remain under ignored `.local/`, and generated-secret lengths follow their definitions. Compose generation is not a startup test.
-
-The opt-in DBOS test uses a cached PostgreSQL 17 test image and a temporary tmpfs database, removes its container, and does not create a persistent Docker volume:
-
-```sh
-# Prepare .local/dbos-runtime using templates/dbos/package*.json and npm ci.
-python3 tests/dbos-recovery.py
-```
-
-The ten images have not all been pulled or built. In particular, RAGFlow's large image was not downloaded within the local disk budget. The new Frappe application builds are unverified. All generated Dockerfile and direct-image sources are pinned by immutable digest; these pins establish source identity, not platform compatibility.
+Local Compose generation remains available through `scripts/prepare-local.py`; it is not a substitute for the Railway validation record. Secrets and receipts stay in ignored `.local/`.

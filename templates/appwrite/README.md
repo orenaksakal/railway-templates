@@ -1,12 +1,12 @@
 # Deploy and Host Appwrite 2 Core on Railway
 
-An Appwrite 2.0.0 core-services draft with its console, PostgreSQL, a MongoDB replica-set adapter, Redis, geolocation service, and a public routing gateway. API, combined workers, and scheduled tasks share one persistent /storage volume inside a supervised core service. Realtime runs privately in its own service to avoid conflicting with the API listener.
+An Appwrite 2.0.0 core-services template with its console, PostgreSQL, a MongoDB replica-set adapter, Redis, geolocation service, and a public routing gateway. API, combined workers, and scheduled tasks share one persistent /storage volume inside a supervised core service. Realtime runs privately in its own service to avoid conflicting with the API listener.
 
-> Unpublished draft. This template is prepared for review; it has not been deployed on Railway or certified for production. See the validation scope below.
+Release tested on Railway for the core workflows below. Functions and Sites execution are excluded.
 
 ## About Hosting Appwrite 2 Core
 
-The template defines 8 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently, so cold-start and migration behavior must be verified in a new test project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
+The template defines 8 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently. Let databases become ready before checking the API after a full-stack restart. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
 
 ## Common Use Cases
 
@@ -24,7 +24,7 @@ The template defines 8 services with pinned container digests, generated deploym
 | mongodb | `templates/appwrite/Mongo.Dockerfile` | `/data` |
 | redis | `redis:7.4` | `/data` |
 | core | `templates/appwrite/Dockerfile` | `/storage` |
-| realtime | `appwrite/appwrite:2.0.0` | `None` |
+| realtime | `templates/appwrite/Realtime.Dockerfile` | `None` |
 | console | `appwrite/new:1.1.16` | `None` |
 | geo | `appwrite/geo:0.3.1` | `None` |
 | appwrite | `templates/appwrite/Gateway.Dockerfile` | `None` |
@@ -39,7 +39,7 @@ Open the appwrite gateway domain to create the first console administrator, then
 
 ## Scope and Limitations
 
-This is the highest-risk draft. Functions/Sites execution and build workers cannot provide their advertised functionality without the unsupported Docker-socket executor, which is excluded. Usage analytics and embedding services are also excluded. Co-located core-process behavior, database adapter compatibility, and first-boot initialization are not validated; do not treat the presence of these settings as a working Appwrite deployment.
+Functions/Sites execution and build workers require an executor that is not included. Usage analytics and embedding services are excluded. The core and realtime images carry exact-match patches for the pinned upstream queue connection to retain Redis authentication. Uploads have a 30 MB service ceiling; configure each bucket's file-size limit within it. Use one core replica.
 
 ## Backups and Upgrades
 
@@ -47,11 +47,11 @@ Back up PostgreSQL, MongoDB including its replica key, the complete core /storag
 
 ## Validation Scope
 
-Upstream service commands, storage-sharing requirements, and database adapter configuration were inspected. The image build, first boot, SDK auth, CRUD/permissions across database types, uploads, realtime, background tasks, and recovery must pass before this draft is deploy-ready. Full Railway startup and product workflows remain release gates.
+Fresh Railway builds/startup, console account signup/login, organization/project/API-key creation, database/collection creation, asynchronous schema completion, document write/read, private file upload and byte-identical download, and unauthenticated file denial passed. Restart and volume-preserving redeploy retained records and files. PostgreSQL was restored into a separate database with 151 application tables; storage archives were restored into a separate directory and compared byte-for-byte. MongoDB startup/replica initialization and dump passed; its application document workload and restore are not verified. SDK compatibility, realtime event delivery, email/OAuth, broader permission scenarios, load testing and complete separate-project disaster recovery are not verified.
 
 ## Why Deploy Appwrite 2 Core on Railway?
 
-Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This draft supplies a reviewable starting configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
+Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This template supplies the tested service configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
 
 ## Support and Upstream
 

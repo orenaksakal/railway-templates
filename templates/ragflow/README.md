@@ -2,11 +2,11 @@
 
 RAGFlow 0.27.1 with CPU processing, MySQL, Elasticsearch, authenticated Redis, and S3-compatible object storage. The adapter supplies a service configuration referencing Railway private hosts and avoids exposing the administration API.
 
-> Unpublished draft. This template is prepared for review; it has not been deployed on Railway or certified for production. See the validation scope below.
+Release tested on Railway with an operator-configured embedding provider. No model provider is bundled.
 
 ## About Hosting RAGFlow CPU
 
-The template defines 5 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently, so cold-start and migration behavior must be verified in a new test project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
+The template defines 5 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Fresh initialization was tested in an isolated Railway project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
 
 ## Common Use Cases
 
@@ -44,11 +44,11 @@ Back up MySQL, Elasticsearch data, object storage, Redis if jobs matter, and pro
 
 ## Validation Scope
 
-Pinned application/dependency images and private endpoints were checked. Startup, parser/model downloads, document ingestion, retrieval/citations, queue restart, resource requirements, and restore remain untested. Full Railway startup and product workflows remain release gates.
+Fresh Railway startup, signup/login, authenticated profile, private dataset creation, text-document upload, parsing, embedding and semantic retrieval passed using a temporary private CPU embedding service. That test service is not part of this template; configure your own compatible provider. Restart and volume-preserving redeploy retained retrieval results. MySQL was restored into a separate database, object backups into a separate directory with byte comparison, and the test search document into a separate Elasticsearch index with all fields equal. Generated answers, external LLM billing, PDF/OCR/large-file parsing, load testing and complete separate-project disaster recovery are not verified. Search-document export testing does not replace a production Elasticsearch snapshot policy.
 
 ## Why Deploy RAGFlow CPU on Railway?
 
-Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This draft supplies a reviewable starting configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
+Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This template supplies the tested service configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
 
 ## Support and Upstream
 

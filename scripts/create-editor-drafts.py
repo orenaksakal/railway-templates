@@ -15,6 +15,16 @@ def api(query,variables):
     except urllib.error.HTTPError as error:raise RuntimeError(f'Railway returned HTTP {error.code}; request contents suppressed') from None
     if result.get('errors'):raise RuntimeError('; '.join(e.get('message','GraphQL error') for e in result['errors']))
     return result['data']
+def normalized_config(config):
+    """Railway retains explicit null source deletions after changing image to repo."""
+    result = json.loads(json.dumps(config))
+    for service in result.get('services', {}).values():
+        source = service.get('source', {})
+        for key in ('image', 'repo', 'branch'):
+            if key in source and source[key] is None:
+                del source[key]
+    return result
+
 def configuration_patch(expected, actual):
     """Include explicit deletions because the editor recursively merges objects."""
     if not isinstance(expected, dict) or not isinstance(actual, dict):
@@ -43,7 +53,7 @@ def main():
         live=api(READ,{'id':receipt['templateId']})['template']
         if live['status']!='UNPUBLISHED' and not args.verify_only:raise RuntimeError(name+': refusing to modify a published template')
         actual=live['serializedConfig'];actual=json.loads(actual) if isinstance(actual,str) else actual
-        if actual!=config or any(live.get(k)!=v for k,v in meta.items()):
+        if normalized_config(actual)!=normalized_config(config) or any(live.get(k)!=v for k,v in meta.items()):
             if args.verify_only:raise RuntimeError(name+': draft differs from local source')
             receipt['verified']=False;save()
             patch=configuration_patch(config, actual)
@@ -51,7 +61,7 @@ def main():
             applied=api('mutation($changeSetId:String!){templateChangeSetApply(changeSetId:$changeSetId){id status}}',{'changeSetId':staged['id']})['templateChangeSetApply']
             if applied['status']!='APPLIED':raise RuntimeError(name+': changes not applied')
             live=api(READ,{'id':receipt['templateId']})['template'];actual=live['serializedConfig'];actual=json.loads(actual) if isinstance(actual,str) else actual
-        if live['status'] not in ('UNPUBLISHED','PUBLISHED') or actual!=config or any(live.get(k)!=v for k,v in meta.items()):raise RuntimeError(name+': saved configuration or metadata did not match')
+        if live['status'] not in ('UNPUBLISHED','PUBLISHED') or normalized_config(actual)!=normalized_config(config) or any(live.get(k)!=v for k,v in meta.items()):raise RuntimeError(name+': saved configuration or metadata did not match')
         (root/(name+'-readback.json')).write_text(json.dumps(live,indent=2)+'\n')
         receipt.update(name=live['name'],templateCode=live['code'],status=live['status'],verified=True,serviceCount=len(config['services']),configHash=hashlib.sha256(json.dumps(config,sort_keys=True).encode()).hexdigest(),url='https://railway.com/workspace/templates/'+live['id'])
         save();print(name,live['status'],'configuration and metadata verified',receipt['url'],flush=True)

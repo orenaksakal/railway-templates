@@ -360,11 +360,6 @@
           "description": "Appflowy base url resolved automatically from the linked service. Keep this reference when using the included topology.",
           "defaultValue": "https://${{appflowy.RAILWAY_PUBLIC_DOMAIN}}"
         },
-        "APPFLOWY_AI_ENABLED": {
-          "isOptional": false,
-          "description": "AI services are not included; configure a compatible provider and license before enabling.",
-          "defaultValue": "false"
-        },
         "APPFLOWY_INDEXER_ENABLED": {
           "isOptional": false,
           "description": "Optional AI indexer is not included in this draft.",
