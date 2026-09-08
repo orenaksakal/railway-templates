@@ -1,0 +1,168 @@
+{
+  "services": {
+    "7cc14452-cdfd-5317-9120-4c8d5ea830e7": {
+      "name": "postgres",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "main"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "POSTGRES_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "POSTGRES_DB": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "APP_USER": {
+          "defaultValue": "affine",
+          "isOptional": false
+        },
+        "APP_DB": {
+          "defaultValue": "affine",
+          "isOptional": false
+        },
+        "APP_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "PGDATA": {
+          "defaultValue": "/var/lib/postgresql/data/pgdata",
+          "isOptional": false
+        },
+        "ENABLE_VECTOR": {
+          "defaultValue": "true",
+          "isOptional": false
+        },
+        "ALLOW_APP_DATABASE_CREATION": {
+          "defaultValue": "false",
+          "isOptional": false
+        },
+        "DATABASE_URL": {
+          "defaultValue": "postgresql://affine:${{postgres.APP_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/affine",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "templates/affine/Postgres.Dockerfile"
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "39dd035e-3316-50d7-87da-22814ebebfcd": {
+      "name": "redis",
+      "source": {
+        "image": "valkey/valkey@sha256:e0eb7c480958d32bdc4357a74bdd70653ae15f2f9b4c93c4a5a9fad1dc471c84"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "REDIS_URL": {
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "startCommand": "sh -c 'exec valkey-server --bind 0.0.0.0 --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "20fb021d-3bab-5ab3-8e60-8ae528a8fcb0": {
+      "name": "affine",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "main"
+      },
+      "variables": {
+        "DATABASE_URL": {
+          "defaultValue": "${{postgres.DATABASE_URL}}",
+          "isOptional": false
+        },
+        "REDIS_SERVER_HOST": {
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}",
+          "isOptional": false
+        },
+        "REDIS_SERVER_PORT": {
+          "defaultValue": "6379",
+          "isOptional": false
+        },
+        "REDIS_SERVER_PASSWORD": {
+          "defaultValue": "${{redis.REDIS_PASSWORD}}",
+          "isOptional": false
+        },
+        "AFFINE_SERVER_EXTERNAL_URL": {
+          "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
+          "isOptional": false
+        },
+        "AFFINE_SERVER_HOST": {
+          "defaultValue": "0.0.0.0",
+          "isOptional": false
+        },
+        "AFFINE_SERVER_PORT": {
+          "defaultValue": "3010",
+          "isOptional": false
+        },
+        "PORT": {
+          "defaultValue": "3010",
+          "isOptional": false
+        },
+        "AFFINE_INDEXER_ENABLED": {
+          "defaultValue": "false",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "healthcheckPath": "/info",
+        "healthcheckTimeout": 600,
+        "requiredMountPath": "/root/.affine"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:3010": {
+            "port": 3010
+          }
+        }
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "templates/affine/Dockerfile"
+      },
+      "volumeMounts": {
+        "3721416a-dab5-5de1-bac2-f01bf213183c": {
+          "mountPath": "/root/.affine"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,308 @@
+{
+  "services": {
+    "7e33c95d-de4a-5fc8-89cd-c7c1bd3b0c4d": {
+      "name": "postgres",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "main"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "POSTGRES_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "POSTGRES_DB": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "APP_USER": {
+          "defaultValue": "formbricks",
+          "isOptional": false
+        },
+        "APP_DB": {
+          "defaultValue": "formbricks",
+          "isOptional": false
+        },
+        "APP_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "PGDATA": {
+          "defaultValue": "/var/lib/postgresql/data/pgdata",
+          "isOptional": false
+        },
+        "ENABLE_VECTOR": {
+          "defaultValue": "true",
+          "isOptional": false
+        },
+        "ALLOW_APP_DATABASE_CREATION": {
+          "defaultValue": "false",
+          "isOptional": false
+        },
+        "DATABASE_URL": {
+          "defaultValue": "postgresql://formbricks:${{postgres.APP_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/formbricks",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "requiredMountPath": "/var/lib/postgresql"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "templates/formbricks/Postgres.Dockerfile"
+      },
+      "volumeMounts": {
+        "fd5a18ca-89a7-5056-8579-f2f8a29b93c7": {
+          "mountPath": "/var/lib/postgresql"
+        }
+      }
+    },
+    "79a57fe6-7404-588e-902b-4c0c08404be7": {
+      "name": "redis",
+      "source": {
+        "image": "valkey/valkey@sha256:e0eb7c480958d32bdc4357a74bdd70653ae15f2f9b4c93c4a5a9fad1dc471c84"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "REDIS_URL": {
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "startCommand": "sh -c 'exec valkey-server --bind 0.0.0.0 --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "8d11a8b2-a7f1-5860-a4ba-149a37b8d909": {
+      "name": "formbricks",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "main"
+      },
+      "variables": {
+        "NODE_ENV": {
+          "defaultValue": "production",
+          "isOptional": false
+        },
+        "PORT": {
+          "defaultValue": "3000",
+          "isOptional": false
+        },
+        "HOSTNAME": {
+          "defaultValue": "0.0.0.0",
+          "isOptional": false
+        },
+        "WEBAPP_URL": {
+          "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
+          "isOptional": false
+        },
+        "NEXTAUTH_URL": {
+          "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
+          "isOptional": false
+        },
+        "NEXTAUTH_SECRET": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "ENCRYPTION_KEY": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "CRON_SECRET": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "DATABASE_URL": {
+          "defaultValue": "${{postgres.DATABASE_URL}}?schema=public",
+          "isOptional": false
+        },
+        "REDIS_URL": {
+          "defaultValue": "${{redis.REDIS_URL}}",
+          "isOptional": false
+        },
+        "HUB_API_KEY": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "HUB_API_URL": {
+          "defaultValue": "http://${{hub.RAILWAY_PRIVATE_DOMAIN}}:8080",
+          "isOptional": false
+        },
+        "CUBEJS_API_URL": {
+          "defaultValue": "http://${{cube.RAILWAY_PRIVATE_DOMAIN}}:4000",
+          "isOptional": false
+        },
+        "CUBEJS_API_SECRET": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "CUBEJS_JWT_ISSUER": {
+          "defaultValue": "formbricks-web",
+          "isOptional": false
+        },
+        "CUBEJS_JWT_AUDIENCE": {
+          "defaultValue": "formbricks-cube",
+          "isOptional": false
+        },
+        "EMAIL_VERIFICATION_DISABLED": {
+          "defaultValue": "1",
+          "isOptional": false
+        },
+        "PASSWORD_RESET_DISABLED": {
+          "defaultValue": "1",
+          "isOptional": false
+        },
+        "TELEMETRY_DISABLED": {
+          "defaultValue": "1",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "healthcheckPath": "/health",
+        "healthcheckTimeout": 600,
+        "requiredMountPath": "/home/nextjs/apps/web/uploads"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:3000": {
+            "port": 3000
+          }
+        }
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "templates/formbricks/Dockerfile"
+      },
+      "volumeMounts": {
+        "d71f7994-0a33-5d3c-bce1-2d804054953d": {
+          "mountPath": "/home/nextjs/apps/web/uploads"
+        }
+      }
+    },
+    "0d22eb85-450e-52e6-93bb-86a4e5769fa3": {
+      "name": "hub",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "main"
+      },
+      "variables": {
+        "API_KEY": {
+          "defaultValue": "${{formbricks.HUB_API_KEY}}",
+          "isOptional": false
+        },
+        "DATABASE_URL": {
+          "defaultValue": "${{postgres.DATABASE_URL}}?sslmode=disable",
+          "isOptional": false
+        },
+        "FORMBRICKS_MIGRATIONS_URL": {
+          "defaultValue": "http://${{formbricks.RAILWAY_PRIVATE_DOMAIN}}:3001/migrations",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "templates/formbricks/Hub.Dockerfile"
+      }
+    },
+    "acd3f188-8d0c-5bb6-b8c5-bc569cba1d4c": {
+      "name": "cube",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "main"
+      },
+      "variables": {
+        "CUBEJS_DB_TYPE": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "CUBEJS_DB_HOST": {
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}",
+          "isOptional": false
+        },
+        "CUBEJS_DB_NAME": {
+          "defaultValue": "formbricks",
+          "isOptional": false
+        },
+        "CUBEJS_DB_USER": {
+          "defaultValue": "formbricks",
+          "isOptional": false
+        },
+        "CUBEJS_DB_PASS": {
+          "defaultValue": "${{postgres.APP_PASSWORD}}",
+          "isOptional": false
+        },
+        "CUBEJS_DB_PORT": {
+          "defaultValue": "5432",
+          "isOptional": false
+        },
+        "CUBEJS_API_SECRET": {
+          "defaultValue": "${{formbricks.CUBEJS_API_SECRET}}",
+          "isOptional": false
+        },
+        "CUBEJS_JWT_ISSUER": {
+          "defaultValue": "formbricks-web",
+          "isOptional": false
+        },
+        "CUBEJS_JWT_AUDIENCE": {
+          "defaultValue": "formbricks-cube",
+          "isOptional": false
+        },
+        "CUBEJS_DEFAULT_API_SCOPES": {
+          "defaultValue": "meta,data",
+          "isOptional": false
+        },
+        "CUBEJS_EXTERNAL_DEFAULT": {
+          "defaultValue": "false",
+          "isOptional": false
+        },
+        "CUBEJS_CACHE_AND_QUEUE_DRIVER": {
+          "defaultValue": "memory",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "templates/formbricks/Cube.Dockerfile"
+      }
+    }
+  }
+}

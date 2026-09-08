@@ -1,0 +1,277 @@
+{
+  "services": {
+    "9b9e29cf-ee1b-594a-b73b-98916451d01d": {
+      "name": "postgres",
+      "source": {
+        "image": "ghcr.io/firecrawl/nuq-postgres@sha256:aed86f62858f29bd971abddcdeb301c12888098d2cf5d33c1ba42b053bc460f6"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "POSTGRES_DB": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "POSTGRES_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "PGDATA": {
+          "defaultValue": "/var/lib/postgresql/data/pgdata",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "2c0d1ce6-5141-57f2-b50a-2ee3829927b9": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "REDIS_URL": {
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "b23aac6c-74d3-57d0-8b5f-fdedf040f8bd": {
+      "name": "rabbitmq",
+      "source": {
+        "image": "rabbitmq:3.13@sha256:87178a0ee3e2f52980ba356d38646ed1056705ff2d5ff281f8965456eaa0c1e3"
+      },
+      "variables": {
+        "RABBITMQ_DEFAULT_USER": {
+          "defaultValue": "firecrawl",
+          "isOptional": false
+        },
+        "RABBITMQ_DEFAULT_PASS": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "RABBITMQ_NODENAME": {
+          "defaultValue": "rabbit@localhost",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "requiredMountPath": "/var/lib/rabbitmq"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "b8cbd873-6090-55dc-bfcd-1c4f9ee0a3dd": {
+          "mountPath": "/var/lib/rabbitmq"
+        }
+      }
+    },
+    "aaf9ab89-9beb-5885-ad81-897b035ebf8a": {
+      "name": "browser",
+      "source": {
+        "image": "ghcr.io/firecrawl/playwright-service@sha256:df1a393ce8bfc3801570a826a9b0dcc400ae48789adb4a0ad9d6cbf0229b059b"
+      },
+      "variables": {
+        "PORT": {
+          "defaultValue": "3000",
+          "isOptional": false
+        },
+        "MAX_CONCURRENT_PAGES": {
+          "defaultValue": "2",
+          "isOptional": false
+        },
+        "ALLOW_LOCAL_WEBHOOKS": {
+          "defaultValue": "false",
+          "isOptional": false
+        },
+        "BLOCK_MEDIA": {
+          "defaultValue": "true",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "1c2b41a7-b679-5f8a-bd41-a3161883f1ac": {
+      "name": "api",
+      "source": {
+        "image": "ghcr.io/firecrawl/firecrawl@sha256:03c94c9f99e0e4fc4ab9c844d2f64abb649396503180b14aeaf0a1169da88bab"
+      },
+      "variables": {
+        "HOST": {
+          "defaultValue": "0.0.0.0",
+          "isOptional": false
+        },
+        "PORT": {
+          "defaultValue": "3002",
+          "isOptional": false
+        },
+        "ENV": {
+          "defaultValue": "local",
+          "isOptional": false
+        },
+        "USE_DB_AUTHENTICATION": {
+          "defaultValue": "false",
+          "isOptional": false
+        },
+        "REDIS_URL": {
+          "defaultValue": "${{redis.REDIS_URL}}",
+          "isOptional": false
+        },
+        "REDIS_RATE_LIMIT_URL": {
+          "defaultValue": "${{redis.REDIS_URL}}",
+          "isOptional": false
+        },
+        "POSTGRES_HOST": {
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}",
+          "isOptional": false
+        },
+        "POSTGRES_PORT": {
+          "defaultValue": "5432",
+          "isOptional": false
+        },
+        "POSTGRES_DB": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "POSTGRES_USER": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "POSTGRES_PASSWORD": {
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}",
+          "isOptional": false
+        },
+        "NUQ_RABBITMQ_URL": {
+          "defaultValue": "amqp://firecrawl:${{rabbitmq.RABBITMQ_DEFAULT_PASS}}@${{rabbitmq.RAILWAY_PRIVATE_DOMAIN}}:5672",
+          "isOptional": false
+        },
+        "PLAYWRIGHT_MICROSERVICE_URL": {
+          "defaultValue": "http://${{browser.RAILWAY_PRIVATE_DOMAIN}}:3000/scrape",
+          "isOptional": false
+        },
+        "NUM_WORKERS_PER_QUEUE": {
+          "defaultValue": "2",
+          "isOptional": false
+        },
+        "CRAWL_CONCURRENT_REQUESTS": {
+          "defaultValue": "2",
+          "isOptional": false
+        },
+        "MAX_CONCURRENT_JOBS": {
+          "defaultValue": "2",
+          "isOptional": false
+        },
+        "BROWSER_POOL_SIZE": {
+          "defaultValue": "2",
+          "isOptional": false
+        },
+        "EXTRACT_WORKER_PORT": {
+          "defaultValue": "3004",
+          "isOptional": false
+        },
+        "WORKER_PORT": {
+          "defaultValue": "3005",
+          "isOptional": false
+        },
+        "HARNESS_STARTUP_TIMEOUT_MS": {
+          "defaultValue": "180000",
+          "isOptional": false
+        },
+        "BULL_AUTH_KEY": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "ALLOW_LOCAL_WEBHOOKS": {
+          "defaultValue": "false",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "startCommand": "node dist/src/harness.js --start-docker"
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "261449cb-6560-5d40-a436-c1b4b8072043": {
+      "name": "firecrawl",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "main"
+      },
+      "variables": {
+        "PORT": {
+          "defaultValue": "8080",
+          "isOptional": false
+        },
+        "API_KEY": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "UPSTREAM_URL": {
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:3002",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "templates/firecrawl/Gateway.Dockerfile"
+      }
+    }
+  }
+}

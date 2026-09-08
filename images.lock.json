@@ -1,0 +1,11 @@
+{
+  "cubejs/cube:v1.6.6": "cubejs/cube:v1.6.6@sha256:746a381c5deb1f33500c84bed357ebe68aa08acc5030939f9e9efd35796d368c",
+  "node:22-alpine": "node:22-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32",
+  "pgvector/pgvector:pg16": "pgvector/pgvector:pg16@sha256:ccc6e83d6e35e931dc7c5def2022729d5a6c370318d099181995567ff1fb4d6b",
+  "pgvector/pgvector:pg18": "pgvector/pgvector:pg18@sha256:2ba9ca5f2e7daa0f0e7723cba1ee9167bab54efd3640516a44ac1a928dd67e7a",
+  "postgres:16": "postgres:16@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94",
+  "postgres:17": "postgres:17@sha256:67f41722b7a8cbdb868a44a4995c846eddfdc2973bccb291ce937dce88ad5675",
+  "postgrest/postgrest:v12.0.2": "postgrest/postgrest:v12.0.2@sha256:79369c0cdf9d7112ed4e327bc1b80156be11575dd66fbda245077a2d13b803bc",
+  "rabbitmq:3.13": "rabbitmq:3.13@sha256:87178a0ee3e2f52980ba356d38646ed1056705ff2d5ff281f8965456eaa0c1e3",
+  "redis:7.4": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+}

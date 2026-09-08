@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.upstream/
+.parked/
+OPPORTUNITIES*.md
+REVENUE-PLAN.md
+evidence/
+.local/
+__pycache__/
+*.pyc
+.DS_Store
+.railway/runtime/

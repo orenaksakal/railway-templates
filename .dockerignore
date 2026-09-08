@@ -1,0 +1,9 @@
+.git
+.upstream
+.local
+**/.env
+**/__pycache__
+evidence
+.parked
+OPPORTUNITIES*.md
+REVENUE-PLAN.md

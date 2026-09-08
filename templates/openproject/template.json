@@ -1,0 +1,150 @@
+{
+  "services": {
+    "eba3f644-6e81-5d46-9f98-a53673e501cd": {
+      "name": "postgres",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "main"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "POSTGRES_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "POSTGRES_DB": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "APP_USER": {
+          "defaultValue": "openproject",
+          "isOptional": false
+        },
+        "APP_DB": {
+          "defaultValue": "openproject",
+          "isOptional": false
+        },
+        "APP_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "PGDATA": {
+          "defaultValue": "/var/lib/postgresql/data/pgdata",
+          "isOptional": false
+        },
+        "ENABLE_VECTOR": {
+          "defaultValue": "false",
+          "isOptional": false
+        },
+        "ALLOW_APP_DATABASE_CREATION": {
+          "defaultValue": "false",
+          "isOptional": false
+        },
+        "DATABASE_URL": {
+          "defaultValue": "postgresql://openproject:${{postgres.APP_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/openproject",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "templates/openproject/Postgres.Dockerfile"
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "f8ca11ec-81ff-5ece-9726-b277722e923a": {
+      "name": "openproject",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "main"
+      },
+      "variables": {
+        "DATABASE_URL": {
+          "defaultValue": "${{postgres.DATABASE_URL}}",
+          "isOptional": false
+        },
+        "SECRET_KEY_BASE": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "OPENPROJECT_HOST__NAME": {
+          "defaultValue": "${{RAILWAY_PUBLIC_DOMAIN}}",
+          "isOptional": false
+        },
+        "OPENPROJECT_HTTPS": {
+          "defaultValue": "true",
+          "isOptional": false
+        },
+        "OPENPROJECT_HSTS": {
+          "defaultValue": "true",
+          "isOptional": false
+        },
+        "PORT": {
+          "defaultValue": "8080",
+          "isOptional": false
+        },
+        "OPENPROJECT_SEED__ADMIN__USER__PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "OPENPROJECT_SEED__ADMIN__USER__PASSWORD__RESET": {
+          "defaultValue": "true",
+          "isOptional": false
+        },
+        "OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL": {
+          "defaultValue": "auto",
+          "isOptional": false
+        },
+        "PG_STARTUP_WAIT_TIME": {
+          "defaultValue": "60",
+          "isOptional": false
+        },
+        "RAILS_MIN_THREADS": {
+          "defaultValue": "2",
+          "isOptional": false
+        },
+        "RAILS_MAX_THREADS": {
+          "defaultValue": "8",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "healthcheckPath": "/health_checks/default",
+        "healthcheckTimeout": 600,
+        "requiredMountPath": "/var/openproject/assets"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:80": {
+            "port": 80
+          }
+        }
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "templates/openproject/Dockerfile"
+      },
+      "volumeMounts": {
+        "dbe419fa-0c07-5e14-9cb4-ae46421a1beb": {
+          "mountPath": "/var/openproject/assets"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "services": {
+    "3a176966-cbdc-5e73-8d16-9088beec4d34": {
+      "name": "postgres",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "main"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "POSTGRES_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "POSTGRES_DB": {
+          "defaultValue": "postgres",
+          "isOptional": false
+        },
+        "APP_USER": {
+          "defaultValue": "tooljet",
+          "isOptional": false
+        },
+        "APP_DB": {
+          "defaultValue": "tooljet",
+          "isOptional": false
+        },
+        "APP_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "PGDATA": {
+          "defaultValue": "/var/lib/postgresql/data/pgdata",
+          "isOptional": false
+        },
+        "ENABLE_VECTOR": {
+          "defaultValue": "false",
+          "isOptional": false
+        },
+        "ALLOW_APP_DATABASE_CREATION": {
+          "defaultValue": "true",
+          "isOptional": false
+        },
+        "DATABASE_URL": {
+          "defaultValue": "postgresql://tooljet:${{postgres.APP_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/tooljet",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "templates/tooljet/Postgres.Dockerfile"
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "1b0753b1-3799-5342-94ee-964f7cffc4fa": {
+      "name": "redis",
+      "source": {
+        "image": "valkey/valkey@sha256:e0eb7c480958d32bdc4357a74bdd70653ae15f2f9b4c93c4a5a9fad1dc471c84"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "REDIS_URL": {
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "startCommand": "sh -c 'exec valkey-server --bind 0.0.0.0 --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "5bd5568e-725c-565b-91ac-775770164d02": {
+      "name": "tooljet",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "main"
+      },
+      "variables": {
+        "NODE_ENV": {
+          "defaultValue": "production",
+          "isOptional": false
+        },
+        "TOOLJET_EDITION": {
+          "defaultValue": "ce",
+          "isOptional": false
+        },
+        "PORT": {
+          "defaultValue": "3000",
+          "isOptional": false
+        },
+        "SERVE_CLIENT": {
+          "defaultValue": "true",
+          "isOptional": false
+        },
+        "TOOLJET_HOST": {
+          "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
+          "isOptional": false
+        },
+        "LOCKBOX_MASTER_KEY": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "SECRET_KEY_BASE": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "PG_HOST": {
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}",
+          "isOptional": false
+        },
+        "PG_PORT": {
+          "defaultValue": "5432",
+          "isOptional": false
+        },
+        "PG_USER": {
+          "defaultValue": "tooljet",
+          "isOptional": false
+        },
+        "PG_PASS": {
+          "defaultValue": "${{postgres.APP_PASSWORD}}",
+          "isOptional": false
+        },
+        "PG_DB": {
+          "defaultValue": "tooljet",
+          "isOptional": false
+        },
+        "PG_SSL": {
+          "defaultValue": "false",
+          "isOptional": false
+        },
+        "TOOLJET_DB_HOST": {
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}",
+          "isOptional": false
+        },
+        "TOOLJET_DB_PORT": {
+          "defaultValue": "5432",
+          "isOptional": false
+        },
+        "TOOLJET_DB_USER": {
+          "defaultValue": "tooljet",
+          "isOptional": false
+        },
+        "TOOLJET_DB_PASS": {
+          "defaultValue": "${{postgres.APP_PASSWORD}}",
+          "isOptional": false
+        },
+        "TOOLJET_DB": {
+          "defaultValue": "tooljet_data",
+          "isOptional": false
+        },
+        "TOOLJET_DB_SSL": {
+          "defaultValue": "false",
+          "isOptional": false
+        },
+        "TOOLJET_DB_RECONFIG": {
+          "defaultValue": "true",
+          "isOptional": false
+        },
+        "ENABLE_TOOLJET_DB": {
+          "defaultValue": "true",
+          "isOptional": false
+        },
+        "PGRST_HOST": {
+          "defaultValue": "${{postgrest.RAILWAY_PRIVATE_DOMAIN}}:3000",
+          "isOptional": false
+        },
+        "PGRST_JWT_SECRET": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "REDIS_HOST": {
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}",
+          "isOptional": false
+        },
+        "REDIS_PORT": {
+          "defaultValue": "6379",
+          "isOptional": false
+        },
+        "REDIS_PASSWORD": {
+          "defaultValue": "${{redis.REDIS_PASSWORD}}",
+          "isOptional": false
+        },
+        "WORKER": {
+          "defaultValue": "true",
+          "isOptional": false
+        },
+        "TOOLJET_QUEUE_DASH_PASSWORD": {
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}",
+          "isOptional": false
+        },
+        "TOOLJET_WORKFLOW_SANDBOX_BYPASS": {
+          "defaultValue": "false",
+          "isOptional": false
+        },
+        "DISABLE_TOOLJET_TELEMETRY": {
+          "defaultValue": "true",
+          "isOptional": false
+        },
+        "SMTP_DISABLED": {
+          "defaultValue": "true",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5,
+        "healthcheckPath": "/api/health",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:3000": {
+            "port": 3000
+          }
+        }
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "templates/tooljet/Dockerfile"
+      }
+    },
+    "e6ee84a1-bfb5-56e5-be76-b82800e58344": {
+      "name": "postgrest",
+      "source": {
+        "image": "postgrest/postgrest:v12.0.2@sha256:79369c0cdf9d7112ed4e327bc1b80156be11575dd66fbda245077a2d13b803bc"
+      },
+      "variables": {
+        "PGRST_DB_URI": {
+          "defaultValue": "postgresql://tooljet:${{postgres.APP_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/tooljet_data",
+          "isOptional": false
+        },
+        "PGRST_JWT_SECRET": {
+          "defaultValue": "${{tooljet.PGRST_JWT_SECRET}}",
+          "isOptional": false
+        },
+        "PGRST_DB_PRE_CONFIG": {
+          "defaultValue": "postgrest.pre_config",
+          "isOptional": false
+        },
+        "PGRST_SERVER_PORT": {
+          "defaultValue": "3000",
+          "isOptional": false
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 5
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    }
+  }
+}
