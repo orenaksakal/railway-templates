@@ -41,7 +41,7 @@ def main():
         receipt=receipts[name]
         if receipt['workspaceId']!=workspace:raise RuntimeError('Workspace mismatch')
         live=api(READ,{'id':receipt['templateId']})['template']
-        if live['status']!='UNPUBLISHED':raise RuntimeError(name+': refusing to modify a published template')
+        if live['status']!='UNPUBLISHED' and not args.verify_only:raise RuntimeError(name+': refusing to modify a published template')
         actual=live['serializedConfig'];actual=json.loads(actual) if isinstance(actual,str) else actual
         if actual!=config or any(live.get(k)!=v for k,v in meta.items()):
             if args.verify_only:raise RuntimeError(name+': draft differs from local source')
@@ -51,7 +51,7 @@ def main():
             applied=api('mutation($changeSetId:String!){templateChangeSetApply(changeSetId:$changeSetId){id status}}',{'changeSetId':staged['id']})['templateChangeSetApply']
             if applied['status']!='APPLIED':raise RuntimeError(name+': changes not applied')
             live=api(READ,{'id':receipt['templateId']})['template'];actual=live['serializedConfig'];actual=json.loads(actual) if isinstance(actual,str) else actual
-        if live['status']!='UNPUBLISHED' or actual!=config or any(live.get(k)!=v for k,v in meta.items()):raise RuntimeError(name+': saved configuration or metadata did not match')
+        if live['status'] not in ('UNPUBLISHED','PUBLISHED') or actual!=config or any(live.get(k)!=v for k,v in meta.items()):raise RuntimeError(name+': saved configuration or metadata did not match')
         (root/(name+'-readback.json')).write_text(json.dumps(live,indent=2)+'\n')
         receipt.update(name=live['name'],templateCode=live['code'],status=live['status'],verified=True,serviceCount=len(config['services']),configHash=hashlib.sha256(json.dumps(config,sort_keys=True).encode()).hexdigest(),url='https://railway.com/workspace/templates/'+live['id'])
         save();print(name,live['status'],'configuration and metadata verified',receipt['url'],flush=True)

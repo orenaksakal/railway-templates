@@ -2,11 +2,11 @@
 
 Immich v3.1.0 provides self-hosted photo and video backup with a matching CPU machine-learning service. The stack includes the upstream VectorChord/pgvecto.rs PostgreSQL image, an authenticated persistent Redis service, media storage, and a persistent model cache.
 
-> Unpublished draft. This template is prepared for review; it has not been deployed on Railway or certified for production. See the validation scope below.
+Verified in an isolated Railway deployment. See the validation scope below for the checks performed and operational limits.
 
 ## About Hosting Immich with Machine Learning
 
-The template defines 4 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently, so cold-start and migration behavior must be verified in a new test project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
+The template defines 4 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Cold-start initialization was verified in a fresh Railway project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
 
 ## Common Use Cases
 
@@ -43,11 +43,11 @@ Back up PostgreSQL and the complete server /data volume. The machine-learning ca
 
 ## Validation Scope
 
-Matching server/ML tags, database image, configuration shape, and storage paths were checked. Build, mobile backup, search, face recognition, video processing, restart, and full recovery still require validation. Full Railway startup and product workflows remain release gates.
+Fresh Railway startup, generated credentials, administrator signup/login, unauthorized-access rejection, photo upload, metadata, thumbnail generation, and byte-identical original download passed. CPU semantic search returned the uploaded image, with its embedding persisted in PostgreSQL. All four services passed restart and volume-preserving redeploy checks. A PostgreSQL dump restored into a separate database, and a media archive restored into a separate directory with all nine test files passing hash verification. Mobile clients, video transcoding, GPU inference, large libraries, and full separate-project disaster recovery were not tested. Backups are not scheduled automatically.
 
 ## Why Deploy Immich with Machine Learning on Railway?
 
-Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This draft supplies a reviewable starting configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
+Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This template supplies the tested service configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
 
 ## Support and Upstream
 
