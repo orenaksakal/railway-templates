@@ -2,11 +2,11 @@
 
 SpiceDB 1.56.1 provides relationship-based authorization backed by a dedicated PostgreSQL database. The startup adapter migrates the datastore before serving and retries while a cold database becomes available.
 
-> Unpublished draft. This template is prepared for review; it has not been deployed on Railway or certified for production. See the validation scope below.
+> Verified in an isolated Railway deployment. See the validation scope below for the checks performed and operational limits.
 
 ## About Hosting SpiceDB with PostgreSQL
 
-The template defines 2 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently, so cold-start and migration behavior must be verified in a new test project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
+The template defines 2 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Cold-start initialization was verified in a fresh Railway project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
 
 ## Common Use Cases
 
@@ -39,11 +39,11 @@ Back up PostgreSQL and retain the preshared key. Review upstream migration compa
 
 ## Validation Scope
 
-Image digest and static configuration verified. Live migration, schema write, relationship write, permission check, and upgrade/recovery tests remain required. Full Railway startup and product workflows remain release gates.
+The pinned Linux container built locally and on Railway. Fresh Railway deployment passed datastore migration, HTTPS authentication rejection, schema write, relationship write, and positive/negative permission checks. Application/database restart and volume-preserving redeploy were tested. A PostgreSQL dump restored into a separate database with the test relationship intact. Backups are not scheduled automatically; load testing, high availability, and a full separate-project disaster-recovery drill are not included.
 
 ## Why Deploy SpiceDB with PostgreSQL on Railway?
 
-Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This draft supplies a reviewable starting configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
+Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This template supplies the tested service configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
 
 ## Support and Upstream
 

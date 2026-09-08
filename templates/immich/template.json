@@ -173,8 +173,8 @@
         },
         "IMMICH_TELEMETRY_INCLUDE": {
           "isOptional": false,
-          "description": "Telemetry selection; no telemetry is requested by this draft.",
-          "defaultValue": "none"
+          "description": "Empty selection disables telemetry collection.",
+          "defaultValue": ""
         },
         "RAILWAY_DOCKERFILE_PATH": {
           "defaultValue": "templates/immich/Dockerfile",

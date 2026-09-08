@@ -2,11 +2,11 @@
 
 A working Node.js service built with DBOS SDK 4.27.6 accepts authenticated JSON events, schedules durable processing, and stores the workflow result in PostgreSQL. This is an application template, not a standalone DBOS orchestration server.
 
-> Unpublished draft. This template is prepared for review; it has not been deployed on Railway or certified for production. See the validation scope below.
+> Verified in an isolated Railway deployment. See the validation scope below for the checks performed and operational limits.
 
 ## About Hosting DBOS Durable Webhooks
 
-The template defines 2 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently, so cold-start and migration behavior must be verified in a new test project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
+The template defines 2 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Cold-start initialization was verified in a fresh Railway project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
 
 ## Common Use Cases
 
@@ -44,11 +44,11 @@ Back up the PostgreSQL database, API key, and source revision together. Running 
 
 ## Validation Scope
 
-Local authentication rejection, idempotent submission, process termination, and recovered workflow result passed against temporary PostgreSQL 17. Railway deployment, restart, and database backup/restore still require testing. Full Railway startup and product workflows remain release gates.
+The pinned Linux container built locally and on Railway. Fresh Railway deployment passed HTTPS health, generated-key authentication, unauthorized-request rejection, idempotent event submission, and durable result retrieval. Application/database restart and volume-preserving redeploy were tested. A PostgreSQL dump restored into a separate database with the completed workflow intact. Local forced-process-termination recovery also passed. Backups are not scheduled automatically; load testing, high availability, and a full separate-project disaster-recovery drill are not included.
 
 ## Why Deploy DBOS Durable Webhooks on Railway?
 
-Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This draft supplies a reviewable starting configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
+Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This template supplies the tested service configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
 
 ## Support and Upstream
 
