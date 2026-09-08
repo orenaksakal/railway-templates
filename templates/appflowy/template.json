@@ -135,6 +135,11 @@
           "description": "Private bucket created on first startup; changing this does not move existing objects.",
           "defaultValue": "appflowy"
         },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "9000"
+        },
         "RAILWAY_DOCKERFILE_PATH": {
           "defaultValue": "shared/draft-storage/Dockerfile",
           "isOptional": false,

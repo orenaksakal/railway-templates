@@ -4,6 +4,7 @@ from pathlib import Path
 from catalog_round3 import ROOT,CATALOG,BRANCH
 ALLOWED_PUBLIC={'dbos':{'dbos'},'spicedb':{'spicedb'},'frappe-crm':{'frappe-crm'},'frappe-helpdesk':{'frappe-helpdesk'},'immich':{'immich'},'matrix':{'matrix','mas','element'},'novu':{'api','ws','novu'},'appflowy':{'storage','appflowy'},'appwrite':{'appwrite'},'ragflow':{'ragflow'}}
 for app in CATALOG:
+    assert '### Deployment Dependencies' in (ROOT/'templates'/app/'README.md').read_text(), (app,'missing marketplace dependency section')
     config=json.loads((ROOT/'templates'/app/'template.json').read_text());services={s['name']:s for s in config['services'].values()}
     for name,s in services.items():
         assert s['source'].get('image') or s['source'].get('repo'),(app,name,'missing source')
@@ -13,6 +14,8 @@ for app in CATALOG:
             path=s['variables']['RAILWAY_DOCKERFILE_PATH']['defaultValue'];assert s['build']['dockerfilePath']==path
             assert (ROOT/path).is_file(),path
         domains=s['networking']['serviceDomains']
+        if domains and s['deploy'].get('healthcheckPath'):
+            assert int(s['variables']['PORT']['defaultValue']) in [d['port'] for d in domains.values()],(app,name,'healthcheck PORT must match public listener')
         assert bool(domains)==(name in ALLOWED_PUBLIC[app]),(app,name,'exposure changed')
         assert not s['networking'].get('tcpProxies')
         mounts=s.get('volumeMounts',{})

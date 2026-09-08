@@ -14,4 +14,9 @@ t=p.with_suffix('.tmp');t.write_text(yaml.safe_dump(c));t.chmod(0o600)
 # The upstream launcher drops root to UID/GID 991 by default.
 if os.getuid()==0:os.chown(t,int(os.environ.get('UID','991')),int(os.environ.get('GID','991')))
 t.replace(p)
+if os.getuid()==0:
+    uid,gid=int(os.environ.get('UID','991')),int(os.environ.get('GID','991'))
+    os.chown('/data',uid,gid)
+    for key in ('log_config','signing_key_path'):
+        if c.get(key):os.chown(c[key],uid,gid)
 os.execvp('python',['python','/start.py','run'])

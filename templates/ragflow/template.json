@@ -45,7 +45,8 @@
     "1c882f3d-3829-5076-8a5a-57a3596f3641": {
       "name": "elasticsearch",
       "source": {
-        "image": "elasticsearch:8.11.3@sha256:58a3a280935d830215802322e9a0373faaacdfd646477aa7e718939c2f29292a"
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
       },
       "variables": {
         "discovery.type": {
@@ -77,6 +78,11 @@
           "isOptional": false,
           "description": "Avoid dependence on host vm.max_map_count, which cannot be changed from a Railway container.",
           "defaultValue": "false"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/ragflow/Elasticsearch.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -86,6 +92,10 @@
       },
       "networking": {
         "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/ragflow/Elasticsearch.Dockerfile"
       },
       "volumeMounts": {
         "d6c8a882-fc19-503e-aa48-1c1c1fe06710": {
@@ -282,6 +292,11 @@
           "isOptional": false,
           "description": "Tz for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
           "defaultValue": "UTC"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "80"
         },
         "RAILWAY_DOCKERFILE_PATH": {
           "defaultValue": "templates/ragflow/Dockerfile",

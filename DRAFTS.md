@@ -1,12 +1,12 @@
-# Ten additional unpublished Railway drafts
+# Ten additional Railway templates: release progress
 
-These are reviewable draft configurations, not deploy-ready or production-certified releases. No paid deployments or marketplace publication are authorized for this batch. The original five marketplace listings are kept separate.
+The owner authorized release validation and publication for this batch on September 7, 2026. DBOS and SpiceDB are published after Railway workflow, restart, redeploy, and separate-database restoration checks. The other eight remain unpublished while runtime validation and fixes continue. The original five marketplace listings are kept separate.
 
 The batch contains 49 services across Appwrite 2 Core, AppFlowy Cloud, DBOS Durable Webhooks, SpiceDB with PostgreSQL, Frappe CRM, Frappe Helpdesk, Matrix Synapse with MAS, Immich with Machine Learning, Novu Community Edition, and RAGFlow CPU. Each has a structured overview, icon, category, variable descriptions, generated secrets, source pins, networking, and a persistence layout.
 
 ## Saved Railway drafts
 
-All ten were read back with status `UNPUBLISHED`; complete configuration and listing metadata matched local source exactly. No source projects, deployments, or publication were created.
+All ten were initially saved and verified as unpublished drafts. Isolated Railway test projects now exist for all ten. Current release evidence is recorded in [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md).
 
 | Draft | Railway editor |
 | --- | --- |

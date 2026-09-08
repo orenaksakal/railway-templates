@@ -546,6 +546,11 @@
           "isOptional": false,
           "description": "Vite websocket hostname resolved automatically from the linked service. Keep this reference when using the included topology.",
           "defaultValue": "https://${{ws.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "4000"
         }
       },
       "deploy": {

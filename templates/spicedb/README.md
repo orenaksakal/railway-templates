@@ -2,7 +2,7 @@
 
 SpiceDB 1.56.1 provides relationship-based authorization backed by a dedicated PostgreSQL database. The startup adapter migrates the datastore before serving and retries while a cold database becomes available.
 
-> Verified in an isolated Railway deployment. See the validation scope below for the checks performed and operational limits.
+Verified in an isolated Railway deployment. See the validation scope below for the checks performed and operational limits.
 
 ## About Hosting SpiceDB with PostgreSQL
 
@@ -29,7 +29,7 @@ Required input before deployment: none; generated secrets and service references
 
 Read `SPICEDB_GRPC_PRESHARED_KEY` from the spicedb service. Use the Railway HTTPS domain for the authenticated HTTP gateway; gRPC listens privately on port 50051. Write a schema and relationships, then perform a permission check. Keep the API key on trusted servers.
 
-The HTTP API accepts `Authorization: Bearer <SPICEDB_GRPC_PRESHARED_KEY>`. Start with the upstream [HTTP API guide](https://authzed.com/docs/spicedb/getting-started/protecting-a-blog) and its matching schema and relationship examples.
+The HTTP API accepts `Authorization: Bearer YOUR_SPICEDB_GRPC_PRESHARED_KEY`. Start with the upstream [HTTP API guide](https://authzed.com/docs/spicedb/getting-started/protecting-a-blog) and its matching schema and relationship examples.
 
 ## Scope and Limitations
 

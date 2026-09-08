@@ -301,6 +301,11 @@
           "description": "Server name resolved automatically from the linked service. Keep this reference when using the included topology.",
           "defaultValue": "${{synapse.SYNAPSE_SERVER_NAME}}"
         },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "80"
+        },
         "RAILWAY_DOCKERFILE_PATH": {
           "defaultValue": "templates/matrix/Element.Dockerfile",
           "isOptional": false,

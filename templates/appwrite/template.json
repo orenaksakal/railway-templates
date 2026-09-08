@@ -131,6 +131,16 @@
         "branch": "codex/remaining-template-drafts"
       },
       "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "80"
+        },
+        "_APP_CPU_NUM": {
+          "isOptional": false,
+          "description": " app cpu num for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
         "_APP_ENV": {
           "isOptional": false,
           "description": "Production self-host runtime mode.",
@@ -336,6 +346,16 @@
         "image": "appwrite/appwrite:2.0.0@sha256:27ca3f70d06fb0f4751e93cba03c49f96562236986f9b688185ee1c0e1f7e9aa"
       },
       "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "${{core.PORT}}"
+        },
+        "_APP_CPU_NUM": {
+          "isOptional": false,
+          "description": " app cpu num resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_CPU_NUM}}"
+        },
         "_APP_ENV": {
           "isOptional": false,
           "description": " app env resolved automatically from the linked service. Keep this reference when using the included topology.",

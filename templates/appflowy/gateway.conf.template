@@ -19,6 +19,6 @@ location /gotrue/ { rewrite ^/gotrue(/.*)$ $1 break; proxy_pass $auth; }
 location /api { proxy_request_buffering off; proxy_pass $api; }
 location /ws { proxy_pass $api; }
 location /console { proxy_pass $admin; }
-location = /healthz { proxy_pass $api/api/health; }
+location = /healthz { proxy_pass $api/api/server; }
 location / { proxy_pass $web; }
 }

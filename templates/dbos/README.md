@@ -2,7 +2,7 @@
 
 A working Node.js service built with DBOS SDK 4.27.6 accepts authenticated JSON events, schedules durable processing, and stores the workflow result in PostgreSQL. This is an application template, not a standalone DBOS orchestration server.
 
-> Verified in an isolated Railway deployment. See the validation scope below for the checks performed and operational limits.
+Verified in an isolated Railway deployment. See the validation scope below for the checks performed and operational limits.
 
 ## About Hosting DBOS Durable Webhooks
 

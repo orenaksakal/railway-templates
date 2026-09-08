@@ -55,6 +55,10 @@ def main():
     for name in ('assets', 'apps.txt'):
         source, destination = template / name, DATA / name
         if source.is_dir():
+            # This directory contains only image-built assets, not user uploads.
+            # Replace it on restart so existing app symlinks do not break copytree.
+            if destination.is_symlink():destination.unlink()
+            elif destination.exists():shutil.rmtree(destination)
             shutil.copytree(source, destination, symlinks=True, dirs_exist_ok=True)
         elif source.exists():
             shutil.copy2(source, destination)
