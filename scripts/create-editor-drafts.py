@@ -15,6 +15,14 @@ def api(query,variables):
     except urllib.error.HTTPError as error:raise RuntimeError(f'Railway returned HTTP {error.code}; request contents suppressed') from None
     if result.get('errors'):raise RuntimeError('; '.join(e.get('message','GraphQL error') for e in result['errors']))
     return result['data']
+def configuration_patch(expected, actual):
+    """Include explicit deletions because the editor recursively merges objects."""
+    if not isinstance(expected, dict) or not isinstance(actual, dict):
+        return expected
+    result = {key: configuration_patch(value, actual.get(key)) for key, value in expected.items()}
+    result.update({key: None for key in actual.keys() - expected.keys()})
+    return result
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--workspace',required=True);parser.add_argument('--verify-only',action='store_true');parser.add_argument('--template',choices=CATALOG);args=parser.parse_args();workspace=args.workspace
     os.umask(0o077)
@@ -37,9 +45,8 @@ def main():
         actual=live['serializedConfig'];actual=json.loads(actual) if isinstance(actual,str) else actual
         if actual!=config or any(live.get(k)!=v for k,v in meta.items()):
             if args.verify_only:raise RuntimeError(name+': draft differs from local source')
-            patch=json.loads(json.dumps(config))
-            for sid in actual.get('services',{}):
-                if sid not in patch['services']:patch['services'][sid]=None
+            receipt['verified']=False;save()
+            patch=configuration_patch(config, actual)
             staged=api('mutation($templateId:String!,$patch:TemplatePatch!,$merge:Boolean){templateChangeSetStage(templateId:$templateId,patch:$patch,merge:$merge){id status}}',{'templateId':receipt['templateId'],'patch':{'config':patch,'metadata':meta},'merge':False})['templateChangeSetStage']
             applied=api('mutation($changeSetId:String!){templateChangeSetApply(changeSetId:$changeSetId){id status}}',{'changeSetId':staged['id']})['templateChangeSetApply']
             if applied['status']!='APPLIED':raise RuntimeError(name+': changes not applied')
