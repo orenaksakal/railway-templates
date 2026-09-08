@@ -36,9 +36,15 @@ Use separate local ports when testing more than one template. To stop a test whi
 docker compose -f .local/formbricks/compose.json stop
 ```
 
-## Railway drafts
+## Railway marketplace listings
 
-All five unpublished drafts now match the local definitions exactly; see [the validation record](VALIDATION.md) for editor links and release limitations. They were completed through the editor’s template-only save flow without new deployments. The source-project script below is an alternative workflow and can start deployments.
+All five listings are published with structured overviews, category, icon, and descriptions for all 184 required variables. Saved configurations and metadata match this release branch exactly. See [the validation record](VALIDATION.md) for tested scope and remaining runtime checks. Publication did not create deployments. The source-project script below is an alternative workflow and can start deployments.
+
+- [Formbricks](https://railway.com/deploy/formbricks)
+- [Firecrawl](https://railway.com/deploy/firecrawl-1)
+- [AFFiNE](https://railway.com/deploy/affine-2)
+- [OpenProject](https://railway.com/deploy/openproject-2)
+- [ToolJet](https://railway.com/deploy/tooljet-2)
 
 The [draft creation script](scripts/create-drafts.py) configures separate private source projects and creates unpublished templates in your chosen workspace. It creates services, connects their sources, attaches volumes, and reserves application domains. **Railway can start billable deployments during source connection and volume attachment.** It never publishes templates. Review workspace billing rules before running it. Receipt files allow a partially completed run to resume. Railway generation removes constant variable defaults and build settings; the script fails verification until the editor repair below is completed.
 

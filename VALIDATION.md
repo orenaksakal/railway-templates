@@ -34,6 +34,18 @@ Source connection and volume attachment started deployments even without an expl
 
 Direct Compose import files remain prepared and locally checked; native editor API transfer was used instead, so Compose import behavior remains unverified. No additional billable source projects or deployments were created during draft completion. Marketplace publication has not occurred. A final live read-back confirmed all five services in the retained Formbricks source project have empty active-deployment lists.
 
+## Marketplace publication (2026-09-07, America/Edmonton)
+
+All five listings were published at the owner's request. Railway returned `PUBLISHED` for each; anonymous public pages returned HTTP 200. Complete configuration objects and all listing metadata were read back and matched the committed definitions, including the release branch and 184 variable descriptions. Icons, categories, required overview sections, first-use steps, dependencies, use cases, support, and operational limitations are included.
+
+- [Formbricks](https://railway.com/deploy/formbricks)
+- [Firecrawl](https://railway.com/deploy/firecrawl-1)
+- [AFFiNE](https://railway.com/deploy/affine-2)
+- [OpenProject](https://railway.com/deploy/openproject-2)
+- [ToolJet](https://railway.com/deploy/tooljet-2)
+
+Railway's `isApproved` and `isVerified` flags were false at verification time; publication does not claim those badges. Source fixes and listings are committed on `codex/railway-template-release`, leaving `main` unchanged. No deployments were started, and a final query confirmed empty active-deployment lists for all five retained Formbricks source services. The older incomplete Formbricks draft remains unpublished.
+
 ## Outstanding release checks
 
 - Fresh Railway deployment: image builds, generated credentials, private DNS, health checks, public HTTPS, and all service dependencies.
@@ -42,4 +54,4 @@ Direct Compose import files remain prepared and locally checked; native editor A
 - Firecrawl restart/queue recovery and dedicated JavaScript-rendering fixture. The basic scrape/crawl does not establish anti-bot or cloud-feature parity.
 - SMTP and optional integrations with the operator's own credentials.
 
-All templates remain release candidates until those checks pass. Marketplace publication is a separate step.
+The marketplace listings are published, but production runtime and recovery validation remain incomplete until these checks pass. That limitation is disclosed in every listing.
