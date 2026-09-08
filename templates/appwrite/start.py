@@ -15,7 +15,12 @@ def stop(*_):
     stopping=True
 for sig in [signal.SIGTERM,signal.SIGINT]:signal.signal(sig,stop)
 try:
-    for command in commands:children.append(subprocess.Popen(command,start_new_session=True))
+    for command in commands:
+        # The combined worker needs one pool slot per queue coroutine (upstream: 78).
+        # Keep that budget local to the worker process, not the HTTP server.
+        child_env=dict(os.environ)
+        if command==['worker']:child_env['_APP_WORKER_MAX_COROUTINES']=os.environ.get('APPWRITE_WORKER_POOL_SIZE','78')
+        children.append(subprocess.Popen(command,start_new_session=True,env=child_env))
     while not stopping:
         for p in children:
             if p.poll() is not None:status=1;stopping=True;print('Required Appwrite process exited',flush=True);break

@@ -500,6 +500,16 @@
           "description": "Appflowy base url resolved automatically from the linked service. Keep this reference when using the included topology.",
           "defaultValue": "https://${{appflowy.RAILWAY_PUBLIC_DOMAIN}}"
         },
+        "APPFLOWY_GOTRUE_BASE_URL": {
+          "isOptional": false,
+          "description": "Appflowy gotrue base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{appflowy.RAILWAY_PUBLIC_DOMAIN}}/gotrue"
+        },
+        "APPFLOWY_WS_BASE_URL": {
+          "isOptional": false,
+          "description": "Appflowy ws base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "wss://${{appflowy.RAILWAY_PUBLIC_DOMAIN}}/ws/v2"
+        },
         "PORT": {
           "isOptional": false,
           "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",

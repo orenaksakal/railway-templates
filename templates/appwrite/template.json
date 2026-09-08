@@ -136,6 +136,11 @@
           "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
           "defaultValue": "80"
         },
+        "APPWRITE_WORKER_POOL_SIZE": {
+          "isOptional": false,
+          "description": "Connection pool budget for the combined worker, matching the pinned upstream queue concurrency. Does not change HTTP pool size.",
+          "defaultValue": "78"
+        },
         "_APP_CPU_NUM": {
           "isOptional": false,
           "description": " app cpu num for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
@@ -351,6 +356,11 @@
           "isOptional": false,
           "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
           "defaultValue": "${{core.PORT}}"
+        },
+        "APPWRITE_WORKER_POOL_SIZE": {
+          "isOptional": false,
+          "description": "Appwrite worker pool size resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.APPWRITE_WORKER_POOL_SIZE}}"
         },
         "_APP_CPU_NUM": {
           "isOptional": false,
