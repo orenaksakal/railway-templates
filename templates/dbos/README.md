@@ -16,6 +16,8 @@ The template defines 2 services with pinned container digests, generated deploym
 
 ## Dependencies for DBOS Durable Webhooks Hosting
 
+### Deployment Dependencies
+
 | Service | Source | Persistent path |
 | --- | --- | --- |
 | postgres | `postgres:17` | `/var/lib/postgresql/data` |

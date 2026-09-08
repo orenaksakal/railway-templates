@@ -16,6 +16,8 @@ The template defines 7 services with pinned container digests, generated deploym
 
 ## Dependencies for Novu Community Edition Hosting
 
+### Deployment Dependencies
+
 | Service | Source | Persistent path |
 | --- | --- | --- |
 | mongodb | `mongo:8.0.17` | `/data/db` |

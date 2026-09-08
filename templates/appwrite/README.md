@@ -16,6 +16,8 @@ The template defines 8 services with pinned container digests, generated deploym
 
 ## Dependencies for Appwrite 2 Core Hosting
 
+### Deployment Dependencies
+
 | Service | Source | Persistent path |
 | --- | --- | --- |
 | postgres | `appwrite/postgres:0.1.0` | `/var/lib/postgresql` |

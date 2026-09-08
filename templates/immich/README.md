@@ -16,6 +16,8 @@ The template defines 4 services with pinned container digests, generated deploym
 
 ## Dependencies for Immich with Machine Learning Hosting
 
+### Deployment Dependencies
+
 | Service | Source | Persistent path |
 | --- | --- | --- |
 | postgres | `ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0` | `/var/lib/postgresql/data` |

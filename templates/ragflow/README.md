@@ -16,6 +16,8 @@ The template defines 5 services with pinned container digests, generated deploym
 
 ## Dependencies for RAGFlow CPU Hosting
 
+### Deployment Dependencies
+
 | Service | Source | Persistent path |
 | --- | --- | --- |
 | mysql | `mysql:8.0.40` | `/var/lib/mysql` |

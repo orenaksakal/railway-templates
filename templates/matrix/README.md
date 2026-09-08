@@ -16,6 +16,8 @@ The template defines 6 services with pinned container digests, generated deploym
 
 ## Dependencies for Matrix Synapse with MAS Hosting
 
+### Deployment Dependencies
+
 | Service | Source | Persistent path |
 | --- | --- | --- |
 | synapse-db | `postgres:17` | `/var/lib/postgresql/data` |

@@ -16,6 +16,8 @@ The template defines 3 services with pinned container digests, generated deploym
 
 ## Dependencies for Frappe CRM Hosting
 
+### Deployment Dependencies
+
 | Service | Source | Persistent path |
 | --- | --- | --- |
 | mariadb | `mariadb:10.11` | `/var/lib/mysql` |

@@ -16,6 +16,8 @@ The template defines 9 services with pinned container digests, generated deploym
 
 ## Dependencies for AppFlowy Cloud Hosting
 
+### Deployment Dependencies
+
 | Service | Source | Persistent path |
 | --- | --- | --- |
 | postgres | `templates/appflowy/Postgres.Dockerfile` | `/var/lib/postgresql/data` |
