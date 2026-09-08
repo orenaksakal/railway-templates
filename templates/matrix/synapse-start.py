@@ -10,5 +10,8 @@ c.update(public_baseurl=os.environ['PUBLIC_URL'].rstrip('/')+'/',enable_registra
 c['database']={'name':'psycopg2','args':{'user':os.environ['DB_USER'],'password':os.environ['DB_PASSWORD'],'host':os.environ['DB_HOST'],'port':5432,'database':'synapse','cp_min':2,'cp_max':5}}
 c['listeners']=[{'port':8008,'tls':False,'type':'http','x_forwarded':True,'bind_addresses':['::','0.0.0.0'],'resources':[{'names':['client','federation'],'compress':False}]}]
 c['matrix_authentication_service']={'enabled':True,'endpoint':os.environ['MAS_URL'],'secret':os.environ['MATRIX_SHARED_SECRET']}
-t=p.with_suffix('.tmp');t.write_text(yaml.safe_dump(c));t.replace(p)
+t=p.with_suffix('.tmp');t.write_text(yaml.safe_dump(c));t.chmod(0o600)
+# The upstream launcher drops root to UID/GID 991 by default.
+if os.getuid()==0:os.chown(t,int(os.environ.get('UID','991')),int(os.environ.get('GID','991')))
+t.replace(p)
 os.execvp('python',['python','/start.py','run'])
