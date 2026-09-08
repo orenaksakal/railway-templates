@@ -1,0 +1,566 @@
+{
+  "services": {
+    "85123620-4f39-5c90-b61d-c1f5ed783cd3": {
+      "name": "mongodb",
+      "source": {
+        "image": "mongo:8.0.17@sha256:9814652e33f0cf8b9fddea8b46dfc9d8e19b130dcfdd7b510ca58bb0d40c8b71"
+      },
+      "variables": {
+        "MONGO_INITDB_ROOT_USERNAME": {
+          "isOptional": false,
+          "description": "Mongo initdb root username for mongodb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "novu"
+        },
+        "MONGO_INITDB_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mongo initdb root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data/db"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "01b96374-d762-5d9d-a70f-469b7163c60e": {
+          "mountPath": "/data/db"
+        }
+      }
+    },
+    "8d6dffe0-8aff-51fb-ae7f-034971d46287": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "23143408-b171-5f61-a9a1-95d47e8b2fca": {
+      "name": "storage",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "MINIO_ROOT_USER": {
+          "isOptional": false,
+          "description": "Generated minio root user. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(20, \"abcdef0123456789\")}}"
+        },
+        "MINIO_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated minio root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "S3_BUCKET": {
+          "isOptional": false,
+          "description": "Private bucket created on first startup; changing this does not move existing objects.",
+          "defaultValue": "novu"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/draft-storage/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/draft-storage/Dockerfile"
+      },
+      "volumeMounts": {
+        "d2311c1b-a75d-5436-8bbb-3a030b29a229": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "a9b88451-0653-5490-9e97-58359bbc5a5d": {
+      "name": "api",
+      "source": {
+        "image": "ghcr.io/novuhq/novu/api:3.19.0@sha256:5cd2a586888b48885cb9ad91fb3cd25a38e6f70bb99d38d48f4d475b57bf544a"
+      },
+      "variables": {
+        "NODE_ENV": {
+          "isOptional": false,
+          "description": "Node.js runtime mode. Keep production for hosted deployments.",
+          "defaultValue": "production"
+        },
+        "MONGO_URL": {
+          "isOptional": false,
+          "description": "Mongo url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "mongodb://novu:${{mongodb.MONGO_INITDB_ROOT_PASSWORD}}@${{mongodb.RAILWAY_PRIVATE_DOMAIN}}:27017/novu?authSource=admin"
+        },
+        "MONGO_MIN_POOL_SIZE": {
+          "isOptional": false,
+          "description": "Mongo min pool size for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "MONGO_MAX_POOL_SIZE": {
+          "isOptional": false,
+          "description": "Mongo max pool size for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "10"
+        },
+        "REDIS_HOST": {
+          "isOptional": false,
+          "description": "Private Redis/Valkey hostname supplied by the redis service reference.",
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_PORT": {
+          "isOptional": false,
+          "description": "Private Redis/Valkey port. Keep 6379.",
+          "defaultValue": "6379"
+        },
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{redis.REDIS_PASSWORD}}"
+        },
+        "REDIS_DB_INDEX": {
+          "isOptional": false,
+          "description": "Redis db index for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2"
+        },
+        "REDIS_CACHE_SERVICE_HOST": {
+          "isOptional": false,
+          "description": "Redis cache service host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_CACHE_SERVICE_PORT": {
+          "isOptional": false,
+          "description": "Redis cache service port for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "6379"
+        },
+        "NEW_RELIC_ENABLED": {
+          "isOptional": false,
+          "description": "New relic enabled for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "S3_LOCAL_STACK": {
+          "isOptional": false,
+          "description": "S3 local stack resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "S3_BUCKET_NAME": {
+          "isOptional": false,
+          "description": "S3 bucket name for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "novu"
+        },
+        "S3_REGION": {
+          "isOptional": false,
+          "description": "S3 region for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "us-east-1"
+        },
+        "AWS_ACCESS_KEY_ID": {
+          "isOptional": false,
+          "description": "Aws access key id resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "AWS_SECRET_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Aws secret access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "API_ROOT_URL": {
+          "isOptional": false,
+          "description": "Api root url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{api.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "SUBSCRIBER_WIDGET_JWT_EXPIRATION_TIME": {
+          "isOptional": false,
+          "description": "Subscriber widget jwt expiration time for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "15d"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
+        "FRONT_BASE_URL": {
+          "isOptional": false,
+          "description": "Front base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{novu.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "JWT_SECRET": {
+          "isOptional": false,
+          "description": "Generated jwt secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "STORE_ENCRYPTION_KEY": {
+          "isOptional": false,
+          "description": "Exactly 32 generated characters for encrypting provider credentials; retain with MongoDB backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "NOVU_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Generated novu secret key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "MONGO_AUTO_CREATE_INDEXES": {
+          "isOptional": false,
+          "description": "Mongo auto create indexes for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "IS_API_IDEMPOTENCY_ENABLED": {
+          "isOptional": false,
+          "description": "Is api idempotency enabled for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "IS_API_RATE_LIMITING_ENABLED": {
+          "isOptional": false,
+          "description": "Is api rate limiting enabled for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "IS_NEW_MESSAGES_API_RESPONSE_ENABLED": {
+          "isOptional": false,
+          "description": "Is new messages api response enabled for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "IS_V2_ENABLED": {
+          "isOptional": false,
+          "description": "Is v2 enabled for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "IS_SELF_HOSTED": {
+          "isOptional": false,
+          "description": "Is self hosted for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/v1/health-check",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:3000": {
+            "port": 3000
+          }
+        }
+      }
+    },
+    "fcc6db21-4d62-5fcd-a4fe-e6441900ee8f": {
+      "name": "worker",
+      "source": {
+        "image": "ghcr.io/novuhq/novu/worker:3.19.0@sha256:2fa72651958986570f3929df0079908a6a4c65f945cf8fa69d973c707ce4ac81"
+      },
+      "variables": {
+        "NODE_ENV": {
+          "isOptional": false,
+          "description": "Node.js runtime mode. Keep production for hosted deployments.",
+          "defaultValue": "production"
+        },
+        "MONGO_URL": {
+          "isOptional": false,
+          "description": "Mongo url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "mongodb://novu:${{mongodb.MONGO_INITDB_ROOT_PASSWORD}}@${{mongodb.RAILWAY_PRIVATE_DOMAIN}}:27017/novu?authSource=admin"
+        },
+        "MONGO_MIN_POOL_SIZE": {
+          "isOptional": false,
+          "description": "Mongo min pool size for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "MONGO_MAX_POOL_SIZE": {
+          "isOptional": false,
+          "description": "Mongo max pool size for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "10"
+        },
+        "REDIS_HOST": {
+          "isOptional": false,
+          "description": "Private Redis/Valkey hostname supplied by the redis service reference.",
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_PORT": {
+          "isOptional": false,
+          "description": "Private Redis/Valkey port. Keep 6379.",
+          "defaultValue": "6379"
+        },
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{redis.REDIS_PASSWORD}}"
+        },
+        "REDIS_DB_INDEX": {
+          "isOptional": false,
+          "description": "Redis db index for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2"
+        },
+        "REDIS_CACHE_SERVICE_HOST": {
+          "isOptional": false,
+          "description": "Redis cache service host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_CACHE_SERVICE_PORT": {
+          "isOptional": false,
+          "description": "Redis cache service port for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "6379"
+        },
+        "NEW_RELIC_ENABLED": {
+          "isOptional": false,
+          "description": "New relic enabled for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "S3_LOCAL_STACK": {
+          "isOptional": false,
+          "description": "S3 local stack resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "S3_BUCKET_NAME": {
+          "isOptional": false,
+          "description": "S3 bucket name for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "novu"
+        },
+        "S3_REGION": {
+          "isOptional": false,
+          "description": "S3 region for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "us-east-1"
+        },
+        "AWS_ACCESS_KEY_ID": {
+          "isOptional": false,
+          "description": "Aws access key id resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "AWS_SECRET_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Aws secret access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "API_ROOT_URL": {
+          "isOptional": false,
+          "description": "Api root url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{api.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "SUBSCRIBER_WIDGET_JWT_EXPIRATION_TIME": {
+          "isOptional": false,
+          "description": "Subscriber widget jwt expiration time for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "15d"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3004"
+        },
+        "STORE_ENCRYPTION_KEY": {
+          "isOptional": false,
+          "description": "Store encryption key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.STORE_ENCRYPTION_KEY}}"
+        },
+        "BROADCAST_QUEUE_CHUNK_SIZE": {
+          "isOptional": false,
+          "description": "Broadcast queue chunk size for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "100"
+        },
+        "MULTICAST_QUEUE_CHUNK_SIZE": {
+          "isOptional": false,
+          "description": "Multicast queue chunk size for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "100"
+        },
+        "IS_EMAIL_INLINE_CSS_DISABLED": {
+          "isOptional": false,
+          "description": "Is email inline css disabled for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "IS_USE_MERGED_DIGEST_ID_ENABLED": {
+          "isOptional": false,
+          "description": "Is use merged digest id enabled for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "52a3ff29-429d-5056-857b-07d9bf0306fd": {
+      "name": "ws",
+      "source": {
+        "image": "ghcr.io/novuhq/novu/ws:3.19.0@sha256:00aa8b9f080da2af443269af672c00b7561556d7adb4b097b4e54c2127de61e5"
+      },
+      "variables": {
+        "NODE_ENV": {
+          "isOptional": false,
+          "description": "Node.js runtime mode. Keep production for hosted deployments.",
+          "defaultValue": "production"
+        },
+        "MONGO_URL": {
+          "isOptional": false,
+          "description": "Mongo url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "mongodb://novu:${{mongodb.MONGO_INITDB_ROOT_PASSWORD}}@${{mongodb.RAILWAY_PRIVATE_DOMAIN}}:27017/novu?authSource=admin"
+        },
+        "MONGO_MIN_POOL_SIZE": {
+          "isOptional": false,
+          "description": "Mongo min pool size for ws. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "MONGO_MAX_POOL_SIZE": {
+          "isOptional": false,
+          "description": "Mongo max pool size for ws. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "10"
+        },
+        "REDIS_HOST": {
+          "isOptional": false,
+          "description": "Private Redis/Valkey hostname supplied by the redis service reference.",
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_PORT": {
+          "isOptional": false,
+          "description": "Private Redis/Valkey port. Keep 6379.",
+          "defaultValue": "6379"
+        },
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{redis.REDIS_PASSWORD}}"
+        },
+        "REDIS_DB_INDEX": {
+          "isOptional": false,
+          "description": "Redis db index for ws. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2"
+        },
+        "REDIS_CACHE_SERVICE_HOST": {
+          "isOptional": false,
+          "description": "Redis cache service host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_CACHE_SERVICE_PORT": {
+          "isOptional": false,
+          "description": "Redis cache service port for ws. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "6379"
+        },
+        "NEW_RELIC_ENABLED": {
+          "isOptional": false,
+          "description": "New relic enabled for ws. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "S3_LOCAL_STACK": {
+          "isOptional": false,
+          "description": "S3 local stack resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "S3_BUCKET_NAME": {
+          "isOptional": false,
+          "description": "S3 bucket name for ws. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "novu"
+        },
+        "S3_REGION": {
+          "isOptional": false,
+          "description": "S3 region for ws. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "us-east-1"
+        },
+        "AWS_ACCESS_KEY_ID": {
+          "isOptional": false,
+          "description": "Aws access key id resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "AWS_SECRET_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Aws secret access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "API_ROOT_URL": {
+          "isOptional": false,
+          "description": "Api root url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{api.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "SUBSCRIBER_WIDGET_JWT_EXPIRATION_TIME": {
+          "isOptional": false,
+          "description": "Subscriber widget jwt expiration time for ws. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "15d"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3002"
+        },
+        "JWT_SECRET": {
+          "isOptional": false,
+          "description": "Jwt secret resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.JWT_SECRET}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/v1/health-check",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:3002": {
+            "port": 3002
+          }
+        }
+      }
+    },
+    "ee4034de-4eae-5591-afcb-141687d90978": {
+      "name": "novu",
+      "source": {
+        "image": "ghcr.io/novuhq/novu/dashboard:3.19.0@sha256:15a7773e01658f671e56fb9f0ddc8f043008bb0cfea2d6c5d1a0a60c722bf6e1"
+      },
+      "variables": {
+        "VITE_API_HOSTNAME": {
+          "isOptional": false,
+          "description": "Vite api hostname resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{api.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "VITE_WEBSOCKET_HOSTNAME": {
+          "isOptional": false,
+          "description": "Vite websocket hostname resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{ws.RAILWAY_PUBLIC_DOMAIN}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:4000": {
+            "port": 4000
+          }
+        }
+      }
+    }
+  }
+}

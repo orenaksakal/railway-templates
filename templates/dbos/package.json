@@ -1,0 +1,1 @@
+{"name":"railway-durable-webhooks","private":true,"type":"module","scripts":{"start":"node server.mjs"},"dependencies":{"@dbos-inc/dbos-sdk":"4.27.6"}}

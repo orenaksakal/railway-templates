@@ -20,7 +20,12 @@ class ComposeExportTests(unittest.TestCase):
             self.assertEqual(exported['services'].keys(), services.keys())
             for name, source in services.items():
                 target = exported['services'][name]
-                self.assertEqual(target['environment'], {k: v['defaultValue'] for k, v in source['variables'].items()})
+                for key, variable in source['variables'].items():
+                    if 'defaultValue' in variable:
+                        self.assertEqual(target['environment'][key], variable['defaultValue'])
+                    else:
+                        self.assertTrue(target['environment'][key].startswith('${' + key + ':?'))
+                        self.assertNotEqual(target['environment'][key], '')
                 if source['source'].get('image'):
                     self.assertEqual(target['image'], source['source']['image'])
                 else:

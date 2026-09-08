@@ -1,0 +1,62 @@
+{
+  "dbos": {
+    "name": "DBOS Durable Webhooks",
+    "description": "Durable webhook processing with PostgreSQL, retries, and recovery.",
+    "category": "Automation",
+    "image": "https://github.com/dbos-inc.png"
+  },
+  "spicedb": {
+    "name": "SpiceDB with PostgreSQL",
+    "description": "Relationship authorization with PostgreSQL and authenticated API access.",
+    "category": "Authentication",
+    "image": "https://github.com/authzed.png"
+  },
+  "frappe-crm": {
+    "name": "Frappe CRM",
+    "description": "Sales CRM with MariaDB, persistent files, workers, and WebSockets.",
+    "category": "Other",
+    "image": "https://github.com/frappe.png"
+  },
+  "frappe-helpdesk": {
+    "name": "Frappe Helpdesk",
+    "description": "Customer support tickets with MariaDB, workers, and persistent files.",
+    "category": "Other",
+    "image": "https://github.com/frappe.png"
+  },
+  "immich": {
+    "name": "Immich with Machine Learning",
+    "description": "Photo backup with matching CPU machine learning and persistent storage.",
+    "category": "Storage",
+    "image": "https://github.com/immich-app.png"
+  },
+  "matrix": {
+    "name": "Matrix Synapse with MAS",
+    "description": "Matrix messaging with Synapse, MAS authentication, and Element Web.",
+    "category": "Other",
+    "image": "https://github.com/element-hq.png"
+  },
+  "novu": {
+    "name": "Novu Community Edition",
+    "description": "Notification workflows with API, workers, dashboard, and WebSockets.",
+    "category": "Automation",
+    "image": "https://github.com/novuhq.png"
+  },
+  "appflowy": {
+    "name": "AppFlowy Cloud",
+    "description": "Collaborative workspace backend with private data and public file URLs.",
+    "category": "CMS",
+    "image": "https://github.com/AppFlowy-IO.png"
+  },
+  "appwrite": {
+    "name": "Appwrite 2 Core",
+    "description": "Appwrite 2 core backend with private databases and persistent storage.",
+    "category": "Starters",
+    "image": "https://github.com/appwrite.png"
+  },
+  "ragflow": {
+    "name": "RAGFlow CPU",
+    "description": "Document ingestion and retrieval with private databases and CPU workers.",
+    "category": "AI/ML",
+    "image": "https://github.com/infiniflow.png"
+  }
+}

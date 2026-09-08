@@ -1,0 +1,109 @@
+{
+  "services": {
+    "3e18d657-8583-5a15-b68b-9563b1bc4013": {
+      "name": "postgres",
+      "source": {
+        "image": "postgres:17@sha256:67f41722b7a8cbdb868a44a4995c846eddfdc2973bccb291ce937dce88ad5675"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "spicedb"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "spicedb"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://spicedb:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/spicedb"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "f40fd2d0-83ed-57be-8bb6-64e3333a8f8e": {
+      "name": "spicedb",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "SPICEDB_DATASTORE_ENGINE": {
+          "isOptional": false,
+          "description": "Use the included PostgreSQL datastore.",
+          "defaultValue": "postgres"
+        },
+        "SPICEDB_DATASTORE_CONN_URI": {
+          "isOptional": false,
+          "description": "Spicedb datastore conn uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.DATABASE_URL}}?sslmode=disable"
+        },
+        "SPICEDB_GRPC_PRESHARED_KEY": {
+          "isOptional": false,
+          "description": "Generated spicedb grpc preshared key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "SPICEDB_GRPC_ADDR": {
+          "isOptional": false,
+          "description": "Private authenticated gRPC listener. No public TCP proxy is created.",
+          "defaultValue": "[::]:50051"
+        },
+        "SPICEDB_HTTP_ENABLED": {
+          "isOptional": false,
+          "description": "Enable the authenticated HTTP gateway for Railway HTTPS access.",
+          "defaultValue": "true"
+        },
+        "SPICEDB_HTTP_ADDR": {
+          "isOptional": false,
+          "description": "HTTP gateway listener; Railway terminates public TLS.",
+          "defaultValue": "[::]:8443"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/spicedb/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8443": {
+            "port": 8443
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/spicedb/Dockerfile"
+      }
+    }
+  }
+}

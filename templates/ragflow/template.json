@@ -1,0 +1,311 @@
+{
+  "services": {
+    "2ca55f80-147f-5c3f-bfdb-ef2264287de9": {
+      "name": "mysql",
+      "source": {
+        "image": "mysql:8.0.40@sha256:d58ac93387f644e4e040c636b8f50494e78e5afc27ca0a87348b2f577da2b7ff"
+      },
+      "variables": {
+        "MYSQL_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mysql root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "MYSQL_DATABASE": {
+          "isOptional": false,
+          "description": "Mysql database for mysql. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "rag_flow"
+        },
+        "MYSQL_USER": {
+          "isOptional": false,
+          "description": "Mysql user for mysql. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "ragflow"
+        },
+        "MYSQL_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mysql password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "mysqld --max-connections=150 --max-allowed-packet=1073741824 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password --binlog-expire-logs-seconds=604800",
+        "requiredMountPath": "/var/lib/mysql"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "6caa3481-2c0f-5d50-9480-904c57280752": {
+          "mountPath": "/var/lib/mysql"
+        }
+      }
+    },
+    "1c882f3d-3829-5076-8a5a-57a3596f3641": {
+      "name": "elasticsearch",
+      "source": {
+        "image": "elasticsearch:8.11.3@sha256:58a3a280935d830215802322e9a0373faaacdfd646477aa7e718939c2f29292a"
+      },
+      "variables": {
+        "discovery.type": {
+          "isOptional": false,
+          "description": "Single-node search index. This is not a high-availability cluster.",
+          "defaultValue": "single-node"
+        },
+        "xpack.security.enabled": {
+          "isOptional": false,
+          "description": "Xpack.security.enabled for elasticsearch. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "xpack.security.http.ssl.enabled": {
+          "isOptional": false,
+          "description": "Xpack.security.http.ssl.enabled for elasticsearch. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "ELASTIC_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated elastic password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "ES_JAVA_OPTS": {
+          "isOptional": false,
+          "description": "Initial Java heap. Increase only with sufficient Railway memory.",
+          "defaultValue": "-Xms1g -Xmx1g"
+        },
+        "node.store.allow_mmap": {
+          "isOptional": false,
+          "description": "Avoid dependence on host vm.max_map_count, which cannot be changed from a Railway container.",
+          "defaultValue": "false"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/usr/share/elasticsearch/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "d6c8a882-fc19-503e-aa48-1c1c1fe06710": {
+          "mountPath": "/usr/share/elasticsearch/data"
+        }
+      }
+    },
+    "17c46b5d-c744-530f-948c-659929668270": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "9fec9cbc-6e10-5d17-81dd-86b0a4e33313": {
+      "name": "storage",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "MINIO_ROOT_USER": {
+          "isOptional": false,
+          "description": "Generated minio root user. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(20, \"abcdef0123456789\")}}"
+        },
+        "MINIO_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated minio root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "S3_BUCKET": {
+          "isOptional": false,
+          "description": "Private bucket created on first startup; changing this does not move existing objects.",
+          "defaultValue": "ragflow"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/draft-storage/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/draft-storage/Dockerfile"
+      },
+      "volumeMounts": {
+        "d2311c1b-a75d-5436-8bbb-3a030b29a229": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "f4083502-a936-544d-a4c3-0a517df1c65e": {
+      "name": "ragflow",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "DOC_ENGINE": {
+          "isOptional": false,
+          "description": "Doc engine for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "elasticsearch"
+        },
+        "DB_TYPE": {
+          "isOptional": false,
+          "description": "Db type for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "mysql"
+        },
+        "DEVICE": {
+          "isOptional": false,
+          "description": "Device for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "cpu"
+        },
+        "MYSQL_HOST": {
+          "isOptional": false,
+          "description": "Mysql host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mysql.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "MYSQL_DBNAME": {
+          "isOptional": false,
+          "description": "Mysql dbname for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "rag_flow"
+        },
+        "MYSQL_USER": {
+          "isOptional": false,
+          "description": "Mysql user for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "ragflow"
+        },
+        "MYSQL_PASSWORD": {
+          "isOptional": false,
+          "description": "Mysql password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mysql.MYSQL_PASSWORD}}"
+        },
+        "MYSQL_PORT": {
+          "isOptional": false,
+          "description": "Mysql port for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "3306"
+        },
+        "MYSQL_MAX_PACKET": {
+          "isOptional": false,
+          "description": "Mysql max packet for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1073741824"
+        },
+        "ES_HOST": {
+          "isOptional": false,
+          "description": "Es host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{elasticsearch.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "ELASTIC_PASSWORD": {
+          "isOptional": false,
+          "description": "Elastic password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{elasticsearch.ELASTIC_PASSWORD}}"
+        },
+        "MINIO_HOST": {
+          "isOptional": false,
+          "description": "Minio host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "MINIO_USER": {
+          "isOptional": false,
+          "description": "Minio user resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "MINIO_PASSWORD": {
+          "isOptional": false,
+          "description": "Minio password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "REDIS_HOST": {
+          "isOptional": false,
+          "description": "Private Redis/Valkey hostname supplied by the redis service reference.",
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{redis.REDIS_PASSWORD}}"
+        },
+        "REGISTER_ENABLED": {
+          "isOptional": false,
+          "description": "Enable account onboarding initially. Disable registration after creating the intended accounts.",
+          "defaultValue": "1"
+        },
+        "ENABLE_REGISTER": {
+          "isOptional": false,
+          "description": "Enable register for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "API_PROXY_SCHEME": {
+          "isOptional": false,
+          "description": "Api proxy scheme for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "python"
+        },
+        "ALLOW_ANY_HOST": {
+          "isOptional": false,
+          "description": "Allow any host for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0"
+        },
+        "TZ": {
+          "isOptional": false,
+          "description": "Tz for ragflow. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "UTC"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/ragflow/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:80": {
+            "port": 80
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/ragflow/Dockerfile"
+      }
+    }
+  }
+}

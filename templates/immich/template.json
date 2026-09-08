@@ -1,0 +1,210 @@
+{
+  "services": {
+    "e9ceba82-d4e9-526d-bb11-601b3c438620": {
+      "name": "postgres",
+      "source": {
+        "image": "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "immich"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "immich"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "POSTGRES_INITDB_ARGS": {
+          "isOptional": false,
+          "description": "Initialization options applied only to an empty database volume. Keep locale and encoding compatible with the application.",
+          "defaultValue": "--data-checksums"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://immich:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/immich"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "26d70d8e-32c2-53bf-9377-90a767d8eb8d": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "a0926b65-597e-558b-a828-e46ed9260fab": {
+      "name": "machine-learning",
+      "source": {
+        "image": "ghcr.io/immich-app/immich-machine-learning:v3.1.0@sha256:5a0839dc5303cd7215bcd2180a26aed3af41675aefb3e75e5157e9f10ad16e6e"
+      },
+      "variables": {
+        "MACHINE_LEARNING_WORKERS": {
+          "isOptional": false,
+          "description": "One CPU inference worker initially. No GPU is configured.",
+          "defaultValue": "1"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/cache"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "467259e6-981d-5632-9bbc-2d64e12dd3cf": {
+          "mountPath": "/cache"
+        }
+      }
+    },
+    "06c143b7-cf95-5e8c-a03d-45a0a425985a": {
+      "name": "immich",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "2283"
+        },
+        "DB_HOSTNAME": {
+          "isOptional": false,
+          "description": "Db hostname resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "DB_PORT": {
+          "isOptional": false,
+          "description": "Db port for immich. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5432"
+        },
+        "DB_USERNAME": {
+          "isOptional": false,
+          "description": "Db username for immich. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "immich"
+        },
+        "DB_PASSWORD": {
+          "isOptional": false,
+          "description": "Db password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}"
+        },
+        "DB_DATABASE_NAME": {
+          "isOptional": false,
+          "description": "Db database name for immich. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "immich"
+        },
+        "REDIS_HOSTNAME": {
+          "isOptional": false,
+          "description": "Redis hostname resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "REDIS_PORT": {
+          "isOptional": false,
+          "description": "Private Redis/Valkey port. Keep 6379.",
+          "defaultValue": "6379"
+        },
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{redis.REDIS_PASSWORD}}"
+        },
+        "IMMICH_CONFIG_FILE": {
+          "isOptional": false,
+          "description": "Generated at startup to configure the private machine-learning service.",
+          "defaultValue": "/tmp/immich-config.json"
+        },
+        "MACHINE_LEARNING_URL": {
+          "isOptional": false,
+          "description": "Machine learning url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{machine-learning.RAILWAY_PRIVATE_DOMAIN}}:3003"
+        },
+        "IMMICH_TELEMETRY_INCLUDE": {
+          "isOptional": false,
+          "description": "Telemetry selection; no telemetry is requested by this draft.",
+          "defaultValue": "none"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/immich/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/api/server/ping",
+        "healthcheckTimeout": 600,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:2283": {
+            "port": 2283
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/immich/Dockerfile"
+      },
+      "volumeMounts": {
+        "9cd8664a-cb42-50cd-9c9a-e4db995d3070": {
+          "mountPath": "/data"
+        }
+      }
+    }
+  }
+}

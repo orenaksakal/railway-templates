@@ -13,7 +13,9 @@ def export(config):
     result = {'services': {}, 'volumes': {}}
     for service in config['services'].values():
         name = service['name']
-        entry = {'environment': {k: v['defaultValue'] for k, v in service['variables'].items()}, 'restart': 'on-failure:5'}
+        # Missing operator inputs must fail Compose interpolation rather than become empty credentials.
+        environment = {k: v['defaultValue'] if 'defaultValue' in v else '${' + k + ':?Set ' + k + ' before starting this template}' for k, v in service['variables'].items()}
+        entry = {'environment': environment, 'restart': 'on-failure:' + str(service['deploy'].get('restartPolicyMaxRetries', 5))}
         source = service['source']
         if source.get('image'):
             entry['image'] = source['image']

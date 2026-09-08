@@ -1,0 +1,32 @@
+ragflow:
+  host: 0.0.0.0
+  http_port: 9380
+admin:
+  host: 127.0.0.1
+  http_port: 9381
+mysql:
+  name: '${MYSQL_DBNAME:-rag_flow}'
+  user: '${MYSQL_USER:-ragflow}'
+  password: '${MYSQL_PASSWORD}'
+  host: '${MYSQL_HOST}'
+  port: 3306
+  max_connections: 40
+  stale_timeout: 300
+  max_allowed_packet: 1073741824
+minio:
+  user: '${MINIO_USER}'
+  password: '${MINIO_PASSWORD}'
+  host: '${MINIO_HOST}:9000'
+es:
+  hosts: 'http://${ES_HOST}:9200'
+  username: elastic
+  password: '${ELASTIC_PASSWORD}'
+redis:
+  db: 1
+  username: ''
+  password: '${REDIS_PASSWORD}'
+  host: '${REDIS_HOST}:6379'
+user_default_llm:
+  factory: OpenAI
+  api_key: ''
+  base_url: ''

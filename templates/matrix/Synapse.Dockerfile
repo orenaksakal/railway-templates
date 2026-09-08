@@ -1,0 +1,3 @@
+FROM ghcr.io/element-hq/synapse:v1.160.0@sha256:78de1d10bef02e375f861d1cc99f8bedd9381d4f9083ea8b2c22a053477b205f
+COPY templates/matrix/synapse-start.py /railway-start.py
+ENTRYPOINT ["python", "/railway-start.py"]

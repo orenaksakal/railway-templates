@@ -7,3 +7,4 @@ evidence
 .parked
 OPPORTUNITIES*.md
 REVENUE-PLAN.md
+**/node_modules

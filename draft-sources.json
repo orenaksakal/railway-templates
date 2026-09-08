@@ -1,0 +1,104 @@
+{
+  "releases": {
+    "appwrite/appwrite": {
+      "tag_name": "2.0.0",
+      "target_commitish": "033c6303e352b9307f0e53fff15fb631882674d6",
+      "html_url": "https://github.com/appwrite/appwrite/releases/tag/2.0.0",
+      "published_at": "2026-09-04T18:36:37Z"
+    },
+    "AppFlowy-IO/AppFlowy-Cloud": {
+      "tag_name": "0.9.64",
+      "target_commitish": "main",
+      "html_url": "https://github.com/AppFlowy-IO/AppFlowy-Cloud/releases/tag/0.9.64",
+      "published_at": "2025-07-04T03:05:45Z"
+    },
+    "dbos-inc/dbos-transact-ts": {
+      "tag_name": "v4.27",
+      "target_commitish": "release/v4.27",
+      "html_url": "https://github.com/dbos-inc/dbos-transact-ts/releases/tag/v4.27",
+      "published_at": "2026-08-25T15:37:38Z"
+    },
+    "authzed/spicedb": {
+      "tag_name": "v1.56.1",
+      "target_commitish": "main",
+      "html_url": "https://github.com/authzed/spicedb/releases/tag/v1.56.1",
+      "published_at": "2026-08-26T18:03:54Z"
+    },
+    "frappe/crm": {
+      "tag_name": "v1.83.0",
+      "target_commitish": "main",
+      "html_url": "https://github.com/frappe/crm/releases/tag/v1.83.0",
+      "published_at": "2026-09-02T11:07:17Z"
+    },
+    "frappe/helpdesk": {
+      "tag_name": "v1.30.1",
+      "target_commitish": "main",
+      "html_url": "https://github.com/frappe/helpdesk/releases/tag/v1.30.1",
+      "published_at": "2026-09-03T09:19:40Z"
+    },
+    "element-hq/synapse": {
+      "tag_name": "v1.160.0",
+      "target_commitish": "develop",
+      "html_url": "https://github.com/element-hq/synapse/releases/tag/v1.160.0",
+      "published_at": "2026-09-02T21:44:40Z"
+    },
+    "element-hq/matrix-authentication-service": {
+      "tag_name": "v1.24.0",
+      "target_commitish": "main",
+      "html_url": "https://github.com/element-hq/matrix-authentication-service/releases/tag/v1.24.0",
+      "published_at": "2026-09-02T23:04:56Z"
+    },
+    "immich-app/immich": {
+      "tag_name": "v3.1.0",
+      "target_commitish": "main",
+      "html_url": "https://github.com/immich-app/immich/releases/tag/v3.1.0",
+      "published_at": "2026-07-29T14:20:10Z"
+    },
+    "novuhq/novu": {
+      "tag_name": "@novu/framework@v2.13.2",
+      "target_commitish": "next",
+      "html_url": "https://github.com/novuhq/novu/releases/tag/%40novu/framework%40v2.13.2",
+      "published_at": "2026-09-07T14:09:13Z"
+    },
+    "infiniflow/ragflow": {
+      "tag_name": "v0.27.1",
+      "target_commitish": "main",
+      "html_url": "https://github.com/infiniflow/ragflow/releases/tag/v0.27.1",
+      "published_at": "2026-08-28T04:10:07Z"
+    }
+  },
+  "novuSourceCommit": "c7bc772fc0b7722909ef1bdb9bcf04991996fdd8",
+  "telephonyCommit": "039cf39f245d6818ead03cf94eea6ce7f9c1e1f7",
+  "sourceContentHashes": {
+    "immich-server-dockerfile": {
+      "sha256": "807570747331842b3a3dca7f8c7bee3fa629ff5f28eb2345df2dadd280e8544d"
+    },
+    "mas-homeserver": {
+      "sha256": "877173a483371fb22e5f5250c3581cce260fb27cf1d7b0f4d73b6b109d149378"
+    },
+    "telephony-commit": {
+      "sha256": "14df4167afa6fe7382a767ba74bc5840043cde883219ec6c2a23a5dcd3f4b3e8"
+    },
+    "element-dockerfile": {
+      "sha256": "c2a5c43d3bec259ff6fb4434120f9ad545152928c530cabf5b609d052581a67b"
+    },
+    "novu-community-compose": {
+      "sha256": "4ae37c45206d46034085bac6f5d943ddc4138511c7a10742fa97b122628a4a73"
+    },
+    "appwrite-pools": {
+      "sha256": "d023206f6d666aa987a4724b29d41db987fe863fa72b8c06baeede02ef26f1f7"
+    },
+    "mas-general": {
+      "sha256": "37e330afdb9032e35950b42b8b88033310e206d34b72b4fdb1e029120a6fc5eb"
+    },
+    "novu-community-env": {
+      "sha256": "5447adc385aa648150a0d343823fa54bddf69b71c245a0d81ab90b1b50c43ae5"
+    },
+    "releases.json": {
+      "sha256": "563b177dc8f4f5cd20f13b0725493eebae93d2dc1f45ac6ba9b662ca5aca15b6"
+    },
+    "helpdesk-pyproject": {
+      "sha256": "72cdf28a274bf79a3039b9b295d23806b69f2d1782ec5b08b9aa00d1cdca80df"
+    }
+  }
+}

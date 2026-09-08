@@ -1,0 +1,96 @@
+{
+  "services": {
+    "5e00331b-3320-53c8-a892-eb6548f8f14d": {
+      "name": "postgres",
+      "source": {
+        "image": "postgres:17@sha256:67f41722b7a8cbdb868a44a4995c846eddfdc2973bccb291ce937dce88ad5675"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "dbos"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "dbos"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://dbos:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/dbos"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "e6041018-83b2-5f9e-a010-278919fb6f54": {
+      "name": "dbos",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "${{postgres.DATABASE_URL}}"
+        },
+        "API_KEY": {
+          "isOptional": false,
+          "description": "Generated API authentication key, or a reference to the shared internal API key. Keep private and preserve matching references.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/dbos/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:3000": {
+            "port": 3000
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/dbos/Dockerfile"
+      }
+    }
+  }
+}

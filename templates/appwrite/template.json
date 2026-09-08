@@ -1,0 +1,403 @@
+{
+  "services": {
+    "8e79be45-5729-5565-bd96-f4e0664528df": {
+      "name": "postgres",
+      "source": {
+        "image": "appwrite/postgres:0.1.0@sha256:77156232a16d80f5830d914edb44f52a0853058939f2365cc3301d08db9d05e9"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "appwrite"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "appwrite"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/18/docker"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://appwrite:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/appwrite"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "08249cdc-6e2f-5d72-a7df-3476a560d123": {
+          "mountPath": "/var/lib/postgresql"
+        }
+      }
+    },
+    "a9e66cc9-aea8-5b10-9b1c-c4c20fe12e03": {
+      "name": "mongodb",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "MONGO_INITDB_ROOT_USERNAME": {
+          "isOptional": false,
+          "description": "Mongo initdb root username for mongodb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "appwrite"
+        },
+        "MONGO_INITDB_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Mongo initdb root password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}"
+        },
+        "MONGO_PRIVATE_HOST": {
+          "isOptional": false,
+          "description": "Mongo private host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mongodb.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/appwrite/Mongo.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/appwrite/Mongo.Dockerfile"
+      },
+      "volumeMounts": {
+        "98efc15d-3bec-5942-86f8-6505636cb93d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "a2531352-2a66-5c1d-a8ce-ecf5caf70fef": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "cfaaa2eb-1ae8-55b6-bea8-36b2688ee512": {
+      "name": "core",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "_APP_ENV": {
+          "isOptional": false,
+          "description": "Production self-host runtime mode.",
+          "defaultValue": "production"
+        },
+        "_APP_EDITION": {
+          "isOptional": false,
+          "description": " app edition for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "self-hosted"
+        },
+        "_APP_DOMAIN": {
+          "isOptional": false,
+          "description": " app domain resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{appwrite.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "_APP_CONSOLE_DOMAIN": {
+          "isOptional": false,
+          "description": " app console domain resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{appwrite.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "_APP_CONSOLE_HOSTNAMES": {
+          "isOptional": false,
+          "description": " app console hostnames resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{appwrite.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "_APP_OPTIONS_FORCE_HTTPS": {
+          "isOptional": false,
+          "description": " app options force https for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "enabled"
+        },
+        "_APP_OPTIONS_ABUSE": {
+          "isOptional": false,
+          "description": " app options abuse for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "enabled"
+        },
+        "_APP_OPENSSL_KEY_V1": {
+          "isOptional": false,
+          "description": "Generated  app openssl key v1. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "_APP_NOTIFICATIONS_TRACKING_SECRET": {
+          "isOptional": false,
+          "description": "Generated  app notifications tracking secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "_APP_DB_ADAPTER": {
+          "isOptional": false,
+          "description": " app db adapter for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "postgresql"
+        },
+        "_APP_DB_HOST": {
+          "isOptional": false,
+          "description": " app db host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "_APP_DB_PORT": {
+          "isOptional": false,
+          "description": " app db port for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5432"
+        },
+        "_APP_DB_SCHEMA": {
+          "isOptional": false,
+          "description": " app db schema for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "appwrite"
+        },
+        "_APP_DB_USER": {
+          "isOptional": false,
+          "description": " app db user for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "appwrite"
+        },
+        "_APP_DB_PASS": {
+          "isOptional": false,
+          "description": " app db pass resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}"
+        },
+        "_APP_DB_ROOT_PASS": {
+          "isOptional": false,
+          "description": " app db root pass resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}"
+        },
+        "_APP_DB_ADAPTER_DOCUMENTSDB": {
+          "isOptional": false,
+          "description": " app db adapter documentsdb for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "mongodb"
+        },
+        "_APP_DB_HOST_DOCUMENTSDB": {
+          "isOptional": false,
+          "description": " app db host documentsdb resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mongodb.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "_APP_DB_PORT_DOCUMENTSDB": {
+          "isOptional": false,
+          "description": " app db port documentsdb for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "27017"
+        },
+        "_APP_DB_ADAPTER_VECTORSDB": {
+          "isOptional": false,
+          "description": " app db adapter vectorsdb for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "postgresql"
+        },
+        "_APP_DB_HOST_VECTORSDB": {
+          "isOptional": false,
+          "description": " app db host vectorsdb resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "_APP_DB_PORT_VECTORSDB": {
+          "isOptional": false,
+          "description": " app db port vectorsdb for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5432"
+        },
+        "_APP_REDIS_HOST": {
+          "isOptional": false,
+          "description": " app redis host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "_APP_REDIS_PORT": {
+          "isOptional": false,
+          "description": " app redis port for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "6379"
+        },
+        "_APP_REDIS_PASS": {
+          "isOptional": false,
+          "description": " app redis pass resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_PASSWORD}}"
+        },
+        "_APP_STORAGE_DEVICE": {
+          "isOptional": false,
+          "description": " app storage device for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "Local"
+        },
+        "_APP_STORAGE_ANTIVIRUS": {
+          "isOptional": false,
+          "description": " app storage antivirus for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "disabled"
+        },
+        "_APP_USAGE_STATS": {
+          "isOptional": false,
+          "description": " app usage stats for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "disabled"
+        },
+        "_APP_FUNCTIONS_RUNTIMES": {
+          "isOptional": false,
+          "description": "Functions and Sites execution are excluded: Railway does not supply the Docker socket required by the executor.",
+          "defaultValue": ""
+        },
+        "_APP_EXECUTOR_SECRET": {
+          "isOptional": false,
+          "description": "Generated  app executor secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "_APP_GEO_ADDRESS": {
+          "isOptional": false,
+          "description": " app geo address resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{geo.RAILWAY_PRIVATE_DOMAIN}}:80"
+        },
+        "_APP_WORKERS_NUM": {
+          "isOptional": false,
+          "description": " app workers num for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "_APP_WORKER_PER_CORE": {
+          "isOptional": false,
+          "description": " app worker per core for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "ALLOW_MIGRATION": {
+          "isOptional": false,
+          "description": "Back up all data before allowing an upgrade migration on an existing volume.",
+          "defaultValue": "false"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/appwrite/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/storage"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/appwrite/Dockerfile"
+      },
+      "volumeMounts": {
+        "7b12406c-84e1-54fc-a78e-3593905949e3": {
+          "mountPath": "/storage"
+        }
+      }
+    },
+    "0abda70e-4618-5d7b-9f3d-10bd218ecb57": {
+      "name": "console",
+      "source": {
+        "image": "appwrite/new:1.1.16@sha256:28d528e6f02c00d369baf44ee56dea153bd7cc6bf7bcb33961349eb7ad7a44d8"
+      },
+      "variables": {},
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "9dcb1d61-12b8-5b08-92f8-291ad171d06f": {
+      "name": "geo",
+      "source": {
+        "image": "appwrite/geo:0.3.1@sha256:df3751399945ec22661f23d745d66ed3b06a61f70ac4d77a1e9011ea17797653"
+      },
+      "variables": {},
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "0b3d2db8-a6fb-598b-bedf-1bfc78e85c81": {
+      "name": "appwrite",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "API_HOST": {
+          "isOptional": false,
+          "description": "Api host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "CONSOLE_HOST": {
+          "isOptional": false,
+          "description": "Console host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{console.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/appwrite/Gateway.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/appwrite/Gateway.Dockerfile"
+      }
+    }
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "services": {
+    "2f91ffca-efd6-537a-98d0-25716a32d791": {
+      "name": "mariadb",
+      "source": {
+        "image": "mariadb:10.11@sha256:ce66c7be32a03aabe7241d0a10993a2db827ef652a35d25727d92a832ac8ef73"
+      },
+      "variables": {
+        "MARIADB_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mariadb root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "MARIADB_ROOT_HOST": {
+          "isOptional": false,
+          "description": "Allow the private application service to initialize its site database.",
+          "defaultValue": "%"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "mariadbd --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --skip-character-set-client-handshake",
+        "requiredMountPath": "/var/lib/mysql"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "0ed1fdcd-07f3-5630-9ec9-95794a648445": {
+          "mountPath": "/var/lib/mysql"
+        }
+      }
+    },
+    "e3c464da-8666-5f48-997d-45ffdbda3685": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "9e9a5e8b-b33e-5a43-9912-e8a4045fbc7d": {
+      "name": "frappe-helpdesk",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "FRAPPE_APP": {
+          "isOptional": false,
+          "description": "Frappe application installed at build time; do not change independently of the image.",
+          "defaultValue": "helpdesk"
+        },
+        "TEMPLATE_RELEASE": {
+          "isOptional": false,
+          "description": "Template release for frappe-helpdesk. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "v1.30.1"
+        },
+        "FRAPPE_SITE_NAME": {
+          "isOptional": false,
+          "description": "Persistent internal site identity; keep stable when changing the public domain.",
+          "defaultValue": "site.localhost"
+        },
+        "PUBLIC_URL": {
+          "isOptional": false,
+          "description": "Public url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{frappe-helpdesk.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "DB_HOST": {
+          "isOptional": false,
+          "description": "Db host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mariadb.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "DB_PORT": {
+          "isOptional": false,
+          "description": "Db port for frappe-helpdesk. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "3306"
+        },
+        "DB_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Db root password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mariadb.MARIADB_ROOT_PASSWORD}}"
+        },
+        "ADMIN_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated admin password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "${{redis.REDIS_URL}}"
+        },
+        "WEB_WORKERS": {
+          "isOptional": false,
+          "description": "Gunicorn worker count; tune against available memory.",
+          "defaultValue": "2"
+        },
+        "ALLOW_MIGRATION": {
+          "isOptional": false,
+          "description": "For an existing site on a different release, back up database and files before setting true for one upgrade.",
+          "defaultValue": "false"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/frappe-helpdesk/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/api/method/ping",
+        "healthcheckTimeout": 600,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/frappe-helpdesk/Dockerfile"
+      },
+      "volumeMounts": {
+        "e6bcc979-e6c8-5db9-87ff-df1fa336e0d8": {
+          "mountPath": "/data"
+        }
+      }
+    }
+  }
+}

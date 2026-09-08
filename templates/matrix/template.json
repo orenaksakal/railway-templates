@@ -1,0 +1,329 @@
+{
+  "services": {
+    "02062a18-bb5f-5faf-9774-1b188cf7a959": {
+      "name": "synapse-db",
+      "source": {
+        "image": "postgres:17@sha256:67f41722b7a8cbdb868a44a4995c846eddfdc2973bccb291ce937dce88ad5675"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "synapse"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "synapse"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "POSTGRES_INITDB_ARGS": {
+          "isOptional": false,
+          "description": "Initialization options applied only to an empty database volume. Keep locale and encoding compatible with the application.",
+          "defaultValue": "--encoding=UTF8 --locale=C"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://synapse:${{synapse-db.POSTGRES_PASSWORD}}@${{synapse-db.RAILWAY_PRIVATE_DOMAIN}}:5432/synapse"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "f65b267f-c247-571a-b485-ca69f8fd1ecc": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "362f909b-bebd-5944-bf9c-994a5a45674c": {
+      "name": "mas-db",
+      "source": {
+        "image": "postgres:17@sha256:67f41722b7a8cbdb868a44a4995c846eddfdc2973bccb291ce937dce88ad5675"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "mas"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "mas"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://mas:${{mas-db.POSTGRES_PASSWORD}}@${{mas-db.RAILWAY_PRIVATE_DOMAIN}}:5432/mas"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "10844e8a-836a-5f68-ad85-68f9ef47d067": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "ba1b2543-a549-5ea0-bf66-58dcac35b85e": {
+      "name": "synapse",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "SYNAPSE_SERVER_NAME": {
+          "isOptional": false,
+          "description": "Immutable Matrix server name. Choose your final domain before first deployment; it cannot be renamed later.",
+          "defaultValue": "${{matrix.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "SYNAPSE_REPORT_STATS": {
+          "isOptional": false,
+          "description": "Synapse report stats for synapse. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "no"
+        },
+        "PUBLIC_URL": {
+          "isOptional": false,
+          "description": "Public url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{matrix.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "DB_HOST": {
+          "isOptional": false,
+          "description": "Db host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{synapse-db.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "DB_USER": {
+          "isOptional": false,
+          "description": "Db user for synapse. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "synapse"
+        },
+        "DB_PASSWORD": {
+          "isOptional": false,
+          "description": "Db password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{synapse-db.POSTGRES_PASSWORD}}"
+        },
+        "MAS_URL": {
+          "isOptional": false,
+          "description": "Mas url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{mas.RAILWAY_PRIVATE_DOMAIN}}:8080/"
+        },
+        "MATRIX_SHARED_SECRET": {
+          "isOptional": false,
+          "description": "Generated matrix shared secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/matrix/Synapse.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/matrix/Synapse.Dockerfile"
+      },
+      "volumeMounts": {
+        "29302a3d-0464-550b-bfd4-68eb5388b621": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "9418633f-0c7f-568a-8764-e619ef5c7d27": {
+      "name": "mas",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "${{mas-db.DATABASE_URL}}"
+        },
+        "PUBLIC_URL": {
+          "isOptional": false,
+          "description": "Public url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{mas.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "SERVER_NAME": {
+          "isOptional": false,
+          "description": "Server name resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{synapse.SYNAPSE_SERVER_NAME}}"
+        },
+        "SYNAPSE_URL": {
+          "isOptional": false,
+          "description": "Synapse url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{synapse.RAILWAY_PRIVATE_DOMAIN}}:8008"
+        },
+        "MATRIX_SHARED_SECRET": {
+          "isOptional": false,
+          "description": "Matrix shared secret resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{synapse.MATRIX_SHARED_SECRET}}"
+        },
+        "REGISTRATION_ENABLED": {
+          "isOptional": false,
+          "description": "Self-service registration stays closed. Create users with the MAS CLI, or deliberately enable registration for onboarding.",
+          "defaultValue": "false"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/matrix/Mas.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/matrix/Mas.Dockerfile"
+      },
+      "volumeMounts": {
+        "3178c3c5-843e-585f-a639-2ee999b888e4": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "16aebd4e-f1f9-5931-bf6d-5fb98ca77e44": {
+      "name": "matrix",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "SYNAPSE_HOST": {
+          "isOptional": false,
+          "description": "Synapse host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{synapse.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "MAS_HOST": {
+          "isOptional": false,
+          "description": "Mas host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mas.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "PUBLIC_HOST": {
+          "isOptional": false,
+          "description": "Public host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{matrix.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/matrix/Gateway.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/matrix/Gateway.Dockerfile"
+      }
+    },
+    "7c995604-16e7-5c84-aa37-b32861b632c7": {
+      "name": "element",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "HOMESERVER_URL": {
+          "isOptional": false,
+          "description": "Homeserver url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{matrix.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "SERVER_NAME": {
+          "isOptional": false,
+          "description": "Server name resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{synapse.SYNAPSE_SERVER_NAME}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/matrix/Element.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:80": {
+            "port": 80
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/matrix/Element.Dockerfile"
+      }
+    }
+  }
+}

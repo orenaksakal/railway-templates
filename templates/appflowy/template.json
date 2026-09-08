@@ -1,0 +1,558 @@
+{
+  "services": {
+    "52701593-03c9-5caf-beab-f21665e71856": {
+      "name": "postgres",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "postgres"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "postgres"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "APP_USER": {
+          "isOptional": false,
+          "description": "Dedicated application database role created during first initialization.",
+          "defaultValue": "appflowy"
+        },
+        "APP_DB": {
+          "isOptional": false,
+          "description": "Application database created during first initialization of an empty PostgreSQL volume.",
+          "defaultValue": "appflowy"
+        },
+        "APP_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated password for the application database role. Preserve it with your backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "ENABLE_VECTOR": {
+          "isOptional": false,
+          "description": "Initialize the pgvector extension for applications that require vector storage. Keep the supplied value.",
+          "defaultValue": "true"
+        },
+        "ALLOW_APP_DATABASE_CREATION": {
+          "isOptional": false,
+          "description": "Grant database and role creation privileges required by ToolJet. Keep false for other applications.",
+          "defaultValue": "false"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://appflowy:${{postgres.APP_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/appflowy"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/appflowy/Postgres.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/appflowy/Postgres.Dockerfile"
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "5628ae19-00fb-5300-97e3-ae587db338cc": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "2897e023-991d-5cfb-8823-91228c6e0c2a": {
+      "name": "storage",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "MINIO_ROOT_USER": {
+          "isOptional": false,
+          "description": "Generated minio root user. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(20, \"abcdef0123456789\")}}"
+        },
+        "MINIO_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated minio root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "S3_BUCKET": {
+          "isOptional": false,
+          "description": "Private bucket created on first startup; changing this does not move existing objects.",
+          "defaultValue": "appflowy"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/draft-storage/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/minio/health/live",
+        "healthcheckTimeout": 600,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:9000": {
+            "port": 9000
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/draft-storage/Dockerfile"
+      },
+      "volumeMounts": {
+        "d2311c1b-a75d-5436-8bbb-3a030b29a229": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "b09559e7-01cc-5de9-85ba-363639711775": {
+      "name": "gotrue",
+      "source": {
+        "image": "appflowyinc/gotrue:latest@sha256:647abb4fc8925fc5fee8e2f4dc307559a55751a7b72f3257592959c93c952f5a"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "9999"
+        },
+        "GOTRUE_ADMIN_EMAIL": {
+          "isOptional": false,
+          "description": "Required service-administrator email. This is not the end-user AppFlowy account; sign up separately in the app."
+        },
+        "GOTRUE_ADMIN_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated gotrue admin password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "GOTRUE_SITE_URL": {
+          "isOptional": false,
+          "description": "Gotrue site url for gotrue. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "appflowy-flutter://"
+        },
+        "GOTRUE_URI_ALLOW_LIST": {
+          "isOptional": false,
+          "description": "Gotrue uri allow list resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{appflowy.RAILWAY_PUBLIC_DOMAIN}}/**,appflowy-flutter://**"
+        },
+        "GOTRUE_JWT_SECRET": {
+          "isOptional": false,
+          "description": "Generated gotrue jwt secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "GOTRUE_JWT_EXP": {
+          "isOptional": false,
+          "description": "Gotrue jwt exp for gotrue. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "7200"
+        },
+        "GOTRUE_JWT_ADMIN_GROUP_NAME": {
+          "isOptional": false,
+          "description": "Gotrue jwt admin group name for gotrue. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "supabase_admin"
+        },
+        "GOTRUE_DB_DRIVER": {
+          "isOptional": false,
+          "description": "Gotrue db driver for gotrue. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "postgres"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "${{postgres.DATABASE_URL}}?search_path=auth"
+        },
+        "API_EXTERNAL_URL": {
+          "isOptional": false,
+          "description": "Api external url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{appflowy.RAILWAY_PUBLIC_DOMAIN}}/gotrue"
+        },
+        "GOTRUE_DISABLE_SIGNUP": {
+          "isOptional": false,
+          "description": "Gotrue disable signup for gotrue. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "GOTRUE_MAILER_AUTOCONFIRM": {
+          "isOptional": false,
+          "description": "No SMTP is configured. Email confirmation is bypassed until you configure delivery.",
+          "defaultValue": "true"
+        },
+        "GOTRUE_MAILER_URLPATHS_CONFIRMATION": {
+          "isOptional": false,
+          "description": "Gotrue mailer urlpaths confirmation for gotrue. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/gotrue/verify"
+        },
+        "GOTRUE_MAILER_URLPATHS_RECOVERY": {
+          "isOptional": false,
+          "description": "Gotrue mailer urlpaths recovery for gotrue. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/gotrue/verify"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "add93d4e-a548-5eec-98e0-ca0569f72871": {
+      "name": "cloud",
+      "source": {
+        "image": "appflowyinc/appflowy_cloud:0.9.64@sha256:d6ba6df1d8dc43336f24e6bb24d58e9077be29477214e45ff9cafcbec2aec1b5"
+      },
+      "variables": {
+        "APPFLOWY_S3_USE_MINIO": {
+          "isOptional": false,
+          "description": "Appflowy s3 use minio for cloud. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "APPFLOWY_S3_CREATE_BUCKET": {
+          "isOptional": false,
+          "description": "Appflowy s3 create bucket for cloud. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "APPFLOWY_S3_MINIO_URL": {
+          "isOptional": false,
+          "description": "Appflowy s3 minio url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "APPFLOWY_S3_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Appflowy s3 access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "APPFLOWY_S3_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Appflowy s3 secret key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "APPFLOWY_S3_BUCKET": {
+          "isOptional": false,
+          "description": "Appflowy s3 bucket for cloud. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "appflowy"
+        },
+        "APPFLOWY_S3_REGION": {
+          "isOptional": false,
+          "description": "Appflowy s3 region for cloud. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "us-east-1"
+        },
+        "RUST_LOG": {
+          "isOptional": false,
+          "description": "Rust log for cloud. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "info"
+        },
+        "APPFLOWY_ENVIRONMENT": {
+          "isOptional": false,
+          "description": "Appflowy environment for cloud. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "production"
+        },
+        "APPFLOWY_DATABASE_URL": {
+          "isOptional": false,
+          "description": "Appflowy database url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.DATABASE_URL}}"
+        },
+        "APPFLOWY_REDIS_URI": {
+          "isOptional": false,
+          "description": "Appflowy redis uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}"
+        },
+        "APPFLOWY_GOTRUE_JWT_SECRET": {
+          "isOptional": false,
+          "description": "Appflowy gotrue jwt secret resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{gotrue.GOTRUE_JWT_SECRET}}"
+        },
+        "APPFLOWY_GOTRUE_JWT_EXP": {
+          "isOptional": false,
+          "description": "Appflowy gotrue jwt exp for cloud. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "7200"
+        },
+        "APPFLOWY_GOTRUE_BASE_URL": {
+          "isOptional": false,
+          "description": "Appflowy gotrue base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{gotrue.RAILWAY_PRIVATE_DOMAIN}}:9999"
+        },
+        "APPFLOWY_S3_PRESIGNED_URL_ENDPOINT": {
+          "isOptional": false,
+          "description": "Appflowy s3 presigned url endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{storage.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "APPFLOWY_ACCESS_CONTROL": {
+          "isOptional": false,
+          "description": "Appflowy access control for cloud. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "APPFLOWY_DATABASE_MAX_CONNECTIONS": {
+          "isOptional": false,
+          "description": "Appflowy database max connections for cloud. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "20"
+        },
+        "APPFLOWY_WEB_URL": {
+          "isOptional": false,
+          "description": "Appflowy web url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{appflowy.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "APPFLOWY_INDEXER_ENABLED": {
+          "isOptional": false,
+          "description": "Optional AI indexer is not included in this draft.",
+          "defaultValue": "false"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "29858153-5dc0-5a8f-b9be-efdc6ce765a0": {
+      "name": "worker",
+      "source": {
+        "image": "appflowyinc/appflowy_worker:0.9.64@sha256:1b42e517d7f52c8d2a2393fb4ba34f0fd897842bf184d77ea564bd37b2098fd1"
+      },
+      "variables": {
+        "APPFLOWY_S3_USE_MINIO": {
+          "isOptional": false,
+          "description": "Appflowy s3 use minio for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "APPFLOWY_S3_CREATE_BUCKET": {
+          "isOptional": false,
+          "description": "Appflowy s3 create bucket for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "APPFLOWY_S3_MINIO_URL": {
+          "isOptional": false,
+          "description": "Appflowy s3 minio url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "APPFLOWY_S3_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Appflowy s3 access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "APPFLOWY_S3_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Appflowy s3 secret key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "APPFLOWY_S3_BUCKET": {
+          "isOptional": false,
+          "description": "Appflowy s3 bucket for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "appflowy"
+        },
+        "APPFLOWY_S3_REGION": {
+          "isOptional": false,
+          "description": "Appflowy s3 region for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "us-east-1"
+        },
+        "RUST_LOG": {
+          "isOptional": false,
+          "description": "Rust log for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "info"
+        },
+        "APPFLOWY_ENVIRONMENT": {
+          "isOptional": false,
+          "description": "Appflowy environment for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "production"
+        },
+        "APPFLOWY_WORKER_ENVIRONMENT": {
+          "isOptional": false,
+          "description": "Appflowy worker environment for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "production"
+        },
+        "APPFLOWY_WORKER_REDIS_URL": {
+          "isOptional": false,
+          "description": "Appflowy worker redis url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}"
+        },
+        "APPFLOWY_WORKER_DATABASE_URL": {
+          "isOptional": false,
+          "description": "Appflowy worker database url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.DATABASE_URL}}"
+        },
+        "APPFLOWY_WORKER_DATABASE_NAME": {
+          "isOptional": false,
+          "description": "Appflowy worker database name for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "appflowy"
+        },
+        "APPFLOWY_WORKER_IMPORT_TICK_INTERVAL": {
+          "isOptional": false,
+          "description": "Appflowy worker import tick interval for worker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "30"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "9da8f2f0-5d77-5b04-a5e1-61c7821de78f": {
+      "name": "admin",
+      "source": {
+        "image": "appflowyinc/admin_frontend:0.9.64@sha256:7ce31fd818121e3b625be0464028af6a5e2a04b71455922fc3fe2c09f6280d14"
+      },
+      "variables": {
+        "ADMIN_FRONTEND_REDIS_URL": {
+          "isOptional": false,
+          "description": "Admin frontend redis url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}"
+        },
+        "ADMIN_FRONTEND_GOTRUE_URL": {
+          "isOptional": false,
+          "description": "Admin frontend gotrue url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{gotrue.RAILWAY_PRIVATE_DOMAIN}}:9999"
+        },
+        "ADMIN_FRONTEND_APPFLOWY_CLOUD_URL": {
+          "isOptional": false,
+          "description": "Admin frontend appflowy cloud url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{cloud.RAILWAY_PRIVATE_DOMAIN}}:8000"
+        },
+        "ADMIN_FRONTEND_PATH_PREFIX": {
+          "isOptional": false,
+          "description": "Admin frontend path prefix for admin. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/console"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "07569f86-040f-5d5a-b177-228806da7bf3": {
+      "name": "web",
+      "source": {
+        "image": "appflowyinc/appflowy_web:latest@sha256:dedc8ded52c89500bbc7db48fa80e04687b97e1e2623d687ecaa47b3dae895b4"
+      },
+      "variables": {},
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "b4b440ec-d3b6-5d80-ae78-6704e367fb99": {
+      "name": "appflowy",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "API_HOST": {
+          "isOptional": false,
+          "description": "Api host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{cloud.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "AUTH_HOST": {
+          "isOptional": false,
+          "description": "Auth host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{gotrue.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "WEB_HOST": {
+          "isOptional": false,
+          "description": "Web host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{web.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "ADMIN_HOST": {
+          "isOptional": false,
+          "description": "Admin host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{admin.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/appflowy/Gateway.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/appflowy/Gateway.Dockerfile"
+      }
+    }
+  }
+}
