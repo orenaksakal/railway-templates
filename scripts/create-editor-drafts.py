@@ -6,7 +6,6 @@ Receipts and read-back evidence stay in ignored .local/. No publish operation ex
 import argparse,hashlib,json,os,subprocess,urllib.request,urllib.error
 from pathlib import Path
 from catalog_round3 import ROOT,CATALOG
-WORKSPACE='09c4d797-8af5-493b-bf8a-558cadc39cfc'
 READ='query($id:String!){template(id:$id){id code name status category description image readme serializedConfig}}'
 def api(query,variables):
     user=json.loads((Path.home()/'.railway/config.json').read_text())['user']
@@ -17,7 +16,7 @@ def api(query,variables):
     if result.get('errors'):raise RuntimeError('; '.join(e.get('message','GraphQL error') for e in result['errors']))
     return result['data']
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--verify-only',action='store_true');parser.add_argument('--template',choices=CATALOG);args=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--workspace',required=True);parser.add_argument('--verify-only',action='store_true');parser.add_argument('--template',choices=CATALOG);args=parser.parse_args();workspace=args.workspace
     os.umask(0o077)
     # This read also refreshes an expired CLI access token through the normal login flow.
     subprocess.run(['railway','api','query { __typename }','--compact'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,check=True)
@@ -29,10 +28,10 @@ def main():
         config=json.loads((ROOT/'templates'/name/'template.json').read_text());meta={**metadata[name],'readme':(ROOT/'templates'/name/'README.md').read_text()}
         if name not in receipts:
             if args.verify_only:raise RuntimeError(name+': draft does not exist')
-            created=api('mutation($input:TemplateCreateV2Input!){templateCreateV2(input:$input){id code status}}',{'input':{'metadata':meta,'serializedConfig':config,'workspaceId':WORKSPACE}})['templateCreateV2']
-            receipts[name]={'templateId':created['id'],'workspaceId':WORKSPACE,'verified':False};save()
+            created=api('mutation($input:TemplateCreateV2Input!){templateCreateV2(input:$input){id code status}}',{'input':{'metadata':meta,'serializedConfig':config,'workspaceId':workspace}})['templateCreateV2']
+            receipts[name]={'templateId':created['id'],'workspaceId':workspace,'verified':False};save()
         receipt=receipts[name]
-        if receipt['workspaceId']!=WORKSPACE:raise RuntimeError('Workspace mismatch')
+        if receipt['workspaceId']!=workspace:raise RuntimeError('Workspace mismatch')
         live=api(READ,{'id':receipt['templateId']})['template']
         if live['status']!='UNPUBLISHED':raise RuntimeError(name+': refusing to modify a published template')
         actual=live['serializedConfig'];actual=json.loads(actual) if isinstance(actual,str) else actual

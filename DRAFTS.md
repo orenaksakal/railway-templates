@@ -4,6 +4,23 @@ These are reviewable draft configurations, not deploy-ready or production-certif
 
 The batch contains 48 services across Appwrite 2 Core, AppFlowy Cloud, DBOS Durable Webhooks, SpiceDB with PostgreSQL, Frappe CRM, Frappe Helpdesk, Matrix Synapse with MAS, Immich with Machine Learning, Novu Community Edition, and RAGFlow CPU. Each has a structured overview, icon, category, variable descriptions, generated secrets, source pins, networking, and a persistence layout.
 
+## Saved Railway drafts
+
+All ten were read back with status `UNPUBLISHED`; complete configuration and listing metadata matched local source exactly. No source projects, deployments, or publication were created.
+
+| Draft | Railway editor |
+| --- | --- |
+| DBOS Durable Webhooks | [Open draft](https://railway.com/workspace/templates/a2eee399-4860-4bf4-bdce-a851c50cfa8a) |
+| SpiceDB with PostgreSQL | [Open draft](https://railway.com/workspace/templates/31ae0705-f6a2-4d6d-8041-75c7d71d1936) |
+| Frappe CRM | [Open draft](https://railway.com/workspace/templates/336656df-5fad-436b-b5c7-c330348b6a78) |
+| Frappe Helpdesk | [Open draft](https://railway.com/workspace/templates/dfa5186a-16c2-46eb-bc98-94167f09e737) |
+| Immich with Machine Learning | [Open draft](https://railway.com/workspace/templates/7e9083c3-7059-4b9e-a941-d9d3df70bc87) |
+| Matrix Synapse with MAS | [Open draft](https://railway.com/workspace/templates/60df14e4-960e-4f48-9030-04f1adbfe214) |
+| Novu Community Edition | [Open draft](https://railway.com/workspace/templates/5b26c62d-104c-4127-a571-af630e286afb) |
+| AppFlowy Cloud | [Open draft](https://railway.com/workspace/templates/0748d7a5-cb4a-4c19-b082-ec3d251c2ec4) |
+| Appwrite 2 Core | [Open draft](https://railway.com/workspace/templates/eedeedb8-cc79-4b7a-9cab-19adf83ab1b9) |
+| RAGFlow CPU | [Open draft](https://railway.com/workspace/templates/d03cbd2c-5d2a-4594-b87d-835d4d9c85f6) |
+
 ## Readiness and remaining gates
 
 | Draft | Evidence completed | Remaining release gate |
@@ -26,6 +43,7 @@ Optional Docker-socket executors, GPU services, and TURN/UDP voice infrastructur
 ```sh
 python3 scripts/catalog_round3.py
 python3 scripts/validate-round3.py
+python3 scripts/create-editor-drafts.py --workspace YOUR_WORKSPACE_ID --verify-only
 python3 scripts/validate.py
 python3 -m unittest discover -s tests -p 'test_*.py'
 node --test tests/*.test.mjs
