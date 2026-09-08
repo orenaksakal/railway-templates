@@ -80,7 +80,7 @@ def appflowy():
     api=svc('cloud',image='appflowyinc/appflowy_cloud:0.9.64',env={**s3,'RUST_LOG':'info','APPFLOWY_ENVIRONMENT':'production','APPFLOWY_DATABASE_URL':ref('postgres','DATABASE_URL'),'APPFLOWY_REDIS_URI':ref('redis','REDIS_URL'),'APPFLOWY_GOTRUE_JWT_SECRET':ref('gotrue','GOTRUE_JWT_SECRET'),'APPFLOWY_GOTRUE_JWT_EXP':7200,'APPFLOWY_GOTRUE_BASE_URL':private('gotrue',9999),'APPFLOWY_S3_PRESIGNED_URL_ENDPOINT':public('storage'),'APPFLOWY_ACCESS_CONTROL':'true','APPFLOWY_DATABASE_MAX_CONNECTIONS':20,'APPFLOWY_WEB_URL':public('appflowy'),'APPFLOWY_INDEXER_ENABLED':('false','Optional AI indexer is not included in this draft.')})
     worker=svc('worker',image='appflowyinc/appflowy_worker:0.9.64',env={**s3,'RUST_LOG':'info','APPFLOWY_ENVIRONMENT':'production','APPFLOWY_WORKER_ENVIRONMENT':'production','APPFLOWY_WORKER_REDIS_URL':ref('redis','REDIS_URL'),'APPFLOWY_WORKER_DATABASE_URL':ref('postgres','DATABASE_URL'),'APPFLOWY_WORKER_DATABASE_NAME':'appflowy','APPFLOWY_WORKER_IMPORT_TICK_INTERVAL':30})
     admin=svc('admin',image='appflowyinc/admin_frontend:0.9.64',env={'ADMIN_FRONTEND_REDIS_URL':ref('redis','REDIS_URL'),'ADMIN_FRONTEND_GOTRUE_URL':private('gotrue',9999),'ADMIN_FRONTEND_APPFLOWY_CLOUD_URL':private('cloud',8000),'ADMIN_FRONTEND_PATH_PREFIX':'/console'})
-    web=svc('web',image='appflowyinc/appflowy_web:latest')
+    web=svc('web',image='appflowyinc/appflowy_web:latest',env={'APPFLOWY_BASE_URL':public('appflowy'),'PORT':80})
     gw=svc('appflowy',dockerfile='templates/appflowy/Gateway.Dockerfile',env={'PORT':8080,'API_HOST':ref('cloud','RAILWAY_PRIVATE_DOMAIN'),'AUTH_HOST':ref('gotrue','RAILWAY_PRIVATE_DOMAIN'),'WEB_HOST':ref('web','RAILWAY_PRIVATE_DOMAIN'),'ADMIN_HOST':ref('admin','RAILWAY_PRIVATE_DOMAIN')},port=8080,health='/healthz')
     return [db,redis(),storage('appflowy',exposed=True),auth,api,worker,admin,web,gw]
 def appwrite():
@@ -90,7 +90,7 @@ def appwrite():
     app=svc('core',dockerfile='templates/appwrite/Dockerfile',env=env,volume='/storage')
     console=svc('console',image='appwrite/new:1.1.16',env={'VITE_CONSOLE_PROFILE':'self-hosted','APPWRITE_ENDPOINT_SAME_ORIGIN':'true'})
     geo=svc('geo',image='appwrite/geo:0.3.1',env={'GEO_SECRET':ref('core','_APP_GEO_SECRET')})
-    realtime=svc('realtime',image='appwrite/appwrite:2.0.0',env={**{key:ref('core',key) for key in env},'_APP_POOL_ADAPTER':'swoole'},command='realtime')
+    realtime=svc('realtime',dockerfile='templates/appwrite/Realtime.Dockerfile',env={**{key:ref('core',key) for key in env},'_APP_POOL_ADAPTER':'swoole'},command='realtime')
     gw=svc('appwrite',dockerfile='templates/appwrite/Gateway.Dockerfile',env={'PORT':8080,'API_HOST':ref('core','RAILWAY_PRIVATE_DOMAIN'),'CONSOLE_HOST':ref('console','RAILWAY_PRIVATE_DOMAIN'),'REALTIME_HOST':ref('realtime','RAILWAY_PRIVATE_DOMAIN')},port=8080,health='/healthz')
     mongo=svc('mongodb',dockerfile='templates/appwrite/Mongo.Dockerfile',env={'MONGO_INITDB_ROOT_USERNAME':'appwrite','MONGO_INITDB_ROOT_PASSWORD':ref('postgres','POSTGRES_PASSWORD'),'MONGO_PRIVATE_HOST':ref('mongodb','RAILWAY_PRIVATE_DOMAIN')},volume='/data')
     return [db,mongo,redis(),app,realtime,console,geo,gw]

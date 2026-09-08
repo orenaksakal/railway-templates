@@ -343,7 +343,8 @@
     "32b1b226-34bb-533f-b295-48da5855a6b8": {
       "name": "realtime",
       "source": {
-        "image": "appwrite/appwrite:2.0.0@sha256:27ca3f70d06fb0f4751e93cba03c49f96562236986f9b688185ee1c0e1f7e9aa"
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
       },
       "variables": {
         "PORT": {
@@ -535,6 +536,11 @@
           "isOptional": false,
           "description": " app pool adapter for realtime. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
           "defaultValue": "swoole"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/appwrite/Realtime.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -544,6 +550,10 @@
       },
       "networking": {
         "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/appwrite/Realtime.Dockerfile"
       }
     },
     "0abda70e-4618-5d7b-9f3d-10bd218ecb57": {

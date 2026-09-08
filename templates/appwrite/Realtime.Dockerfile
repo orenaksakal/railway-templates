@@ -3,5 +3,4 @@ USER root
 RUN apk add --no-cache python3
 COPY templates/appwrite/patch-redis-auth.py /opt/railway/patch-redis-auth.py
 RUN python3 /opt/railway/patch-redis-auth.py && php -l /usr/src/code/app/init/registers.php
-COPY templates/appwrite/start.py /opt/railway/start.py
-ENTRYPOINT ["python3", "/opt/railway/start.py"]
+CMD ["realtime"]
