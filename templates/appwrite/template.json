@@ -271,6 +271,11 @@
           "description": " app redis pass resolved automatically from the linked service. Keep this reference when using the included topology.",
           "defaultValue": "${{redis.REDIS_PASSWORD}}"
         },
+        "_APP_STORAGE_LIMIT": {
+          "isOptional": false,
+          "description": "Maximum upload size in bytes; individual bucket limits must fit within this ceiling.",
+          "defaultValue": "30000000"
+        },
         "_APP_STORAGE_DEVICE": {
           "isOptional": false,
           "description": " app storage device for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
@@ -491,6 +496,11 @@
           "isOptional": false,
           "description": " app redis pass resolved automatically from the linked service. Keep this reference when using the included topology.",
           "defaultValue": "${{core._APP_REDIS_PASS}}"
+        },
+        "_APP_STORAGE_LIMIT": {
+          "isOptional": false,
+          "description": " app storage limit resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core._APP_STORAGE_LIMIT}}"
         },
         "_APP_STORAGE_DEVICE": {
           "isOptional": false,

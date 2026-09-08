@@ -1,8 +1,12 @@
 {
   "alpine:3.22": "alpine:3.22@sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
   "appflowyinc/admin_frontend:0.9.64": "appflowyinc/admin_frontend:0.9.64@sha256:7ce31fd818121e3b625be0464028af6a5e2a04b71455922fc3fe2c09f6280d14",
+  "appflowyinc/admin_frontend:latest": "appflowyinc/admin_frontend:latest@sha256:600f3b98197e41a34e504aaaa4db361cc864682f94b31090daeff5223e4c59e8",
+  "appflowyinc/appflowy_cloud:0.18.3": "appflowyinc/appflowy_cloud:0.18.3@sha256:de5e3e1eaaa7482c85cfce6adeb9e8e2a7f41b65c1e7301d5ce06d33b6c80b1e",
   "appflowyinc/appflowy_cloud:0.9.64": "appflowyinc/appflowy_cloud:0.9.64@sha256:d6ba6df1d8dc43336f24e6bb24d58e9077be29477214e45ff9cafcbec2aec1b5",
+  "appflowyinc/appflowy_web:0.17.1": "appflowyinc/appflowy_web:0.17.1@sha256:dedc8ded52c89500bbc7db48fa80e04687b97e1e2623d687ecaa47b3dae895b4",
   "appflowyinc/appflowy_web:latest": "appflowyinc/appflowy_web:latest@sha256:dedc8ded52c89500bbc7db48fa80e04687b97e1e2623d687ecaa47b3dae895b4",
+  "appflowyinc/appflowy_worker:0.18.3": "appflowyinc/appflowy_worker:0.18.3@sha256:68749ee2cac1e08173b1430376e09b99b30be74fb8dc5e7a576a90437702dc58",
   "appflowyinc/appflowy_worker:0.9.64": "appflowyinc/appflowy_worker:0.9.64@sha256:1b42e517d7f52c8d2a2393fb4ba34f0fd897842bf184d77ea564bd37b2098fd1",
   "appflowyinc/gotrue:latest": "appflowyinc/gotrue:latest@sha256:647abb4fc8925fc5fee8e2f4dc307559a55751a7b72f3257592959c93c952f5a",
   "appwrite/appwrite:2.0.0": "appwrite/appwrite:2.0.0@sha256:27ca3f70d06fb0f4751e93cba03c49f96562236986f9b688185ee1c0e1f7e9aa",

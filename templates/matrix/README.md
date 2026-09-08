@@ -1,12 +1,12 @@
 # Deploy and Host Matrix Synapse with MAS on Railway
 
-This draft combines Synapse 1.160.0, Matrix Authentication Service 1.24.0, Element Web 1.12.27, and separate PostgreSQL databases for the homeserver and authentication service. A routing gateway directs legacy login/logout/refresh endpoints to MAS and other Matrix endpoints to Synapse.
+This template combines Synapse 1.160.0, Matrix Authentication Service 1.24.0, Element Web 1.12.27, and separate PostgreSQL databases for the homeserver and authentication service. A routing gateway directs legacy login/logout/refresh endpoints to MAS and other Matrix endpoints to Synapse.
 
-> Unpublished draft. This template is prepared for review; it has not been deployed on Railway or certified for production. See the validation scope below.
+Release tested on Railway. See the validation scope below for verified workflows and remaining limitations.
 
 ## About Hosting Matrix Synapse with MAS
 
-The template defines 6 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently, so cold-start and migration behavior must be verified in a new test project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
+The template defines 6 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently; allow the homeserver to finish database startup before testing client routes. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
 
 ## Common Use Cases
 
@@ -45,11 +45,11 @@ Back up both PostgreSQL databases, the Synapse /data volume, and the MAS /data v
 
 ## Validation Scope
 
-Upstream delegated-auth configuration and Element runtime paths were checked. Image builds, account creation/login, encrypted two-client messaging, media, federation, and backup/restore remain unverified. Full Railway startup and product workflows remain release gates.
+Fresh Railway builds/startup, real password login through MAS, unauthenticated rejection, blocked public admin routes, private room/message creation, authenticated media upload/download and client discovery passed. App/database restart and volume-preserving redeploy passed after homeserver startup completed. Both databases were dumped/restored into separate databases on the test services; restored Synapse media/config/signing files and MAS configuration were compared byte-for-byte. Encrypted two-client messaging, Element OIDC browser login, federation, calls, load testing and complete separate-project disaster recovery are not verified.
 
 ## Why Deploy Matrix Synapse with MAS on Railway?
 
-Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This draft supplies a reviewable starting configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
+Railway keeps the services, networking, environment references, deployment logs, and volumes together in one project. This template supplies the tested service configuration. Railway resources and volume storage are billed separately from external email, model, and other service providers. No deployment cost or revenue estimate has been measured.
 
 ## Support and Upstream
 
