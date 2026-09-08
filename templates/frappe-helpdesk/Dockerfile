@@ -23,7 +23,8 @@ USER root
 COPY shared/frappe/start.py /opt/railway/start.py
 COPY shared/frappe/nginx.conf /opt/railway/nginx.conf
 COPY shared/frappe/entrypoint.sh /opt/railway/entrypoint.sh
-RUN chmod 755 /opt/railway/entrypoint.sh \
+RUN mkdir -p /logs && chown frappe:frappe /logs \
+    && chmod 755 /opt/railway/entrypoint.sh \
     && rm -rf /home/frappe/frappe-bench/sites \
     && ln -s /data /home/frappe/frappe-bench/sites
 EXPOSE 8080
