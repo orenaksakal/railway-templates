@@ -169,7 +169,8 @@
     "40d710e5-e356-52b1-a6b8-3d172089d37f": {
       "name": "etcd",
       "source": {
-        "image": "bitnamilegacy/etcd:3.5@sha256:1b9977cf4cce7546873e0ee50e684c38a38a4e7a27d22086fbd2b8a1b44a69d0"
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
       },
       "variables": {
         "ALLOW_NONE_AUTHENTICATION": {
@@ -201,6 +202,11 @@
           "isOptional": false,
           "description": "Etcd quota backend bytes for etcd. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
           "defaultValue": "4294967296"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/coze-studio/Etcd.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -210,6 +216,10 @@
       },
       "networking": {
         "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/coze-studio/Etcd.Dockerfile"
       },
       "volumeMounts": {
         "5eddb2af-a26e-5e39-a721-4401452ff2e4": {
