@@ -222,6 +222,11 @@
         "image": "ghcr.io/labring/fastgpt:v4.16.2@sha256:23f0f23e69d8c22f547bc8887d7089a87bbef10e67fa239489bcc241cff6ee1e"
       },
       "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
         "PG_URL": {
           "isOptional": false,
           "description": "Pg url resolved automatically from the linked service. Keep this reference when using the included topology.",
@@ -471,6 +476,11 @@
           "description": "Storage s3 force path style resolved automatically from the linked service. Keep this reference when using the included topology.",
           "defaultValue": "${{fastgpt.STORAGE_S3_FORCE_PATH_STYLE}}"
         },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
         "AUTH_TOKEN": {
           "isOptional": false,
           "description": "Auth token resolved automatically from the linked service. Keep this reference when using the included topology.",
@@ -491,6 +501,11 @@
         "image": "ghcr.io/labring/fastgpt-code-sandbox:v4.16.0@sha256:4ba4613d7fa6534e72a3adbfe3cd26f6617ba55df99e21d71a8fe7c6ebff36ab"
       },
       "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
         "SANDBOX_TOKEN": {
           "isOptional": false,
           "description": "Sandbox token resolved automatically from the linked service. Keep this reference when using the included topology.",
@@ -546,6 +561,11 @@
         "image": "ghcr.io/labring/aiproxy:v0.6.5@sha256:9b2d9148c8d8a09d2e70577b492b7b32aab5877fe48c2c78a6d300005f4d42bb"
       },
       "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
         "ADMIN_KEY": {
           "isOptional": false,
           "description": "Admin key resolved automatically from the linked service. Keep this reference when using the included topology.",

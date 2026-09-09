@@ -3,7 +3,8 @@
     "0ddda606-1cd1-514f-ab3e-ec3d95fbbe42": {
       "name": "opensearch",
       "source": {
-        "image": "langflowai/openrag-opensearch:0.7.1@sha256:e63b97ec056022048229befdb7a13a487c006efdca2dc9e2a5ff3884c945e2ba"
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
       },
       "variables": {
         "discovery.type": {
@@ -30,6 +31,11 @@
           "isOptional": false,
           "description": "Node.store.allow mmap for opensearch. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
           "defaultValue": "false"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/openrag/OpenSearch.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
@@ -39,6 +45,10 @@
       },
       "networking": {
         "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/openrag/OpenSearch.Dockerfile"
       },
       "volumeMounts": {
         "bdd2aaf7-a118-5d2e-8e80-490a13441ca0": {
@@ -362,6 +372,16 @@
         "image": "langflowai/openrag-frontend:0.7.1@sha256:b85c0f3b8c9c3cd4417ae422d36e61814c04e011942cf50596887844a220d740"
       },
       "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
+        "HOSTNAME": {
+          "isOptional": false,
+          "description": "Application bind address. Keep 0.0.0.0 for container networking.",
+          "defaultValue": "0.0.0.0"
+        },
         "OPENRAG_BACKEND_HOST": {
           "isOptional": false,
           "description": "Openrag backend host resolved automatically from the linked service. Keep this reference when using the included topology.",

@@ -462,6 +462,16 @@
         "image": "ghcr.io/memodb-io/acontext-ui:latest@sha256:b303d1f1894bbe356e4f70483c06a7bfe9c38bcf46a5fff5de2d8826e87ef436"
       },
       "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
+        "HOSTNAME": {
+          "isOptional": false,
+          "description": "Application bind address. Keep 0.0.0.0 for container networking.",
+          "defaultValue": "0.0.0.0"
+        },
         "NODE_ENV": {
           "isOptional": false,
           "description": "Node.js runtime mode. Keep production for hosted deployments.",
