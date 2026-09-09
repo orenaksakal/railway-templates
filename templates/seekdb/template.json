@@ -20,7 +20,7 @@
         "MEMORY_LIMIT": {
           "isOptional": false,
           "description": "Memory limit for seekdb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
-          "defaultValue": "2G"
+          "defaultValue": "4G"
         },
         "SEEKDB_DATABASE": {
           "isOptional": false,
@@ -45,7 +45,7 @@
         "LOG_DISK_SIZE": {
           "isOptional": false,
           "description": "Log disk size for seekdb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
-          "defaultValue": "1G"
+          "defaultValue": "2G"
         },
         "DATABASE_URL": {
           "isOptional": false,

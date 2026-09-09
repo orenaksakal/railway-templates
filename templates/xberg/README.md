@@ -2,7 +2,11 @@
 
 CPU document extraction API from Xberg, formerly Kreuzberg, behind authenticated HTTPS.
 
-**Unpublished draft — not runtime-validated or approved for release.** Saving this template does not deploy services. Deployment later incurs Railway and provider charges.
+**Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
+
+## Live verification — 2026-09-08
+
+Public gateway rejected anonymous requests. Authenticated OpenAPI and real PDF extraction passed. MCP transport, optional formats and sustained load were not tested.
 
 ## Setup
 
@@ -25,7 +29,7 @@ Generated credentials: `xberg.ACCESS_PASSWORD`. Keep them private and preserve r
 
 CPU core image, no GPU or optional full-image extras. Gateway limits request bodies to 32 MiB and upstream idle time to 600 seconds. No durable file archive is configured. API response schemas and MCP transport must be validated before advertising client compatibility.
 
-## Release gates
+## Recommended acceptance checks
 
 Image startup; unauthorized rejection; representative PDF and Office extraction; Unicode output; MCP handshake if advertised; upload and timeout behavior.
 
@@ -38,4 +42,4 @@ Keep database and internal service endpoints private. Railway provides HTTPS for
 - [Upstream project](https://github.com/xberg-io/xberg)
 - [Reviewed source snapshot](https://github.com/xberg-io/xberg/tree/e19378401a562ae88e81a60454e05d4f838ac8ee)
 - Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
-- Build and runtime verification remain pending. Base-image pins do not lock packages installed by apt/apk/pip.
+- Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.

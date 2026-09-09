@@ -2,7 +2,11 @@
 
 OpenRAG with OpenSearch, Langflow, CPU Docling and an authenticated frontend.
 
-**Unpublished draft — not runtime-validated or approved for release.** Saving this template does not deploy services. Deployment later incurs Railway and provider charges.
+**Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
+
+## Live verification — 2026-09-08
+
+All six services built and started. OpenSearch connection, Langflow authentication/key creation, global-variable initialization, backend health, public UI and gateway authentication passed. Model-backed ingestion/chat, optional connectors, flow-edit synchronization and restore were not tested.
 
 ## Setup
 
@@ -12,7 +16,7 @@ Enter OPENAI_API_KEY. OPENRAG_ENCRYPTION_KEY is generated for the upstream AES-2
 
 | Service | Source | Persistent volume | Public HTTP |
 |---|---|---|---|
-| opensearch | langflowai/openrag-opensearch:0.7.1 (digest pinned) | /usr/share/opensearch/data | Private only |
+| opensearch | repository adapter: templates/openrag/OpenSearch.Dockerfile | /usr/share/opensearch/data | Private only |
 | backend | repository adapter: templates/openrag/Dockerfile | /data | Private only |
 | langflow | repository adapter: templates/openrag/Langflow.Dockerfile | /app/langflow-data | 7860 |
 | frontend | langflowai/openrag-frontend:0.7.1 (digest pinned) | None | Private only |
@@ -23,13 +27,13 @@ Enter OPENAI_API_KEY. OPENRAG_ENCRYPTION_KEY is generated for the upstream AES-2
 
 `backend.OPENAI_API_KEY`
 
-Generated credentials: `backend.OPENRAG_ENCRYPTION_KEY`, `opensearch.OPENSEARCH_INITIAL_ADMIN_PASSWORD`, `backend.LANGFLOW_SUPERUSER_PASSWORD`, `backend.SESSION_SECRET`, `langflow.LANGFLOW_SECRET_KEY`, `openrag.ACCESS_PASSWORD`. Keep them private and preserve relevant encryption keys with backups. Every editor variable includes a description.
+Generated credentials: `opensearch.OPENSEARCH_INITIAL_ADMIN_PASSWORD`, `backend.LANGFLOW_SUPERUSER_PASSWORD`, `backend.SESSION_SECRET`, `backend.OPENRAG_ENCRYPTION_KEY`, `langflow.LANGFLOW_SECRET_KEY`, `openrag.ACCESS_PASSWORD`. Keep them private and preserve relevant encryption keys with backups. Every editor variable includes a description.
 
 ## Scope and limitations
 
 Six services. Backend directories are seeded into one volume; Langflow has its own database volume and image-provided flows. Railway volumes are not shared: verify API flow import and subsequent edits remain consistent across the two services. CPU Docling uses persistent model cache. No GPU, Azure emulator, OpenSearch dashboard or privileged Instana host agent is included. Some optional connectors need additional OAuth credentials. Upstream startup may run its own migrations; review these before upgrades.
 
-## Release gates
+## Recommended acceptance checks
 
 All image builds and permissions; OpenSearch bootstrap/JWKS; authentication; Langflow key creation and flow import; document ingestion and chat; Docling model download; encryption recovery; saved connections and flows after restart; backup and restore.
 
@@ -42,4 +46,4 @@ Keep database and internal service endpoints private. Railway provides HTTPS for
 - [Upstream project](https://github.com/langflow-ai/openrag)
 - [Reviewed source snapshot](https://github.com/langflow-ai/openrag/tree/1e228bb0ef7e45959f241a6f3163fb2182303785)
 - Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
-- Build and runtime verification remain pending. Base-image pins do not lock packages installed by apt/apk/pip.
+- Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.

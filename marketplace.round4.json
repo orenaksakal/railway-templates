@@ -25,7 +25,7 @@
   },
   "coze-studio": {
     "name": "Coze Studio",
-    "description": "Coze agent and workflow studio draft with MySQL, Redis, Elasticsearch, Milvus, NSQ and object storage.",
+    "description": "Coze agent and workflow studio with MySQL, Redis, Elasticsearch, Milvus, NSQ and object storage.",
     "category": "AI/ML",
     "image": "https://github.com/coze-dev.png"
   },

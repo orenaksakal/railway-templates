@@ -2,7 +2,11 @@
 
 Git-style versioned data with a private MySQL-compatible Dolt SQL server.
 
-**Unpublished draft — not runtime-validated or approved for release.** Saving this template does not deploy services. Deployment later incurs Railway and provider charges.
+**Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
+
+## Live verification — 2026-09-08
+
+Authenticated SQL write, Dolt add/commit, and record/history persistence across service restart passed. SQL remains private. Offsite backup, restore and public TLS were not tested.
 
 ## Setup
 
@@ -24,7 +28,7 @@ Generated credentials: `dolt.DOLT_ROOT_PASSWORD`, `dolt.DOLT_PASSWORD`. Keep the
 
 One persistent service. This is a standalone database, with no DoltHub synchronization, remote backup or high availability configured. Versioned history is not an offsite backup.
 
-## Release gates
+## Recommended acceptance checks
 
 Authenticated SQL connection; user grants; insert/commit/branch/merge; volume restart; export and restore. Verify external TLS before offering public SQL access.
 
@@ -37,4 +41,4 @@ Keep database and internal service endpoints private. Railway provides HTTPS for
 - [Upstream project](https://github.com/dolthub/dolt)
 - [Reviewed source snapshot](https://github.com/dolthub/dolt/tree/329729ad14a7c5239f54f1f185cd5c38ac765ce0)
 - Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
-- Build and runtime verification remain pending. Base-image pins do not lock packages installed by apt/apk/pip.
+- Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.

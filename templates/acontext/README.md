@@ -2,11 +2,15 @@
 
 Acontext API, core and UI with PostgreSQL, Redis, RabbitMQ and S3-compatible asset storage.
 
-**Unpublished draft — not runtime-validated or approved for release.** Saving this template does not deploy services. Deployment later incurs Railway and provider charges.
+**Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
+
+## Live verification — 2026-09-08
+
+All nine services started. Core database/queue initialization, API health, authenticated session create/list, public UI and gateway authentication passed. Provider-backed processing, external Cloudflare sandbox execution, full UI administration, signed assets and restore were not tested.
 
 ## Setup
 
-Enter core.LLM_API_KEY and core.CLOUDFLARE_WORKER_URL for an existing Acontext sandbox Worker. Worker deployment is a separate prerequisite. Open acontext with the gateway access credentials. API clients use api.ROOT_API_BEARER_TOKEN; never put this root token into browser code.
+Enter core.LLM_API_KEY and core.CLOUDFLARE_WORKER_URL for an existing Acontext sandbox Worker. Worker deployment is a separate prerequisite. Open acontext with the gateway access credentials. Create/select a project in the dashboard and use its project API key for API clients. ROOT_API_BEARER_TOKEN is an internal administrative credential; never put it into browser code.
 
 ### Deployment Dependencies
 
@@ -32,7 +36,7 @@ Generated credentials: `postgres.POSTGRES_PASSWORD`, `redis.REDIS_PASSWORD`, `ra
 
 Nine services. MinIO replaces upstream SeaweedFS for S3-compatible storage; bucket initialization is included. Public S3 endpoint supports signed asset URLs while the core uses the private endpoint. Jaeger is private, memory-only and capped at 10,000 traces; traces are intentionally ephemeral. Core config is an empty mapping so environment variables supply credentials. Sandbox execution cannot work until the external Worker is configured. Validate current UI/API root-token and pepper handling before release.
 
-## Release gates
+## Recommended acceptance checks
 
 Clean image builds; DB migrations and vector extension; API auth; context/session lifecycle; worker queue processing; S3 upload and signed download; Cloudflare sandbox execution; UI login; private trace access; persistence and restore.
 
@@ -45,4 +49,4 @@ Keep database and internal service endpoints private. Railway provides HTTPS for
 - [Upstream project](https://github.com/memodb-io/Acontext)
 - [Reviewed source snapshot](https://github.com/memodb-io/Acontext/tree/259d73bfdebeed35ec2d4211ddc060a2d4126bc6)
 - Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
-- Build and runtime verification remain pending. Base-image pins do not lock packages installed by apt/apk/pip.
+- Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.

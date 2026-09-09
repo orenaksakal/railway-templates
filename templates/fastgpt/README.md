@@ -2,7 +2,11 @@
 
 FastGPT chat, knowledge bases and workflows with MongoDB, pgvector, Redis and S3 storage.
 
-**Unpublished draft — not runtime-validated or approved for release.** Saving this template does not deploy services. Deployment later incurs Railway and provider charges.
+**Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
+
+## Live verification — 2026-09-08
+
+All nine services started. MongoDB replica became primary. Public web route and root password login passed. Model-backed chat, RAG quality, restore and external sandbox execution were not tested; the Docker-socket agent sandbox is excluded.
 
 ## Setup
 
@@ -32,7 +36,7 @@ Generated credentials: `vector.POSTGRES_PASSWORD`, `mongo.MONGO_INITDB_ROOT_PASS
 
 Nine services. Full OpenSandbox agent execution, agent previews and Docker volume management are excluded: those upstream services require a Docker socket. The separate workflow code sandbox is included. Confirm the current UI handles unavailable agent features clearly. Both S3 buckets start private; confirm signed/proxied downloads and intended public assets.
 
-## Release gates
+## Recommended acceptance checks
 
 Build and first boot; root login; model-provider configuration; document upload and retrieval; workflow execution; authenticated replica recovery; object downloads; restart and restore. Verify MongoDB 5 lifecycle/support before release.
 
@@ -45,4 +49,4 @@ Keep database and internal service endpoints private. Railway provides HTTPS for
 - [Upstream project](https://github.com/labring/FastGPT)
 - [Reviewed source snapshot](https://github.com/labring/FastGPT/tree/0058e223edfcb1035b437cadb9370462b562f685)
 - Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
-- Build and runtime verification remain pending. Base-image pins do not lock packages installed by apt/apk/pip.
+- Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.

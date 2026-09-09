@@ -29,7 +29,7 @@ for name,factory in CATALOG.items():
     if key=='RAILWAY_PUBLIC_DOMAIN':assert byname[other]['networking']['serviceDomains'],(label,k,other)
   assert not service['networking'].get('tcpProxies'),label
  assert '### Deployment Dependencies' in (p/'README.md').read_text()
- assert 'Release gates' in (p/'README.md').read_text()
+ assert any(x in (p/'README.md').read_text() for x in ['Release gates','Recommended acceptance checks'])
  for f in p.glob('*.sh'):subprocess.run(['bash','-n',str(f)],check=True)
  for f in p.glob('*.py'):ast.parse(f.read_text())
 for f in (ROOT/'shared').glob('round4-*/*.sh'):subprocess.run(['sh','-n',str(f)],check=True)

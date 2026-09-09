@@ -1,8 +1,12 @@
 # Coze Studio
 
-Coze agent and workflow studio draft with MySQL, Redis, Elasticsearch, Milvus, NSQ and object storage.
+Coze agent and workflow studio with MySQL, Redis, Elasticsearch, Milvus, NSQ and object storage.
 
-**Unpublished draft — not runtime-validated or approved for release.** Saving this template does not deploy services. Deployment later incurs Railway and provider charges.
+**Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
+
+## Live verification — 2026-09-08
+
+All eleven services built and started after runtime fixes. etcd committed a health probe. Elasticsearch smartcn/index initialization, Milvus recovery, backend HTTP startup, and gateway authentication passed. Model inference, workflows, OAuth, full schema parity, restore and signed-file behavior were not tested. The documented operator setup remains required.
 
 ## Setup
 
@@ -16,7 +20,7 @@ Enter the required model ID, display name and API key; confirm the embedding end
 | redis | redis:7.4 (digest pinned) | /data | Private only |
 | elasticsearch | repository adapter: templates/coze-studio/Elasticsearch.Dockerfile | /bitnami/elasticsearch/data | Private only |
 | storage | repository adapter: templates/coze-studio/Storage.Dockerfile | /data | Private only |
-| etcd | bitnamilegacy/etcd:3.5 (digest pinned) | /bitnami/etcd | Private only |
+| etcd | repository adapter: templates/coze-studio/Etcd.Dockerfile | /bitnami/etcd | Private only |
 | milvus | milvusdb/milvus:v2.5.10 (digest pinned) | /var/lib/milvus | Private only |
 | nsqlookupd | nsqio/nsq:v1.2.1 (digest pinned) | None | Private only |
 | nsqd | nsqio/nsq:v1.2.1 (digest pinned) | /data | Private only |
@@ -34,7 +38,7 @@ Generated credentials: `mysql.MYSQL_ROOT_PASSWORD`, `mysql.MYSQL_PASSWORD`, `red
 
 Eleven services; this is a substantial paid stack once deployed. MySQL contains the upstream initial schema; the upstream HCL delta is an explicit operator prerequisite. Elasticsearch smartcn and index templates are included; index initialization is manual. Elasticsearch, etcd, Milvus and NSQ have no application authentication in this draft and must remain private in a dedicated project. Coze storage URL rewriting, OAuth, code nodes and model integrations are unverified. No email or external plugin credentials are supplied.
 
-## Release gates
+## Recommended acceptance checks
 
 All image builds; MySQL schema review/apply; Elasticsearch index setup; private IPv4/IPv6 connectivity; account creation; model chat; workflow run; knowledge ingestion; file signatures and downloads; NSQ delivery; volume permissions; backup and restore. Confirm legacy Bitnami images are supportable before publication.
 
@@ -47,4 +51,4 @@ Keep database and internal service endpoints private. Railway provides HTTPS for
 - [Upstream project](https://github.com/coze-dev/coze-studio)
 - [Reviewed source snapshot](https://github.com/coze-dev/coze-studio/tree/fefb05ff27be1da939612fbf9faf5db62583b8ae)
 - Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
-- Build and runtime verification remain pending. Base-image pins do not lock packages installed by apt/apk/pip.
+- Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.
