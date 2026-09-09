@@ -8,7 +8,7 @@
   "dolt": {
     "name": "Dolt SQL Server",
     "description": "Git-style versioned data with a private MySQL-compatible Dolt SQL server.",
-    "category": "Databases",
+    "category": "Storage",
     "image": "https://github.com/dolthub.png"
   },
   "xberg": {
@@ -56,7 +56,7 @@
   "seekdb": {
     "name": "OceanBase seekdb",
     "description": "Hybrid search database with MySQL-compatible SQL, persistent data and a password-protected web console.",
-    "category": "Databases",
+    "category": "Storage",
     "image": "https://github.com/oceanbase.png"
   }
 }
