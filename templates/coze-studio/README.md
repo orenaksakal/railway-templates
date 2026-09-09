@@ -1,6 +1,6 @@
 # Coze Studio
 
-Coze agent and workflow studio with MySQL, Redis, Elasticsearch, Milvus, NSQ and object storage.
+Agent and workflow studio with SQL, vector search and object storage.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
 

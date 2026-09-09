@@ -34,3 +34,7 @@ for name,factory in CATALOG.items():
  for f in p.glob('*.py'):ast.parse(f.read_text())
 for f in (ROOT/'shared').glob('round4-*/*.sh'):subprocess.run(['sh','-n',str(f)],check=True)
 print(f'PASS: {len(CATALOG)} drafts, {count} services; pins, references, sources, descriptions, volumes and script syntax')
+
+for metadata in json.loads((ROOT/"marketplace.round4.json").read_text()).values():
+    assert len(metadata["description"]) <= 75
+    assert metadata["category"] in {"AI/ML","Analytics","Authentication","Automation","Blogs","Bots","CMS","Observability","Other","Starters","Storage","Queues"}

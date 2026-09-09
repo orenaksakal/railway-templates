@@ -1,6 +1,6 @@
 # BettaFish Research Reports
 
-Multi-agent public-opinion research and report generation with PostgreSQL and persistent output files.
+Multi-agent research and reports with PostgreSQL and persistent files.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
 

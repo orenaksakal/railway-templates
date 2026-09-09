@@ -1,6 +1,6 @@
 # Dolt SQL Server
 
-Git-style versioned data with a private MySQL-compatible Dolt SQL server.
+Versioned MySQL-compatible SQL with persistent storage.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
 

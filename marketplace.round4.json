@@ -1,61 +1,61 @@
 {
   "fastgpt": {
     "name": "FastGPT Core + RAG",
-    "description": "FastGPT chat, knowledge bases and workflows with MongoDB, pgvector, Redis and S3 storage.",
+    "description": "FastGPT chat and RAG with MongoDB, pgvector, Redis and object storage.",
     "category": "AI/ML",
     "image": "https://github.com/labring.png"
   },
   "dolt": {
     "name": "Dolt SQL Server",
-    "description": "Git-style versioned data with a private MySQL-compatible Dolt SQL server.",
+    "description": "Versioned MySQL-compatible SQL with persistent storage.",
     "category": "Storage",
     "image": "https://github.com/dolthub.png"
   },
   "xberg": {
     "name": "Xberg / Kreuzberg Document API",
-    "description": "CPU document extraction API from Xberg, formerly Kreuzberg, behind authenticated HTTPS.",
+    "description": "CPU document extraction API with authenticated HTTPS access.",
     "category": "AI/ML",
     "image": "https://github.com/xberg-io.png"
   },
   "agentscope": {
     "name": "AgentScope Service API",
-    "description": "AgentScope API service with Redis state, persistent workspaces and authenticated access.",
+    "description": "AgentScope API with Redis state and persistent agent workspaces.",
     "category": "AI/ML",
     "image": "https://github.com/agentscope-ai.png"
   },
   "coze-studio": {
     "name": "Coze Studio",
-    "description": "Coze agent and workflow studio with MySQL, Redis, Elasticsearch, Milvus, NSQ and object storage.",
+    "description": "Agent and workflow studio with SQL, vector search and object storage.",
     "category": "AI/ML",
     "image": "https://github.com/coze-dev.png"
   },
   "bettafish": {
     "name": "BettaFish Research Reports",
-    "description": "Multi-agent public-opinion research and report generation with PostgreSQL and persistent output files.",
+    "description": "Multi-agent research and reports with PostgreSQL and persistent files.",
     "category": "AI/ML",
     "image": "https://github.com/666ghj.png"
   },
   "openrag": {
     "name": "OpenRAG CPU Stack",
-    "description": "OpenRAG with OpenSearch, Langflow, CPU Docling and an authenticated frontend.",
+    "description": "RAG workspace with OpenSearch, Langflow and CPU document processing.",
     "category": "AI/ML",
     "image": "https://github.com/langflow-ai.png"
   },
   "marker": {
     "name": "Marker PDF to Markdown API",
-    "description": "Authenticated, upload-only CPU Marker API for extracting Markdown from digital PDFs.",
+    "description": "Authenticated CPU API for converting digital PDFs to Markdown.",
     "category": "AI/ML",
     "image": "https://github.com/datalab-to.png"
   },
   "acontext": {
     "name": "Acontext Agent Context Platform",
-    "description": "Acontext API, core and UI with PostgreSQL, Redis, RabbitMQ and S3-compatible asset storage.",
+    "description": "Agent context management with sessions, queues and object storage.",
     "category": "AI/ML",
     "image": "https://github.com/memodb-io.png"
   },
   "seekdb": {
     "name": "OceanBase seekdb",
-    "description": "Hybrid search database with MySQL-compatible SQL, persistent data and a password-protected web console.",
+    "description": "MySQL-compatible hybrid search database with a protected console.",
     "category": "Storage",
     "image": "https://github.com/oceanbase.png"
   }

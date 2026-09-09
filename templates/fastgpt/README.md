@@ -1,6 +1,6 @@
 # FastGPT Core + RAG
 
-FastGPT chat, knowledge bases and workflows with MongoDB, pgvector, Redis and S3 storage.
+FastGPT chat and RAG with MongoDB, pgvector, Redis and object storage.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
 

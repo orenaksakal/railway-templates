@@ -1,6 +1,6 @@
 # OceanBase seekdb
 
-Hybrid search database with MySQL-compatible SQL, persistent data and a password-protected web console.
+MySQL-compatible hybrid search database with a protected console.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
 

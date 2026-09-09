@@ -1,6 +1,6 @@
 # Xberg / Kreuzberg Document API
 
-CPU document extraction API from Xberg, formerly Kreuzberg, behind authenticated HTTPS.
+CPU document extraction API with authenticated HTTPS access.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
 

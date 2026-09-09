@@ -1,6 +1,6 @@
 # AgentScope Service API
 
-AgentScope API service with Redis state, persistent workspaces and authenticated access.
+AgentScope API with Redis state and persistent agent workspaces.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
 

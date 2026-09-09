@@ -1,6 +1,6 @@
 # Marker PDF to Markdown API
 
-Authenticated, upload-only CPU Marker API for extracting Markdown from digital PDFs.
+Authenticated CPU API for converting digital PDFs to Markdown.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
 

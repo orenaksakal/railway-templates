@@ -1,6 +1,6 @@
 # Acontext Agent Context Platform
 
-Acontext API, core and UI with PostgreSQL, Redis, RabbitMQ and S3-compatible asset storage.
+Agent context management with sessions, queues and object storage.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
 

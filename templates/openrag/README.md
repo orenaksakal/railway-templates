@@ -1,6 +1,6 @@
 # OpenRAG CPU Stack
 
-OpenRAG with OpenSearch, Langflow, CPU Docling and an authenticated frontend.
+RAG workspace with OpenSearch, Langflow and CPU document processing.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
 
