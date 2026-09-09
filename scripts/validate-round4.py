@@ -38,3 +38,8 @@ print(f'PASS: {len(CATALOG)} drafts, {count} services; pins, references, sources
 for metadata in json.loads((ROOT/"marketplace.round4.json").read_text()).values():
     assert len(metadata["description"]) <= 75
     assert metadata["category"] in {"AI/ML","Analytics","Authentication","Automation","Blogs","Bots","CMS","Observability","Other","Starters","Storage","Queues"}
+
+for name in CATALOG:
+    readme=(ROOT/"templates"/name/"README.md").read_text()
+    for heading in ["# Deploy and Host", "## About Hosting", "## Why Deploy", "## Common Use Cases", "## Dependencies for"]:
+        assert heading in readme, (name,heading)

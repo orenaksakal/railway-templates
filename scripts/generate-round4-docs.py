@@ -66,6 +66,22 @@ for slug,factory in CATALOG.items():
  if proof:
   lines=[line.replace('**Unpublished draft — not runtime-validated or approved for release.** Saving this template does not deploy services. Deployment later incurs Railway and provider charges.', '**Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.').replace('## Release gates','## Recommended acceptance checks').replace('Build and runtime verification remain pending. Base-image pins do not lock packages installed by apt/apk/pip.', 'Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.') for line in lines]
   lines[3:3]=['## Live verification — 2026-09-08\n',proof+'\n']
+ lines[0]=f'# Deploy and Host {title} on Railway\n'
+ lines[3:3]=[f'## About Hosting {title}\n', f'This template provisions {len(services)} services in one Railway project, with image digests or upstream source revisions pinned, generated internal credentials, linked environment variables and the persistent paths listed below. Public HTTP routes use Railway HTTPS. SQL and internal dependency endpoints stay private. Keep stateful services single-replica and configure your own backup policy.\n']
+ uses={
+  'fastgpt':['Build a private knowledge-base assistant with your own model provider.','Configure chat and RAG workflows with persistent document storage.'],
+  'dolt':['Version application data with SQL commits and branches.','Explore data changes through MySQL-compatible queries.'],
+  'xberg':['Extract text and structured results from documents through an API.','Feed extracted digital-document content into your own processing pipeline.'],
+  'agentscope':['Host a trusted-owner AgentScope API for agent configuration and sessions.','Persist agent workspaces and session state while integrating your own client.'],
+  'coze-studio':['Build agent and workflow applications using your own model provider.','Connect a knowledge base to the included vector and object-storage services.'],
+  'bettafish':['Research a topic using deployer-configured search and model providers.','Generate reports from operator-supplied datasets and available public sources.'],
+  'openrag':['Set up a document retrieval workspace with your own model credentials.','Experiment with Langflow-based ingestion and chat over indexed documents.'],
+  'marker':['Convert digital PDFs to Markdown through an authenticated API.','Extract text for downstream indexing without exposing filesystem-path inputs.'],
+  'acontext':['Store agent sessions and manage context through the Acontext API.','Connect your own model provider and external sandbox Worker to context processing.'],
+  'seekdb':['Store application data behind a private MySQL-compatible SQL endpoint.','Explore vector, full-text and hybrid search using your own datasets.']}
+ idx=lines.index('### Deployment Dependencies\n')
+ lines[idx:idx]=[f'## Dependencies for {title} Hosting\n']
+ lines += ['## Common Use Cases\n']+['- '+u for u in uses[slug]]+[f'\n## Why Deploy {title} on Railway?\n','Railway groups service deployment, logs, private networking, generated environment references and persistent volumes in one project. This community template supplies the configuration and setup notes; Railway resource charges and external provider costs remain separate. No fixed cost or capacity guarantee is made.\n']
  (ROOT/f'templates/{slug}/README.md').write_text('\n'.join(lines))
  report.append(f"| {title} | {len(services)} | {', '.join(required) or 'Application onboarding only'} | {gates} |")
 (ROOT/'marketplace.round4.json').write_text(json.dumps(metadata,indent=2)+'\n')

@@ -1,8 +1,12 @@
-# AgentScope Service API
+# Deploy and Host AgentScope Service API on Railway
 
 AgentScope API with Redis state and persistent agent workspaces.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
+
+## About Hosting AgentScope Service API
+
+This template provisions 3 services in one Railway project, with image digests or upstream source revisions pinned, generated internal credentials, linked environment variables and the persistent paths listed below. Public HTTP routes use Railway HTTPS. SQL and internal dependency endpoints stay private. Keep stateful services single-replica and configure your own backup policy.
 
 ## Live verification — 2026-09-08
 
@@ -11,6 +15,8 @@ Source build, gateway authentication, agent creation and Redis-backed session cr
 ## Setup
 
 Use the agentscope domain with gateway ACCESS_USER and ACCESS_PASSWORD. Open /docs and configure model credentials and agents through the upstream API. The service uses one Uvicorn worker and an in-process message bus.
+
+## Dependencies for AgentScope Service API Hosting
 
 ### Deployment Dependencies
 
@@ -44,3 +50,12 @@ Keep database and internal service endpoints private. Railway provides HTTPS for
 - [Reviewed source snapshot](https://github.com/agentscope-ai/agentscope/tree/7e614306296233e502b9278f53649acad988aa9f)
 - Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
 - Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.
+
+## Common Use Cases
+
+- Host a trusted-owner AgentScope API for agent configuration and sessions.
+- Persist agent workspaces and session state while integrating your own client.
+
+## Why Deploy AgentScope Service API on Railway?
+
+Railway groups service deployment, logs, private networking, generated environment references and persistent volumes in one project. This community template supplies the configuration and setup notes; Railway resource charges and external provider costs remain separate. No fixed cost or capacity guarantee is made.

@@ -1,8 +1,12 @@
-# FastGPT Core + RAG
+# Deploy and Host FastGPT Core + RAG on Railway
 
 FastGPT chat and RAG with MongoDB, pgvector, Redis and object storage.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
+
+## About Hosting FastGPT Core + RAG
+
+This template provisions 9 services in one Railway project, with image digests or upstream source revisions pinned, generated internal credentials, linked environment variables and the persistent paths listed below. Public HTTP routes use Railway HTTPS. SQL and internal dependency endpoints stay private. Keep stateful services single-replica and configure your own backup policy.
 
 ## Live verification — 2026-09-08
 
@@ -11,6 +15,8 @@ All nine services started. MongoDB replica became primary. Public web route and 
 ## Setup
 
 Log in as root with fastgpt.DEFAULT_ROOT_PSW. Configure your model provider and embedding model in FastGPT before ingesting documents. Keep all generated encryption keys and MongoDB replica identity with your backups.
+
+## Dependencies for FastGPT Core + RAG Hosting
 
 ### Deployment Dependencies
 
@@ -50,3 +56,12 @@ Keep database and internal service endpoints private. Railway provides HTTPS for
 - [Reviewed source snapshot](https://github.com/labring/FastGPT/tree/0058e223edfcb1035b437cadb9370462b562f685)
 - Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
 - Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.
+
+## Common Use Cases
+
+- Build a private knowledge-base assistant with your own model provider.
+- Configure chat and RAG workflows with persistent document storage.
+
+## Why Deploy FastGPT Core + RAG on Railway?
+
+Railway groups service deployment, logs, private networking, generated environment references and persistent volumes in one project. This community template supplies the configuration and setup notes; Railway resource charges and external provider costs remain separate. No fixed cost or capacity guarantee is made.

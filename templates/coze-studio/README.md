@@ -1,8 +1,12 @@
-# Coze Studio
+# Deploy and Host Coze Studio on Railway
 
 Agent and workflow studio with SQL, vector search and object storage.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
+
+## About Hosting Coze Studio
+
+This template provisions 11 services in one Railway project, with image digests or upstream source revisions pinned, generated internal credentials, linked environment variables and the persistent paths listed below. Public HTTP routes use Railway HTTPS. SQL and internal dependency endpoints stay private. Keep stateful services single-replica and configure your own backup policy.
 
 ## Live verification — 2026-09-08
 
@@ -11,6 +15,8 @@ All eleven services built and started after runtime fixes. etcd committed a heal
 ## Setup
 
 Enter the required model ID, display name and API key; confirm the embedding endpoint/model/dimensions. After a test deployment, review the bundled /operator/opencoze_latest_schema.hcl against MySQL and explicitly apply the required schema delta using a reviewed Atlas CLI. No startup script downloads Atlas or automatically approves schema changes. Review and run the bundled Elasticsearch setup script with --es-address http://127.0.0.1:9200 --docker-host false --index-dir /operator/es_index_schema. Only then proceed to account onboarding through the authenticated coze-studio gateway.
+
+## Dependencies for Coze Studio Hosting
 
 ### Deployment Dependencies
 
@@ -52,3 +58,12 @@ Keep database and internal service endpoints private. Railway provides HTTPS for
 - [Reviewed source snapshot](https://github.com/coze-dev/coze-studio/tree/fefb05ff27be1da939612fbf9faf5db62583b8ae)
 - Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
 - Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.
+
+## Common Use Cases
+
+- Build agent and workflow applications using your own model provider.
+- Connect a knowledge base to the included vector and object-storage services.
+
+## Why Deploy Coze Studio on Railway?
+
+Railway groups service deployment, logs, private networking, generated environment references and persistent volumes in one project. This community template supplies the configuration and setup notes; Railway resource charges and external provider costs remain separate. No fixed cost or capacity guarantee is made.

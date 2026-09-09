@@ -1,8 +1,12 @@
-# BettaFish Research Reports
+# Deploy and Host BettaFish Research Reports on Railway
 
 Multi-agent research and reports with PostgreSQL and persistent files.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
+
+## About Hosting BettaFish Research Reports
+
+This template provisions 3 services in one Railway project, with image digests or upstream source revisions pinned, generated internal credentials, linked environment variables and the persistent paths listed below. Public HTTP routes use Railway HTTPS. SQL and internal dependency endpoints stay private. Keep stateful services single-replica and configure your own backup policy.
 
 ## Live verification — 2026-09-08
 
@@ -11,6 +15,8 @@ Container build, PostgreSQL startup, public report UI and gateway authentication
 ## Setup
 
 Enter MODEL_API_KEY, MODEL_BASE_URL and MODEL_NAME for an OpenAI-compatible provider, plus the selected search provider credentials. The engines reference the shared model inputs. Open the bettafish gateway using ACCESS_USER and ACCESS_PASSWORD. Set up source data before expecting database-backed insight reports.
+
+## Dependencies for BettaFish Research Reports Hosting
 
 ### Deployment Dependencies
 
@@ -44,3 +50,12 @@ Keep database and internal service endpoints private. Railway provides HTTPS for
 - [Reviewed source snapshot](https://github.com/666ghj/BettaFish/tree/c4ca6360489b53c38d3d41d213a67b50d2fcb883)
 - Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
 - Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.
+
+## Common Use Cases
+
+- Research a topic using deployer-configured search and model providers.
+- Generate reports from operator-supplied datasets and available public sources.
+
+## Why Deploy BettaFish Research Reports on Railway?
+
+Railway groups service deployment, logs, private networking, generated environment references and persistent volumes in one project. This community template supplies the configuration and setup notes; Railway resource charges and external provider costs remain separate. No fixed cost or capacity guarantee is made.

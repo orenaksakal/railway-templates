@@ -1,8 +1,12 @@
-# Marker PDF to Markdown API
+# Deploy and Host Marker PDF to Markdown API on Railway
 
 Authenticated CPU API for converting digital PDFs to Markdown.
 
 **Deployment template.** Deployment incurs Railway charges. Supply your own required model, search and external-service credentials; no example provider credentials are included.
+
+## About Hosting Marker PDF to Markdown API
+
+This template provisions 2 services in one Railway project, with image digests or upstream source revisions pinned, generated internal credentials, linked environment variables and the persistent paths listed below. Public HTTP routes use Railway HTTPS. SQL and internal dependency endpoints stay private. Keep stateful services single-replica and configure your own backup policy.
 
 ## Live verification — 2026-09-08
 
@@ -11,6 +15,8 @@ Source build with compatible CPU Torch/Torchvision, public authentication and re
 ## Setup
 
 POST a PDF multipart field named file to /convert on marker-api. Supply gateway Basic Auth (ACCESS_USER/ACCESS_PASSWORD) plus header X-API-Key equal to marker.API_KEY. The API returns markdown and metadata. /docs requires the same credentials.
+
+## Dependencies for Marker PDF to Markdown API Hosting
 
 ### Deployment Dependencies
 
@@ -43,3 +49,12 @@ Keep database and internal service endpoints private. Railway provides HTTPS for
 - [Reviewed source snapshot](https://github.com/datalab-to/marker/tree/36b3947d05b16787937fc77db47422c9a6bc0e29)
 - Image digest pins: `images.round4.lock.json` in the template source repository. Source snapshots are research references; image digests do not prove the image was built from that same commit.
 - Base-image pins do not lock every package installed by apt/apk/pip. See the verification scope above before relying on this deployment.
+
+## Common Use Cases
+
+- Convert digital PDFs to Markdown through an authenticated API.
+- Extract text for downstream indexing without exposing filesystem-path inputs.
+
+## Why Deploy Marker PDF to Markdown API on Railway?
+
+Railway groups service deployment, logs, private networking, generated environment references and persistent volumes in one project. This community template supplies the configuration and setup notes; Railway resource charges and external provider costs remain separate. No fixed cost or capacity guarantee is made.
