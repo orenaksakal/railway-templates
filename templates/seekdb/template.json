@@ -3,7 +3,8 @@
     "4d8f0c1a-6fc9-5722-b011-d5882ad2ee42": {
       "name": "seekdb",
       "source": {
-        "image": "oceanbase/seekdb:1.4.0-100000172026082615@sha256:00d7a1e22220d4bf12c8dacfb1bf5723e5cf5670078b1ce28b41015f4d833b18"
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/remaining-template-drafts"
       },
       "variables": {
         "ROOT_PASSWORD": {
@@ -21,16 +22,26 @@
           "description": "Memory limit for seekdb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
           "defaultValue": "2G"
         },
+        "SEEKDB_DATABASE": {
+          "isOptional": false,
+          "description": "Seekdb database for seekdb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "test"
+        },
         "DATABASE_URL": {
           "isOptional": false,
           "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
           "defaultValue": "mysql://root:${{seekdb.ROOT_PASSWORD}}@${{seekdb.RAILWAY_PRIVATE_DOMAIN}}:2881/test"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/seekdb/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
         }
       },
       "deploy": {
         "restartPolicyType": "ON_FAILURE",
         "restartPolicyMaxRetries": 10,
-        "requiredMountPath": "/var/lib/oceanbase"
+        "requiredMountPath": "/var/lib/seekdb"
       },
       "networking": {
         "serviceDomains": {
@@ -39,9 +50,13 @@
           }
         }
       },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/seekdb/Dockerfile"
+      },
       "volumeMounts": {
-        "ec14a082-8e04-5c66-bfe3-89434c727d8a": {
-          "mountPath": "/var/lib/oceanbase"
+        "5045f919-4689-5e52-a76c-9775404914cc": {
+          "mountPath": "/var/lib/seekdb"
         }
       }
     }
