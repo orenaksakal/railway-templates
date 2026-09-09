@@ -276,7 +276,7 @@
         "LANGFLOW_SECRET_KEY": {
           "isOptional": false,
           "description": "Generated langflow secret key. Keep private and preserve with backups.",
-          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+          "defaultValue": "${{secret(43, \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_\")}}="
         },
         "LANGFLOW_CONFIG_DIR": {
           "isOptional": false,
