@@ -27,6 +27,26 @@
           "description": "Seekdb database for seekdb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
           "defaultValue": "test"
         },
+        "DATAFILE_SIZE": {
+          "isOptional": false,
+          "description": "Datafile size for seekdb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "512M"
+        },
+        "DATAFILE_NEXT": {
+          "isOptional": false,
+          "description": "Datafile next for seekdb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "256M"
+        },
+        "DATAFILE_MAXSIZE": {
+          "isOptional": false,
+          "description": "Datafile maxsize for seekdb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2G"
+        },
+        "LOG_DISK_SIZE": {
+          "isOptional": false,
+          "description": "Log disk size for seekdb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1G"
+        },
         "DATABASE_URL": {
           "isOptional": false,
           "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",

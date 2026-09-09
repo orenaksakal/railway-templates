@@ -20,7 +20,7 @@ def gateway(name,target,port):
 def dolt():
     return [svc('dolt',image='dolthub/dolt-sql-server:2.3.2',volume='/var/lib/dolt',env={'DOLT_ROOT_PASSWORD':secret(),'DOLT_ROOT_HOST':'localhost','DOLT_USER':'dolt','DOLT_USER_HOST':'%','DOLT_PASSWORD':secret(),'DOLT_DATABASE':'app','DATABASE_URL':'mysql://dolt:'+ref('dolt','DOLT_PASSWORD')+'@'+ref('dolt','RAILWAY_PRIVATE_DOMAIN')+':3306/app'})]
 def seekdb():
-    return [svc('seekdb',dockerfile='templates/seekdb/Dockerfile',env={'ROOT_PASSWORD':secret(),'CPU_COUNT':2,'MEMORY_LIMIT':'2G','SEEKDB_DATABASE':'test','DATABASE_URL':'mysql://root:'+ref('seekdb','ROOT_PASSWORD')+'@'+ref('seekdb','RAILWAY_PRIVATE_DOMAIN')+':2881/test'},volume='/var/lib/seekdb',port=2886)]
+    return [svc('seekdb',dockerfile='templates/seekdb/Dockerfile',env={'ROOT_PASSWORD':secret(),'CPU_COUNT':2,'MEMORY_LIMIT':'2G','SEEKDB_DATABASE':'test','DATAFILE_SIZE':'512M','DATAFILE_NEXT':'256M','DATAFILE_MAXSIZE':'2G','LOG_DISK_SIZE':'1G','DATABASE_URL':'mysql://root:'+ref('seekdb','ROOT_PASSWORD')+'@'+ref('seekdb','RAILWAY_PRIVATE_DOMAIN')+':2881/test'},volume='/var/lib/seekdb',port=2886)]
 def xberg():
     return [svc('extractor',image='ghcr.io/xberg-io/xberg:1.1.2'),gateway('xberg','extractor',8000)]
 def agentscope():
