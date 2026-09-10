@@ -13,7 +13,7 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 node --test tests/*.test.mjs
 ```
 
-The additional catalog uses `codex/remaining-template-drafts` and `images.round3.lock.json`. It does not regenerate the original five templates. Repository-backed adapters build from this branch; retain it for deployed consumers. `marketplace.round3.json` and each README are the listing sources. The editor tool creates/updates unpublished templates and can verify published templates without changing them.
+The additional catalog uses `main` and `images.round3.lock.json`. It does not regenerate the original five templates. Repository-backed adapters build from this branch; retain it for deployed consumers. `marketplace.round3.json` and each README are the listing sources. The editor tool creates/updates unpublished templates and can verify published templates without changing them.
 
 Images and application revisions are pinned. Large images were built/tested on Railway rather than pulled locally. Static checks establish configuration consistency; live workflow evidence is separately recorded. AppFlowy requires the operator's GoTrue administrator email and is subject to upstream license limits. Matrix requires a deliberate server-name/domain choice before first use. No Docker-socket executor, GPU service or TURN infrastructure is supplied.
 

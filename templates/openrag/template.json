@@ -4,7 +4,7 @@
       "name": "opensearch",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "discovery.type": {
@@ -60,7 +60,7 @@
       "name": "backend",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "OPENSEARCH_HOST": {
@@ -220,7 +220,7 @@
       "name": "langflow",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "OPENSEARCH_HOST": {
@@ -436,7 +436,7 @@
       "name": "openrag",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "UPSTREAM_HOST": {

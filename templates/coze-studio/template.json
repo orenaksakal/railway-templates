@@ -4,7 +4,7 @@
       "name": "mysql",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "MYSQL_ROOT_PASSWORD": {
@@ -88,7 +88,7 @@
       "name": "elasticsearch",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "ES_JAVA_OPTS": {
@@ -124,7 +124,7 @@
       "name": "storage",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "MINIO_ROOT_USER": {
@@ -170,7 +170,7 @@
       "name": "etcd",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "ALLOW_NONE_AUTHENTICATION": {
@@ -335,7 +335,7 @@
       "name": "backend",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "LISTEN_ADDR": {
@@ -571,7 +571,7 @@
       "name": "web",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "BACKEND_HOST": {
@@ -606,7 +606,7 @@
       "name": "coze-studio",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "UPSTREAM_HOST": {

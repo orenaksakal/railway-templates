@@ -4,7 +4,7 @@
       "name": "postgres",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "POSTGRES_USER": {
@@ -117,7 +117,7 @@
       "name": "storage",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "MINIO_ROOT_USER": {
@@ -533,7 +533,7 @@
       "name": "appflowy",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "PORT": {

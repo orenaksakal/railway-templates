@@ -6,7 +6,7 @@ Release tested on Railway. See the validation scope below for verified workflows
 
 ## About Hosting Novu Community Edition
 
-The template defines 7 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Fresh initialization was tested in an isolated Railway project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
+The template defines 7 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `main`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Fresh initialization was tested in an isolated Railway project. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
 
 ## Common Use Cases
 
@@ -54,4 +54,4 @@ Railway keeps the services, networking, environment references, deployment logs,
 
 ## Support and Upstream
 
-[Upstream source and release](https://github.com/novuhq/novu/tree/c7bc772fc0b7722909ef1bdb9bcf04991996fdd8/docker/community). This is an independent community integration; upstream licenses, trademarks, and paid-feature restrictions remain in effect. See the [draft readiness record](https://github.com/orenaksakal/railway-templates/blob/codex/remaining-template-drafts/DRAFTS.md). Report issues with redacted logs and image versions; never share credentials.
+[Upstream source and release](https://github.com/novuhq/novu/tree/c7bc772fc0b7722909ef1bdb9bcf04991996fdd8/docker/community). This is an independent community integration; upstream licenses, trademarks, and paid-feature restrictions remain in effect. See the [draft readiness record](https://github.com/orenaksakal/railway-templates/blob/main/DRAFTS.md). Report issues with redacted logs and image versions; never share credentials.

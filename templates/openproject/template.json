@@ -4,7 +4,7 @@
       "name": "postgres",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/railway-template-release"
+        "branch": "main"
       },
       "variables": {
         "POSTGRES_USER": {
@@ -85,7 +85,7 @@
       "name": "openproject",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/railway-template-release"
+        "branch": "main"
       },
       "variables": {
         "DATABASE_URL": {

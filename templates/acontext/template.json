@@ -123,7 +123,7 @@
       "name": "storage",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "MINIO_ROOT_USER": {
@@ -203,7 +203,7 @@
       "name": "core",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "LLM_API_KEY": {
@@ -525,7 +525,7 @@
       "name": "acontext",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "UPSTREAM_HOST": {

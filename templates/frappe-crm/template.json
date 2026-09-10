@@ -68,7 +68,7 @@
       "name": "frappe-crm",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "PORT": {

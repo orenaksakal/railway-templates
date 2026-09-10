@@ -3,7 +3,7 @@ from pathlib import Path
 import json,uuid
 from variable_descriptions import DESCRIPTIONS
 ROOT=Path(__file__).resolve().parents[1]
-BRANCH='codex/remaining-template-drafts'
+BRANCH='main'
 LOCK_PATH=ROOT/'images.round3.lock.json'
 LOCK=json.loads(LOCK_PATH.read_text()) if LOCK_PATH.exists() else {}
 def secret(n=64):return '${{secret('+str(n)+', "abcdef0123456789")}}'

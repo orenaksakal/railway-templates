@@ -274,7 +274,7 @@
       "name": "firecrawl",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/railway-template-release"
+        "branch": "main"
       },
       "variables": {
         "PORT": {

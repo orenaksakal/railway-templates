@@ -4,7 +4,7 @@
       "name": "marker",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "API_KEY": {
@@ -55,7 +55,7 @@
       "name": "marker-api",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "UPSTREAM_HOST": {

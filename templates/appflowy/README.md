@@ -6,7 +6,7 @@ Release tested on Railway for the workflows below. The unlicensed server reports
 
 ## About Hosting AppFlowy Cloud
 
-The template defines 9 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `codex/remaining-template-drafts`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently; wait for database migrations and the cloud API before opening the frontend. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
+The template defines 9 services with pinned container digests, generated deployment secrets, explicit service references, and persistent volumes for stateful dependencies. Repository-backed adapters build from `main`. Railway terminates HTTPS for the public endpoints; databases and internal workers have no public TCP proxies. Services initialize independently; wait for database migrations and the cloud API before opening the frontend. Each deployment has its own database and storage resources. Backups are not scheduled by this template, and filesystem-backed services should remain single-replica.
 
 ## Common Use Cases
 
@@ -56,4 +56,4 @@ Railway keeps the services, networking, environment references, deployment logs,
 
 ## Support and Upstream
 
-[Upstream source and release](https://hub.docker.com/r/appflowyinc/appflowy_cloud/tags). This is an independent community integration; upstream licenses, trademarks, and paid-feature restrictions remain in effect. See the [draft readiness record](https://github.com/orenaksakal/railway-templates/blob/codex/remaining-template-drafts/DRAFTS.md). Report issues with redacted logs and image versions; never share credentials.
+[Upstream source and release](https://hub.docker.com/r/appflowyinc/appflowy_cloud/tags). This is an independent community integration; upstream licenses, trademarks, and paid-feature restrictions remain in effect. See the [draft readiness record](https://github.com/orenaksakal/railway-templates/blob/main/DRAFTS.md). Report issues with redacted logs and image versions; never share credentials.

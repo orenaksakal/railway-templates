@@ -67,7 +67,7 @@
       "name": "storage",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "MINIO_ROOT_USER": {

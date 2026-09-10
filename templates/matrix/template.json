@@ -101,7 +101,7 @@
       "name": "synapse",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "SYNAPSE_SERVER_NAME": {
@@ -172,7 +172,7 @@
       "name": "mas",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "DATABASE_URL": {
@@ -237,7 +237,7 @@
       "name": "matrix",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "PORT": {
@@ -288,7 +288,7 @@
       "name": "element",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "HOMESERVER_URL": {

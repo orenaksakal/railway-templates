@@ -4,7 +4,7 @@
       "name": "postgres",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/railway-template-release"
+        "branch": "main"
       },
       "variables": {
         "POSTGRES_USER": {
@@ -117,7 +117,7 @@
       "name": "affine",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/railway-template-release"
+        "branch": "main"
       },
       "variables": {
         "DATABASE_URL": {

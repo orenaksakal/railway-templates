@@ -36,7 +36,7 @@
       "name": "service",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "REDIS_HOST": {
@@ -77,7 +77,7 @@
       "name": "agentscope",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/remaining-template-drafts"
+        "branch": "main"
       },
       "variables": {
         "UPSTREAM_HOST": {

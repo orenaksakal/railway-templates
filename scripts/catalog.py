@@ -6,7 +6,7 @@ from variable_descriptions import DESCRIPTIONS
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = 'orenaksakal/railway-templates'
-REPO_BRANCH = 'codex/railway-template-release'
+REPO_BRANCH = 'main'
 LOCK_PATH = ROOT / 'images.lock.json'
 IMAGE_LOCK = json.loads(LOCK_PATH.read_text()) if LOCK_PATH.exists() else {}
 SECRET = '${{secret(64, "abcdef0123456789")}}'

@@ -4,7 +4,7 @@
       "name": "postgres",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/railway-template-release"
+        "branch": "main"
       },
       "variables": {
         "POSTGRES_USER": {
@@ -117,7 +117,7 @@
       "name": "formbricks",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/railway-template-release"
+        "branch": "main"
       },
       "variables": {
         "NODE_ENV": {
@@ -249,7 +249,7 @@
       "name": "hub",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/railway-template-release"
+        "branch": "main"
       },
       "variables": {
         "API_KEY": {
@@ -284,7 +284,7 @@
       "name": "cube",
       "source": {
         "repo": "orenaksakal/railway-templates",
-        "branch": "codex/railway-template-release"
+        "branch": "main"
       },
       "variables": {
         "CUBEJS_DB_TYPE": {
