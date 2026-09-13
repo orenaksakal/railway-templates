@@ -1,0 +1,23 @@
+map $http_upgrade $connection_upgrade { default upgrade; '' close; }
+map "${OWNER_SCOPE}:$uri" $route_realm {
+  default "${AUTH_REALM}";
+  ~^setup:/api/setup\. "${AUTH_REALM}";
+  ~^setup:/(setup|console)(/|$) "${AUTH_REALM}";
+  ~^setup: off;
+}
+map $http_x_template_key $owner_realm {
+  default $route_realm;
+  "${ACCESS_PASSWORD}" off;
+}
+map $http_authorization $upstream_authorization { default $http_authorization; ~^Basic\s ""; }
+server {
+  listen 8080;
+  listen [::]:8080;
+  resolver ${DNS_RESOLVER} valid=10s;
+  client_max_body_size 32m;
+  auth_basic $owner_realm;
+  auth_basic_user_file /etc/nginx/htpasswd;
+  set $upstream "${UPSTREAM_HOST}:${UPSTREAM_PORT}";
+  location = /healthz { auth_basic off; access_log off; return 200 'gateway ready'; }
+  location / { include /etc/nginx/proxy.inc; }
+}

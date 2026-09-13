@@ -1,0 +1,64 @@
+{
+  "services": {
+    "42c95656-c580-56cf-a6a9-28327451778f": {
+      "name": "timetagger",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "ADMIN_USERNAME": {
+          "isOptional": false,
+          "description": "Admin username for timetagger. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "ADMIN_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated admin password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(40, \"abcdef0123456789\")}}"
+        },
+        "TIMETAGGER_BIND": {
+          "isOptional": false,
+          "description": "Timetagger bind for timetagger. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0.0.0.0:8080"
+        },
+        "TIMETAGGER_DATADIR": {
+          "isOptional": false,
+          "description": "Timetagger datadir for timetagger. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/opt/_timetagger"
+        },
+        "TIMETAGGER_LOG_LEVEL": {
+          "isOptional": false,
+          "description": "Timetagger log level for timetagger. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "info"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/timetagger/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/opt/_timetagger"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/timetagger/Dockerfile"
+      },
+      "volumeMounts": {
+        "e6bf3733-c93a-54ed-9c5a-f303852ad1df": {
+          "mountPath": "/opt/_timetagger"
+        }
+      }
+    }
+  }
+}

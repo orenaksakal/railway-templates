@@ -1,0 +1,112 @@
+{
+  "agenta": {
+    "release_url": "https://github.com/Agenta-AI/agenta/releases/tag/v0.118.0",
+    "released_at": "2026-09-11T15:37:11Z",
+    "repo": "Agenta-AI/agenta",
+    "sha": "dd55885f1d21b03c4c43a61a4df358efd743fdc6",
+    "tag": "v0.118.0"
+  },
+  "bugsink": {
+    "release_url": "https://github.com/bugsink/bugsink/releases/tag/2.5.1",
+    "released_at": "2026-08-31T19:53:09Z",
+    "repo": "bugsink/bugsink",
+    "sha": "68803af03ff09f1a9a5368fa5b9e79fa59902f1e",
+    "tag": "2.5.1"
+  },
+  "db-gpt": {
+    "release_url": "https://github.com/eosphoros-ai/DB-GPT/releases/tag/v0.8.2",
+    "released_at": "2026-08-26T11:10:31Z",
+    "repo": "eosphoros-ai/DB-GPT",
+    "sha": "83609c471266607490b24e72188311efa23a0d16",
+    "tag": "v0.8.2"
+  },
+  "docuseal": {
+    "release_url": "https://github.com/docusealco/docuseal/releases/tag/3.2.4",
+    "released_at": "2026-09-07T10:02:39Z",
+    "repo": "docusealco/docuseal",
+    "sha": "11856a17ac0865128333a0ffe1fdfc44e4b8a982",
+    "tag": "3.2.4"
+  },
+  "frappe-builder": {
+    "release_url": "https://github.com/frappe/builder/releases/tag/v1.34.0",
+    "released_at": "2026-09-08T11:25:11Z",
+    "repo": "frappe/builder",
+    "sha": "09c3effa10926e736a87d80f68880d81f498fbe2",
+    "tag": "v1.34.0"
+  },
+  "frappe-insights": {
+    "release_url": "https://github.com/frappe/insights/releases/tag/v3.13.2",
+    "released_at": "2026-09-05T07:47:06Z",
+    "repo": "frappe/insights",
+    "sha": "b7bf01ad60d5ae45a9863e81ab89c24785adfade",
+    "tag": "v3.13.2"
+  },
+  "frappe-learning": {
+    "release_url": "https://github.com/frappe/lms/releases/tag/v2.63.0",
+    "released_at": "2026-09-10T05:51:27Z",
+    "repo": "frappe/lms",
+    "sha": "2ee61568603d0b081e9d98c8bf39b18f4464e3b5",
+    "tag": "v2.63.0"
+  },
+  "frappe-payments": {
+    "ref": "version-15",
+    "repo": "frappe/payments",
+    "sha": "9885a6e500104f1f160add47d55b370773e67a81"
+  },
+  "lago": {
+    "release_url": "https://github.com/getlago/lago/releases/tag/v1.53.0",
+    "released_at": "2026-09-08T14:33:04Z",
+    "repo": "getlago/lago",
+    "sha": "ba292b669781714f33b3029267e9a6c17010b75d",
+    "tag": "v1.53.0"
+  },
+  "mcpjungle": {
+    "release_url": "https://github.com/mcpjungle/MCPJungle/releases/tag/0.4.6",
+    "released_at": "2026-08-02T15:34:24Z",
+    "repo": "mcpjungle/MCPJungle",
+    "sha": "12648be5edc70391dc3f9c4aecfd37b83b3e30be",
+    "tag": "0.4.6"
+  },
+  "notifuse": {
+    "release_url": "https://github.com/Notifuse/notifuse/releases/tag/v40.0",
+    "released_at": "2026-09-05T12:13:28Z",
+    "repo": "Notifuse/notifuse",
+    "sha": "dc1d98622ec522d750c24a5cfa65e8cc075d37a9",
+    "tag": "v40.0"
+  },
+  "perses": {
+    "release_url": "https://github.com/perses/perses/releases/tag/v0.54.0",
+    "released_at": "2026-07-29T13:16:25Z",
+    "repo": "perses/perses",
+    "sha": "4c719fc19fa21d333797e84c4fe7e3d81c25f4f5",
+    "tag": "v0.54.0"
+  },
+  "plunk": {
+    "release_url": "https://github.com/useplunk/plunk/releases/tag/v0.14.0",
+    "released_at": "2026-08-17T16:59:09Z",
+    "repo": "useplunk/plunk",
+    "sha": "ee0efe0974014cf9bf13ccee8610501a93ea9a03",
+    "tag": "v0.14.0"
+  },
+  "timetagger": {
+    "release_url": "https://github.com/almarklein/timetagger/releases/tag/v26.1.3",
+    "released_at": "2026-02-02T12:22:59Z",
+    "repo": "almarklein/timetagger",
+    "sha": "681720d84c94be660f30947db4b23e52d36cbe32",
+    "tag": "v26.1.3"
+  },
+  "unla": {
+    "release_url": "https://github.com/AmoyLab/Unla/releases/tag/v0.10.0",
+    "released_at": "2026-08-04T14:48:10Z",
+    "repo": "AmoyLab/Unla",
+    "sha": "5da380b8d883165def1c0a19ec55025ef12db8a5",
+    "tag": "v0.10.0"
+  },
+  "vespa": {
+    "release_url": "https://github.com/vespa-engine/vespa/releases/tag/v8.751.13",
+    "released_at": "2026-09-07T02:23:38Z",
+    "repo": "vespa-engine/vespa",
+    "sha": "40f6d816139431d1203e69dfaffbb9bd1af4fe53",
+    "tag": "v8.751.13"
+  }
+}

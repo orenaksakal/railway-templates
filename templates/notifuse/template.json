@@ -1,0 +1,230 @@
+{
+  "services": {
+    "2ea46571-d181-5e93-8bfb-8e09956175f0": {
+      "name": "postgres",
+      "source": {
+        "image": "postgres:17-alpine@sha256:18cfe3ef5e6815560c98237d6216d1e5119702fb0f3894c8785dd58b8bbe5d73"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "notifuse"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "notifuse"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "PGPORT": {
+          "isOptional": false,
+          "description": "Pgport for postgres. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5432"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://notifuse:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/notifuse"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "89e010d9-fa6b-5ce3-8c9d-c755fe547064": {
+      "name": "core",
+      "source": {
+        "image": "notifuse/notifuse:v40.0@sha256:ffc9058741be942401281da44a17f5c00befca887b46f7e5fc43b6f1cc444c69"
+      },
+      "variables": {
+        "SERVER_PORT": {
+          "isOptional": false,
+          "description": "Server port for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8080"
+        },
+        "SERVER_HOST": {
+          "isOptional": false,
+          "description": "Server host for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0.0.0.0"
+        },
+        "ENVIRONMENT": {
+          "isOptional": false,
+          "description": "Environment for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "production"
+        },
+        "DB_HOST": {
+          "isOptional": false,
+          "description": "Db host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "DB_PORT": {
+          "isOptional": false,
+          "description": "Db port for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5432"
+        },
+        "DB_USER": {
+          "isOptional": false,
+          "description": "Db user for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "notifuse"
+        },
+        "DB_PASSWORD": {
+          "isOptional": false,
+          "description": "Db password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}"
+        },
+        "DB_PREFIX": {
+          "isOptional": false,
+          "description": "Db prefix for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "notifuse"
+        },
+        "DB_NAME": {
+          "isOptional": false,
+          "description": "Db name for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "notifuse_system"
+        },
+        "DB_SSLMODE": {
+          "isOptional": false,
+          "description": "Db sslmode for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "disable"
+        },
+        "SECRET_KEY": {
+          "isOptional": false,
+          "description": "Generated secret key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "ROOT_EMAIL": {
+          "isOptional": false,
+          "description": "Required operator email. Complete the protected initial setup with this address."
+        },
+        "API_ENDPOINT": {
+          "isOptional": false,
+          "description": "Api endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{notifuse.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "SMTP_BRIDGE_ENABLED": {
+          "isOptional": false,
+          "description": "Smtp bridge enabled for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "SMTP_HOST": {
+          "isOptional": true,
+          "description": "SMTP server for login/setup email."
+        },
+        "SMTP_PORT": {
+          "isOptional": true,
+          "description": "SMTP port, usually 587."
+        },
+        "SMTP_USERNAME": {
+          "isOptional": true,
+          "description": "SMTP username."
+        },
+        "SMTP_PASSWORD": {
+          "isOptional": true,
+          "description": "SMTP password."
+        },
+        "SMTP_FROM_EMAIL": {
+          "isOptional": true,
+          "description": "Verified sender address."
+        },
+        "NOTIFUSE_LICENSE_KEY": {
+          "isOptional": true,
+          "description": "Optional paid upstream license; no license is included."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/app/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "b8bdcf68-4112-5e15-97a4-6ff3af885a9d": {
+          "mountPath": "/app/data"
+        }
+      }
+    },
+    "7e814c1b-d4b5-5c49-a9c4-1adaa16f96d5": {
+      "name": "notifuse",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for notifuse. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8080"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for notifuse. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for notifuse. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "setup"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

@@ -1,0 +1,308 @@
+{
+  "services": {
+    "5e3c52f8-b6f9-597a-88b4-b3b1149f05e5": {
+      "name": "postgres",
+      "source": {
+        "image": "getlago/postgres-partman:15.0-alpine@sha256:27a1e3a1138a69b5a0911ce125dfa613b9ced07604a2d781b9d31141f7f96036"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "lago"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "lago"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "PGPORT": {
+          "isOptional": false,
+          "description": "Pgport for postgres. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5432"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://lago:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/lago"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "c3f11749-7a92-5b70-b742-d1c88edcf1c7": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "4179ffdc-27b4-50ec-a9d4-a82111510433": {
+      "name": "api",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "${{postgres.DATABASE_URL}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "${{redis.REDIS_URL}}"
+        },
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{redis.REDIS_PASSWORD}}"
+        },
+        "LAGO_REDIS_CACHE_URL": {
+          "isOptional": false,
+          "description": "Lago redis cache url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}"
+        },
+        "LAGO_REDIS_CACHE_PASSWORD": {
+          "isOptional": false,
+          "description": "Lago redis cache password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_PASSWORD}}"
+        },
+        "RAILS_ENV": {
+          "isOptional": false,
+          "description": "Rails env for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "production"
+        },
+        "RAILS_LOG_TO_STDOUT": {
+          "isOptional": false,
+          "description": "Rails log to stdout for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "SECRET_KEY_BASE": {
+          "isOptional": false,
+          "description": "Generated application signing secret. Preserve across restarts and backup restores.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "LAGO_ENCRYPTION_PRIMARY_KEY": {
+          "isOptional": false,
+          "description": "Generated lago encryption primary key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "LAGO_ENCRYPTION_DETERMINISTIC_KEY": {
+          "isOptional": false,
+          "description": "Generated lago encryption deterministic key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "LAGO_ENCRYPTION_KEY_DERIVATION_SALT": {
+          "isOptional": false,
+          "description": "Generated lago encryption key derivation salt. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "LAGO_FRONT_URL": {
+          "isOptional": false,
+          "description": "Lago front url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{lago.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "LAGO_API_URL": {
+          "isOptional": false,
+          "description": "Lago api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{api.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "LAGO_PDF_URL": {
+          "isOptional": false,
+          "description": "Lago pdf url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{pdf.RAILWAY_PRIVATE_DOMAIN}}:3000"
+        },
+        "LAGO_USE_AWS_S3": {
+          "isOptional": false,
+          "description": "Lago use aws s3 for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LAGO_DISABLE_SEGMENT": {
+          "isOptional": false,
+          "description": "Lago disable segment for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "LAGO_SIDEKIQ_WEB": {
+          "isOptional": false,
+          "description": "Lago sidekiq web for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LAGO_DISABLE_SIGNUP": {
+          "isOptional": false,
+          "description": "Lago disable signup for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "LAGO_CREATE_ORG": {
+          "isOptional": false,
+          "description": "Lago create org for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "LAGO_ORG_NAME": {
+          "isOptional": false,
+          "description": "Lago org name for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "My organization"
+        },
+        "LAGO_ORG_USER_EMAIL": {
+          "isOptional": false,
+          "description": "Required first organization administrator email."
+        },
+        "LAGO_ORG_USER_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated lago org user password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "LAGO_ORG_API_KEY": {
+          "isOptional": false,
+          "description": "Generated lago org api key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/lago/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        },
+        "LAGO_SMTP_ADDRESS": {
+          "isOptional": true,
+          "description": "SMTP host for invoices and account emails."
+        },
+        "LAGO_SMTP_USERNAME": {
+          "isOptional": true,
+          "description": "SMTP username."
+        },
+        "LAGO_SMTP_PASSWORD": {
+          "isOptional": true,
+          "description": "SMTP password."
+        },
+        "LAGO_FROM_EMAIL": {
+          "isOptional": true,
+          "description": "Verified sender email."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/health",
+        "healthcheckTimeout": 600,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:3000": {
+            "port": 3000
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/lago/Dockerfile"
+      },
+      "volumeMounts": {
+        "43817a41-b878-50a2-a553-a2f08e6bf72f": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "b30f0573-fc74-5125-b4db-e4cb4707d1fd": {
+      "name": "lago",
+      "source": {
+        "image": "getlago/front:v1.53.0@sha256:16646b2b1c834f110e57e3460d09cf24c7a487ced721f50f5886d65d4d6228af"
+      },
+      "variables": {
+        "API_URL": {
+          "isOptional": false,
+          "description": "Api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{api.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "APP_ENV": {
+          "isOptional": false,
+          "description": "App env for lago. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "production"
+        },
+        "LAGO_OAUTH_PROXY_URL": {
+          "isOptional": false,
+          "description": "Lago oauth proxy url for lago. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "https://proxy.getlago.com"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:80": {
+            "port": 80
+          }
+        }
+      }
+    },
+    "061e6c37-554f-5504-b524-ec5729c72f99": {
+      "name": "pdf",
+      "source": {
+        "image": "getlago/lago-gotenberg:8.15@sha256:c05a9d3926c0b2b14b4086cbf83c9399f7c1f2473d2d5b96857a16666b725353"
+      },
+      "variables": {},
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "gotenberg --libreoffice-disable-routes=true --chromium-disable-javascript=true --api-timeout=300s"
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    }
+  }
+}

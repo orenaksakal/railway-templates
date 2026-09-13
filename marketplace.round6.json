@@ -1,0 +1,92 @@
+{
+  "plunk": {
+    "name": "Plunk Email Platform",
+    "description": "Email campaigns and transactional delivery with AWS SES and storage.",
+    "category": "Automation",
+    "image": "https://github.com/useplunk.png"
+  },
+  "bugsink": {
+    "name": "Bugsink Error Tracking",
+    "description": "Self-hosted error tracking with private MySQL and generated admin access.",
+    "category": "Observability",
+    "image": "https://github.com/bugsink.png"
+  },
+  "notifuse": {
+    "name": "Notifuse Email Marketing",
+    "description": "Email campaigns with PostgreSQL and a protected first-run setup.",
+    "category": "Automation",
+    "image": "https://github.com/Notifuse.png"
+  },
+  "lago": {
+    "name": "Lago Usage Billing",
+    "description": "Usage billing with PostgreSQL, Redis, background jobs and invoice PDFs.",
+    "category": "Automation",
+    "image": "https://github.com/getlago.png"
+  },
+  "docuseal": {
+    "name": "DocuSeal Document Signing",
+    "description": "Document signing with PostgreSQL and an administrator created at startup.",
+    "category": "Automation",
+    "image": "https://github.com/docusealco.png"
+  },
+  "frappe-learning": {
+    "name": "Frappe Learning",
+    "description": "Learning management with Frappe, MariaDB, Redis and persistent courses.",
+    "category": "Other",
+    "image": "https://github.com/frappe.png"
+  },
+  "db-gpt": {
+    "name": "DB-GPT Data Assistant",
+    "description": "Private AI data assistant with persistent metadata and vector storage.",
+    "category": "AI/ML",
+    "image": "https://github.com/eosphoros-ai.png"
+  },
+  "frappe-insights": {
+    "name": "Frappe Insights",
+    "description": "Business intelligence dashboards with Frappe, MariaDB and Redis.",
+    "category": "Analytics",
+    "image": "https://github.com/frappe.png"
+  },
+  "frappe-builder": {
+    "name": "Frappe Builder",
+    "description": "Visual website builder with Frappe, MariaDB and persistent assets.",
+    "category": "CMS",
+    "image": "https://github.com/frappe.png"
+  },
+  "unla": {
+    "name": "Unla MCP Gateway",
+    "description": "MCP gateway and management UI with persistent SQLite and owner access.",
+    "category": "AI/ML",
+    "image": "https://github.com/AmoyLab.png"
+  },
+  "mcpjungle": {
+    "name": "MCPJungle Enterprise Mode",
+    "description": "MCP registry and gateway with PostgreSQL and a protected initialization.",
+    "category": "AI/ML",
+    "image": "https://github.com/mcpjungle.png"
+  },
+  "perses": {
+    "name": "Perses Dashboards",
+    "description": "Observability dashboards with persistent storage and owner access.",
+    "category": "Observability",
+    "image": "https://github.com/perses.png"
+  },
+  "timetagger": {
+    "name": "TimeTagger",
+    "description": "Personal time tracking with generated credentials and persistent data.",
+    "category": "Other",
+    "image": "https://github.com/almarklein.png"
+  },
+  "vespa": {
+    "name": "Vespa Search Starter",
+    "description": "Single-node search with a starter document schema and protected API.",
+    "category": "Storage",
+    "image": "https://github.com/vespa-engine.png"
+  },
+  "agenta": {
+    "name": "Agenta LLM Engineering",
+    "description": "LLM evaluation and tracing with databases, workers and object storage.",
+    "category": "AI/ML",
+    "image": "https://github.com/Agenta-AI.png"
+  }
+}

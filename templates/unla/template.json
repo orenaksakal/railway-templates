@@ -1,0 +1,161 @@
+{
+  "services": {
+    "ca7bbd44-4df6-54a0-ada5-d8c9920aa8fe": {
+      "name": "core",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "ENV": {
+          "isOptional": false,
+          "description": "Firecrawl runtime mode. Keep local for this self-hosted deployment.",
+          "defaultValue": "production"
+        },
+        "SUPER_ADMIN_USERNAME": {
+          "isOptional": false,
+          "description": "Super admin username for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "SUPER_ADMIN_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated super admin password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "APISERVER_JWT_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Generated apiserver jwt secret key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "APISERVER_DB_NAME": {
+          "isOptional": false,
+          "description": "Apiserver db name for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/app/data/unla.db"
+        },
+        "GATEWAY_DB_NAME": {
+          "isOptional": false,
+          "description": "Gateway db name for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/app/data/unla.db"
+        },
+        "VITE_API_BASE_URL": {
+          "isOptional": false,
+          "description": "Vite api base url for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/api"
+        },
+        "VITE_WS_BASE_URL": {
+          "isOptional": false,
+          "description": "Vite ws base url for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/api/ws"
+        },
+        "VITE_MCP_GATEWAY_BASE_URL": {
+          "isOptional": false,
+          "description": "Vite mcp gateway base url for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/gateway"
+        },
+        "VITE_GATEWAY_SERVICE_BASE_URL": {
+          "isOptional": false,
+          "description": "Vite gateway service base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{unla.RAILWAY_PUBLIC_DOMAIN}}/gateway"
+        },
+        "VITE_DIRECT_MCP_GATEWAY_MODIFIER": {
+          "isOptional": false,
+          "description": "Vite direct mcp gateway modifier for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/gateway"
+        },
+        "OAUTH2_ISSUER": {
+          "isOptional": false,
+          "description": "Oauth2 issuer resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{unla.RAILWAY_PUBLIC_DOMAIN}}/gateway"
+        },
+        "LOGGER_LEVEL": {
+          "isOptional": false,
+          "description": "Logger level for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "info"
+        },
+        "LLM_CONFIG_ADMIN_ONLY": {
+          "isOptional": false,
+          "description": "Llm config admin only for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/unla/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/app/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/unla/Dockerfile"
+      },
+      "volumeMounts": {
+        "b8bdcf68-4112-5e15-97a4-6ff3af885a9d": {
+          "mountPath": "/app/data"
+        }
+      }
+    },
+    "e017c24a-3b01-56cb-881d-078c4d84d662": {
+      "name": "unla",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for unla. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "80"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for unla. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

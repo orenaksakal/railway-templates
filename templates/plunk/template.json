@@ -1,0 +1,472 @@
+{
+  "services": {
+    "0e0e0806-c127-586b-87bb-179ebbf18d3e": {
+      "name": "postgres",
+      "source": {
+        "image": "postgres:16-alpine@sha256:cf78e76683b9ca8c5733cbbdce6c9262b45b6767934dd0a95e671f9a0fc20685"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "plunk"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "plunk"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "PGPORT": {
+          "isOptional": false,
+          "description": "Pgport for postgres. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5432"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://plunk:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/plunk"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "e9dc15ca-990d-5280-a54c-d50fe897fa82": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "1e547c6c-a79a-5f05-986a-6d493a2c06dc": {
+      "name": "storage",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "MINIO_ROOT_USER": {
+          "isOptional": false,
+          "description": "Generated minio root user. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(20, \"abcdef0123456789\")}}"
+        },
+        "MINIO_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated minio root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "S3_BUCKETS": {
+          "isOptional": false,
+          "description": "S3 buckets for storage. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "uploads"
+        },
+        "PUBLIC_BUCKET": {
+          "isOptional": false,
+          "description": "Public email-image bucket. Do not upload confidential files; only this bucket allows anonymous reads.",
+          "defaultValue": "uploads"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-storage/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:9000": {
+            "port": 9000
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-storage/Dockerfile"
+      },
+      "volumeMounts": {
+        "d2311c1b-a75d-5436-8bbb-3a030b29a229": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "e402eae9-bf35-57cc-8875-21fa295f3ff4": {
+      "name": "core",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "SERVICE": {
+          "isOptional": false,
+          "description": "Service for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "NODE_ENV": {
+          "isOptional": false,
+          "description": "Node.js runtime mode. Keep production for hosted deployments.",
+          "defaultValue": "production"
+        },
+        "NGINX_PORT": {
+          "isOptional": false,
+          "description": "Nginx port for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "80"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "${{postgres.DATABASE_URL}}"
+        },
+        "DIRECT_DATABASE_URL": {
+          "isOptional": false,
+          "description": "Direct database url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.DATABASE_URL}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "${{redis.REDIS_URL}}"
+        },
+        "JWT_SECRET": {
+          "isOptional": false,
+          "description": "Generated jwt secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "USE_HTTPS": {
+          "isOptional": false,
+          "description": "Use https for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "API_DOMAIN": {
+          "isOptional": false,
+          "description": "Api domain resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{plunk.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "DASHBOARD_DOMAIN": {
+          "isOptional": false,
+          "description": "Dashboard domain for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "dashboard.internal.invalid"
+        },
+        "API_URI": {
+          "isOptional": false,
+          "description": "Api uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{plunk.RAILWAY_PUBLIC_DOMAIN}}/api"
+        },
+        "DASHBOARD_URI": {
+          "isOptional": false,
+          "description": "Dashboard uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{plunk.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "LANDING_DOMAIN": {
+          "isOptional": false,
+          "description": "Landing domain resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{landing.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "WIKI_DOMAIN": {
+          "isOptional": false,
+          "description": "Wiki domain resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{docs.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "AWS_SES_REGION": {
+          "isOptional": false,
+          "description": "Required region of your configured AWS SES account."
+        },
+        "AWS_SES_ACCESS_KEY_ID": {
+          "isOptional": false,
+          "description": "Required operator-owned SES access key. Never use a template author credential."
+        },
+        "AWS_SES_SECRET_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Required operator-supplied aws ses secret access key. Enter your own value before deployment."
+        },
+        "SES_CONFIGURATION_SET": {
+          "isOptional": false,
+          "description": "Required SES configuration set with the SNS callback described below."
+        },
+        "S3_ENDPOINT": {
+          "isOptional": false,
+          "description": "S3 endpoint resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{storage.RAILWAY_PRIVATE_DOMAIN}}:9000"
+        },
+        "S3_ACCESS_KEY_ID": {
+          "isOptional": false,
+          "description": "S3 access key id resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_USER}}"
+        },
+        "S3_ACCESS_KEY_SECRET": {
+          "isOptional": false,
+          "description": "S3 access key secret resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{storage.MINIO_ROOT_PASSWORD}}"
+        },
+        "S3_BUCKET": {
+          "isOptional": false,
+          "description": "S3 bucket for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "uploads"
+        },
+        "S3_PUBLIC_URL": {
+          "isOptional": false,
+          "description": "S3 public url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{storage.RAILWAY_PUBLIC_DOMAIN}}/uploads"
+        },
+        "S3_FORCE_PATH_STYLE": {
+          "isOptional": false,
+          "description": "S3 force path style for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "NTFY_URL": {
+          "isOptional": false,
+          "description": "Ntfy url for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": ""
+        },
+        "DISABLE_SIGNUPS": {
+          "isOptional": false,
+          "description": "Owner gateway protects registration. After creating your account, set true to close new registrations.",
+          "defaultValue": "false"
+        },
+        "AUTO_PROJECT_DISABLE": {
+          "isOptional": false,
+          "description": "Auto project disable for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/plunk/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/app/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/plunk/Dockerfile"
+      },
+      "volumeMounts": {
+        "b8bdcf68-4112-5e15-97a4-6ff3af885a9d": {
+          "mountPath": "/app/data"
+        }
+      }
+    },
+    "16b46e60-7dce-5e6d-8a0d-dc8de6345513": {
+      "name": "plunk",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for plunk. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "3000"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for plunk. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/plunk/Gateway.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/plunk/Gateway.Dockerfile"
+      }
+    },
+    "06719506-9a90-52fd-8800-1427d9da6db6": {
+      "name": "landing",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for landing. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "80"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for landing. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Access password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{plunk.ACCESS_PASSWORD}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    },
+    "5af88161-4acf-5a68-8492-c01c1936d3f1": {
+      "name": "docs",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for docs. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "80"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for docs. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Access password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{plunk.ACCESS_PASSWORD}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "services": {
+    "e9bf07b2-ced0-533e-b8cc-5a290e870672": {
+      "name": "core",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "OPENAI_API_KEY": {
+          "isOptional": false,
+          "description": "Required model-provider API key. Provider charges are separate from Railway."
+        },
+        "OPENAI_API_BASE": {
+          "isOptional": false,
+          "description": "Openai api base for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "https://api.openai.com/v1"
+        },
+        "LLM_MODEL_NAME": {
+          "isOptional": false,
+          "description": "Llm model name for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "gpt-4o"
+        },
+        "EMBEDDING_MODEL_NAME": {
+          "isOptional": false,
+          "description": "Embedding model name for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "text-embedding-3-small"
+        },
+        "EMBEDDING_MODEL_API_URL": {
+          "isOptional": false,
+          "description": "Embedding model api url for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "https://api.openai.com/v1/embeddings"
+        },
+        "DBGPT_LANG": {
+          "isOptional": false,
+          "description": "Dbgpt lang for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "en"
+        },
+        "ENCRYPTION_KEY": {
+          "isOptional": false,
+          "description": "Generated Formbricks encryption key. Back it up securely; changing it can make encrypted data unreadable.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "PUBLIC_URL": {
+          "isOptional": false,
+          "description": "Public url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{db-gpt.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "DBGPT_MAX_PARALLEL_SUBAGENTS": {
+          "isOptional": false,
+          "description": "Dbgpt max parallel subagents for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "HF_HOME": {
+          "isOptional": false,
+          "description": "Hf home for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/cache/huggingface"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/db-gpt/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/db-gpt/Dockerfile"
+      },
+      "volumeMounts": {
+        "00be78aa-d23d-52b6-8939-07ba72082160": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "916a1f32-bc4c-579f-b0d3-e890842e3dde": {
+      "name": "db-gpt",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for db-gpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5670"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for db-gpt. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

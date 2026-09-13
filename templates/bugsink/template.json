@@ -1,0 +1,151 @@
+{
+  "services": {
+    "9a9559ec-ced0-549f-b61f-8975d479e0d3": {
+      "name": "mysql",
+      "source": {
+        "image": "mysql:8.4@sha256:85b9bf2e29cf836ecb8c2a15a935d4ba0c606631dff1dd79531a11983c638f2a"
+      },
+      "variables": {
+        "MYSQL_DATABASE": {
+          "isOptional": false,
+          "description": "Mysql database for mysql. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "bugsink"
+        },
+        "MYSQL_USER": {
+          "isOptional": false,
+          "description": "Mysql user for mysql. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "bugsink"
+        },
+        "MYSQL_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mysql password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "MYSQL_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mysql root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/mysql"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "6caa3481-2c0f-5d50-9480-904c57280752": {
+          "mountPath": "/var/lib/mysql"
+        }
+      }
+    },
+    "c4afb97d-39bf-5bc8-910b-96c473f62bbc": {
+      "name": "bugsink",
+      "source": {
+        "image": "bugsink/bugsink:2.5.1@sha256:ecdd845877464d70d61244b8adba20d623e1860e88d8338f2808d9cc2925745c"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8000"
+        },
+        "SECRET_KEY": {
+          "isOptional": false,
+          "description": "Generated secret key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "ADMIN_EMAIL": {
+          "isOptional": false,
+          "description": "Required administrator email for first startup."
+        },
+        "ADMIN_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated admin password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "CREATE_SUPERUSER": {
+          "isOptional": false,
+          "description": "Create superuser resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{bugsink.ADMIN_EMAIL}}:${{bugsink.ADMIN_PASSWORD}}"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "mysql://bugsink:${{mysql.MYSQL_PASSWORD}}@${{mysql.RAILWAY_PRIVATE_DOMAIN}}:3306/bugsink"
+        },
+        "BASE_URL": {
+          "isOptional": false,
+          "description": "Base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{bugsink.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "BEHIND_HTTPS_PROXY": {
+          "isOptional": false,
+          "description": "Behind https proxy for bugsink. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "USE_X_REAL_IP": {
+          "isOptional": false,
+          "description": "Use x real ip for bugsink. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "USER_REGISTRATION": {
+          "isOptional": false,
+          "description": "User registration for bugsink. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "CB_ADMINS"
+        },
+        "PHONEHOME": {
+          "isOptional": false,
+          "description": "Phonehome for bugsink. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "MAX_EVENT_AGE_DAYS": {
+          "isOptional": false,
+          "description": "Max event age days for bugsink. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "30"
+        },
+        "MAX_RETENTION_EVENT_COUNT": {
+          "isOptional": false,
+          "description": "Max retention event count for bugsink. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "100000"
+        },
+        "SNAPPEA_NUM_WORKERS": {
+          "isOptional": false,
+          "description": "Snappea num workers for bugsink. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2"
+        },
+        "EMAIL_HOST": {
+          "isOptional": true,
+          "description": "Optional SMTP server for invitations and alerts."
+        },
+        "EMAIL_HOST_USER": {
+          "isOptional": true,
+          "description": "SMTP username."
+        },
+        "EMAIL_HOST_PASSWORD": {
+          "isOptional": true,
+          "description": "SMTP password."
+        },
+        "DEFAULT_FROM_EMAIL": {
+          "isOptional": true,
+          "description": "Verified sender email."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/health/ready",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8000": {
+            "port": 8000
+          }
+        }
+      }
+    }
+  }
+}

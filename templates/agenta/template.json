@@ -1,0 +1,1100 @@
+{
+  "services": {
+    "722445d5-908a-59d5-9eff-930290984d2f": {
+      "name": "postgres",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "agenta"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "agenta"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "PGPORT": {
+          "isOptional": false,
+          "description": "Pgport for postgres. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5432"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "postgresql://agenta:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/agenta"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/agenta/Postgres.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/agenta/Postgres.Dockerfile"
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "0bfaf82b-6dd0-558b-a5fe-39a1aa23b871": {
+      "name": "redis",
+      "source": {
+        "image": "redis:7.4@sha256:71da9275c5f3fcb97d0fa0c8c5b36cc995327265420f17a04bfd544f458059f7"
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "2f003068-8a90-559f-84d5-a60cfd06e740": {
+      "name": "seaweedfs",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "AGENTA_STORE_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Agenta store access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_STORE_ACCESS_KEY}}"
+        },
+        "AGENTA_STORE_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Agenta store secret key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_STORE_SECRET_KEY}}"
+        },
+        "AGENTA_STORE_SIGNING_KEY": {
+          "isOptional": false,
+          "description": "Agenta store signing key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_STORE_SIGNING_KEY}}"
+        },
+        "AGENTA_STORE_BUCKET": {
+          "isOptional": false,
+          "description": "Agenta store bucket for seaweedfs. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "agenta-store"
+        },
+        "AGENTA_STORE_JWT_ISSUER": {
+          "isOptional": false,
+          "description": "Agenta store jwt issuer resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/api"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/agenta/Storage.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/agenta/Storage.Dockerfile"
+      },
+      "volumeMounts": {
+        "ac7f0e38-71b6-5b4f-921c-bb36f106e953": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "69780a4a-3018-5505-b0d2-743a786000c2": {
+      "name": "web",
+      "source": {
+        "image": "ghcr.io/agenta-ai/agenta-web:v0.118.0@sha256:dc1c408c0574ebc0c90fa290f997bbd04cc2d8dad9414eeaa15a0ec9fe2bd68a"
+      },
+      "variables": {
+        "AGENTA_WEB_URL": {
+          "isOptional": false,
+          "description": "Agenta web url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "AGENTA_API_URL": {
+          "isOptional": false,
+          "description": "Agenta api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/api"
+        },
+        "AGENTA_SERVICES_URL": {
+          "isOptional": false,
+          "description": "Agenta services url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/services"
+        },
+        "AGENTA_AUTH_KEY": {
+          "isOptional": false,
+          "description": "Agenta auth key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_AUTH_KEY}}"
+        },
+        "AGENTA_CRYPT_KEY": {
+          "isOptional": false,
+          "description": "Agenta crypt key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_CRYPT_KEY}}"
+        },
+        "AGENTA_LICENSE": {
+          "isOptional": false,
+          "description": "Agenta license for web. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "oss"
+        },
+        "AGENTA_MOBILE_GATE": {
+          "isOptional": false,
+          "description": "Agenta mobile gate for web. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "HOSTNAME": {
+          "isOptional": false,
+          "description": "Application bind address. Keep 0.0.0.0 for container networking.",
+          "defaultValue": "0.0.0.0"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -lc '/app/entrypoint.sh node /app/oss/server.js'"
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "e6e67460-f8b3-53b9-951f-86cc0c16df1e": {
+      "name": "web-mobile",
+      "source": {
+        "image": "ghcr.io/agenta-ai/agenta-web-mobile:v0.118.0@sha256:ee2b6abd0e9e6a3fe43d8032b4b747343743d8fac482628a5a73a4f148f5eb69"
+      },
+      "variables": {
+        "AGENTA_WEB_URL": {
+          "isOptional": false,
+          "description": "Agenta web url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "AGENTA_API_URL": {
+          "isOptional": false,
+          "description": "Agenta api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/api"
+        },
+        "AGENTA_SERVICES_URL": {
+          "isOptional": false,
+          "description": "Agenta services url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/services"
+        },
+        "AGENTA_AUTH_KEY": {
+          "isOptional": false,
+          "description": "Agenta auth key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_AUTH_KEY}}"
+        },
+        "AGENTA_CRYPT_KEY": {
+          "isOptional": false,
+          "description": "Agenta crypt key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_CRYPT_KEY}}"
+        },
+        "AGENTA_LICENSE": {
+          "isOptional": false,
+          "description": "Agenta license for web-mobile. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "oss"
+        },
+        "AGENTA_MOBILE_GATE": {
+          "isOptional": false,
+          "description": "Agenta mobile gate for web-mobile. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "HOSTNAME": {
+          "isOptional": false,
+          "description": "Application bind address. Keep 0.0.0.0 for container networking.",
+          "defaultValue": "0.0.0.0"
+        },
+        "AGENTA_MOBILE_REVERSE_GATE": {
+          "isOptional": false,
+          "description": "Agenta mobile reverse gate for web-mobile. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "sh -lc '/app/entrypoint.sh node /app/mobile/server.js'"
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "6f1e2bdd-26ed-5ccf-b3d8-4dd91a937eef": {
+      "name": "api",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "AGENTA_WEB_URL": {
+          "isOptional": false,
+          "description": "Agenta web url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "AGENTA_API_URL": {
+          "isOptional": false,
+          "description": "Agenta api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/api"
+        },
+        "AGENTA_SERVICES_URL": {
+          "isOptional": false,
+          "description": "Agenta services url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/services"
+        },
+        "AGENTA_AUTH_KEY": {
+          "isOptional": false,
+          "description": "Generated agenta auth key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "AGENTA_CRYPT_KEY": {
+          "isOptional": false,
+          "description": "Generated agenta crypt key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "AGENTA_SERVICES_INTERNAL_KEY": {
+          "isOptional": false,
+          "description": "Generated agenta services internal key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "POSTGRES_URI_CORE": {
+          "isOptional": false,
+          "description": "Postgres uri core resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql+asyncpg://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_core"
+        },
+        "POSTGRES_URI_TRACING": {
+          "isOptional": false,
+          "description": "Postgres uri tracing resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql+asyncpg://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_tracing"
+        },
+        "POSTGRES_URI_SUPERTOKENS": {
+          "isOptional": false,
+          "description": "Postgres uri supertokens resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_supertokens"
+        },
+        "AGENTA_RUNNER_INTERNAL_URL": {
+          "isOptional": false,
+          "description": "Agenta runner internal url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{runner.RAILWAY_PRIVATE_DOMAIN}}:8765"
+        },
+        "AGENTA_RUNNER_TOKEN": {
+          "isOptional": false,
+          "description": "Generated agenta runner token. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "AGENTA_STORE_ENDPOINT_URL": {
+          "isOptional": false,
+          "description": "Agenta store endpoint url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{seaweedfs.RAILWAY_PRIVATE_DOMAIN}}:8333"
+        },
+        "AGENTA_STORE_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Generated agenta store access key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(20, \"abcdef0123456789\")}}"
+        },
+        "AGENTA_STORE_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Generated agenta store secret key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "AGENTA_STORE_BUCKET": {
+          "isOptional": false,
+          "description": "Agenta store bucket for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "agenta-store"
+        },
+        "AGENTA_STORE_SIGNING_KEY": {
+          "isOptional": false,
+          "description": "Generated agenta store signing key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "AGENTA_STORE_JWT_ISSUER": {
+          "isOptional": false,
+          "description": "Agenta store jwt issuer resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/api"
+        },
+        "AGENTA_LICENSE": {
+          "isOptional": false,
+          "description": "Agenta license for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "oss"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8000"
+        },
+        "SCRIPT_NAME": {
+          "isOptional": false,
+          "description": "Script name for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/api"
+        },
+        "REDIS_URI": {
+          "isOptional": false,
+          "description": "Redis uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "REDIS_URI_VOLATILE": {
+          "isOptional": false,
+          "description": "Redis uri volatile resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "REDIS_URI_DURABLE": {
+          "isOptional": false,
+          "description": "Redis uri durable resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "SUPERTOKENS_CONNECTION_URI": {
+          "isOptional": false,
+          "description": "Supertokens connection uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{supertokens.RAILWAY_PRIVATE_DOMAIN}}:3567"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}"
+        },
+        "START_ROLE": {
+          "isOptional": false,
+          "description": "Start role for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "api"
+        },
+        "PGHOST": {
+          "isOptional": false,
+          "description": "Pghost resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "PGPORT": {
+          "isOptional": false,
+          "description": "Pgport for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "5432"
+        },
+        "ALEMBIC_CFG_PATH_CORE": {
+          "isOptional": false,
+          "description": "Alembic cfg path core for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/app/oss/databases/postgres/migrations/core/alembic.ini"
+        },
+        "ALEMBIC_CFG_PATH_TRACING": {
+          "isOptional": false,
+          "description": "Alembic cfg path tracing for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/app/oss/databases/postgres/migrations/tracing/alembic.ini"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/agenta/Api.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/agenta/Api.Dockerfile"
+      },
+      "volumeMounts": {
+        "43817a41-b878-50a2-a553-a2f08e6bf72f": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "6df273a7-9f5c-5ac5-941c-5ab613a8b14e": {
+      "name": "services",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "AGENTA_WEB_URL": {
+          "isOptional": false,
+          "description": "Agenta web url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "AGENTA_API_URL": {
+          "isOptional": false,
+          "description": "Agenta api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/api"
+        },
+        "AGENTA_SERVICES_URL": {
+          "isOptional": false,
+          "description": "Agenta services url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/services"
+        },
+        "AGENTA_AUTH_KEY": {
+          "isOptional": false,
+          "description": "Agenta auth key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_AUTH_KEY}}"
+        },
+        "AGENTA_CRYPT_KEY": {
+          "isOptional": false,
+          "description": "Agenta crypt key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_CRYPT_KEY}}"
+        },
+        "AGENTA_SERVICES_INTERNAL_KEY": {
+          "isOptional": false,
+          "description": "Agenta services internal key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_SERVICES_INTERNAL_KEY}}"
+        },
+        "POSTGRES_URI_CORE": {
+          "isOptional": false,
+          "description": "Postgres uri core resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql+asyncpg://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_core"
+        },
+        "POSTGRES_URI_TRACING": {
+          "isOptional": false,
+          "description": "Postgres uri tracing resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql+asyncpg://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_tracing"
+        },
+        "POSTGRES_URI_SUPERTOKENS": {
+          "isOptional": false,
+          "description": "Postgres uri supertokens resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_supertokens"
+        },
+        "AGENTA_RUNNER_INTERNAL_URL": {
+          "isOptional": false,
+          "description": "Agenta runner internal url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{runner.RAILWAY_PRIVATE_DOMAIN}}:8765"
+        },
+        "AGENTA_RUNNER_TOKEN": {
+          "isOptional": false,
+          "description": "Agenta runner token resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_RUNNER_TOKEN}}"
+        },
+        "AGENTA_STORE_ENDPOINT_URL": {
+          "isOptional": false,
+          "description": "Agenta store endpoint url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{seaweedfs.RAILWAY_PRIVATE_DOMAIN}}:8333"
+        },
+        "AGENTA_STORE_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Agenta store access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_STORE_ACCESS_KEY}}"
+        },
+        "AGENTA_STORE_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Agenta store secret key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_STORE_SECRET_KEY}}"
+        },
+        "AGENTA_STORE_BUCKET": {
+          "isOptional": false,
+          "description": "Agenta store bucket for services. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "agenta-store"
+        },
+        "AGENTA_STORE_SIGNING_KEY": {
+          "isOptional": false,
+          "description": "Agenta store signing key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_STORE_SIGNING_KEY}}"
+        },
+        "AGENTA_LICENSE": {
+          "isOptional": false,
+          "description": "Agenta license for services. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "oss"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "SCRIPT_NAME": {
+          "isOptional": false,
+          "description": "Script name for services. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/services"
+        },
+        "AGENTA_API_INTERNAL_URL": {
+          "isOptional": false,
+          "description": "Agenta api internal url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/api"
+        },
+        "REDIS_URI": {
+          "isOptional": false,
+          "description": "Redis uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "REDIS_URI_VOLATILE": {
+          "isOptional": false,
+          "description": "Redis uri volatile resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "REDIS_URI_DURABLE": {
+          "isOptional": false,
+          "description": "Redis uri durable resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "START_ROLE": {
+          "isOptional": false,
+          "description": "Start role for services. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "services"
+        },
+        "API_HEALTH_URL": {
+          "isOptional": false,
+          "description": "Api health url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/health"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/agenta/Services.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/agenta/Services.Dockerfile"
+      }
+    },
+    "af116e59-8a30-5ae0-9598-f275c5fc2b39": {
+      "name": "runner",
+      "source": {
+        "image": "ghcr.io/agenta-ai/agenta-runner:v0.118.0@sha256:9b4de2365b8931773d88105e1b13daabaa0111d9e0137321bc424b3e70d261a5"
+      },
+      "variables": {
+        "AGENTA_RUNNER_HOST": {
+          "isOptional": false,
+          "description": "Agenta runner host for runner. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0.0.0.0"
+        },
+        "AGENTA_RUNNER_PORT": {
+          "isOptional": false,
+          "description": "Agenta runner port for runner. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8765"
+        },
+        "AGENTA_API_URL": {
+          "isOptional": false,
+          "description": "Agenta api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/api"
+        },
+        "AGENTA_API_INTERNAL_URL": {
+          "isOptional": false,
+          "description": "Agenta api internal url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/api"
+        },
+        "AGENTA_RUNNER_TOKEN": {
+          "isOptional": false,
+          "description": "Agenta runner token resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_RUNNER_TOKEN}}"
+        },
+        "AGENTA_RUNNER_ENABLED_SANDBOX_PROVIDERS": {
+          "isOptional": false,
+          "description": "Agenta runner enabled sandbox providers for runner. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "daytona"
+        },
+        "AGENTA_RUNNER_DEFAULT_SANDBOX_PROVIDER": {
+          "isOptional": false,
+          "description": "Agenta runner default sandbox provider for runner. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "daytona"
+        },
+        "AGENTA_STORE_ENDPOINT_URL": {
+          "isOptional": false,
+          "description": "Agenta store endpoint url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{seaweedfs.RAILWAY_PRIVATE_DOMAIN}}:8333"
+        },
+        "AGENTA_STORE_ACCESS_KEY": {
+          "isOptional": false,
+          "description": "Agenta store access key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_STORE_ACCESS_KEY}}"
+        },
+        "AGENTA_STORE_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Agenta store secret key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_STORE_SECRET_KEY}}"
+        },
+        "AGENTA_STORE_BUCKET": {
+          "isOptional": false,
+          "description": "Agenta store bucket for runner. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "agenta-store"
+        },
+        "AGENTA_STORE_SIGNING_KEY": {
+          "isOptional": false,
+          "description": "Agenta store signing key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_STORE_SIGNING_KEY}}"
+        },
+        "AGENTA_RUNNER_DAYTONA_API_KEY": {
+          "isOptional": false,
+          "description": "Required operator-owned Daytona key. Agent execution uses a separate sandbox service; no host Docker socket or FUSE device is provisioned."
+        },
+        "AGENTA_RUNNER_DAYTONA_SNAPSHOT": {
+          "isOptional": true,
+          "description": "Optional Daytona snapshot name for the chosen runtime."
+        },
+        "AGENTA_RUNNER_DAYTONA_TARGET": {
+          "isOptional": true,
+          "description": "Optional Daytona target region."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "startCommand": "node_modules/.bin/tsx src/server.ts"
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "f9380012-1663-50d9-bdad-613375c1e027": {
+      "name": "worker-streams",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "AGENTA_WEB_URL": {
+          "isOptional": false,
+          "description": "Agenta web url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "AGENTA_SERVICES_URL": {
+          "isOptional": false,
+          "description": "Agenta services url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/services"
+        },
+        "AGENTA_AUTH_KEY": {
+          "isOptional": false,
+          "description": "Agenta auth key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_AUTH_KEY}}"
+        },
+        "AGENTA_CRYPT_KEY": {
+          "isOptional": false,
+          "description": "Agenta crypt key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_CRYPT_KEY}}"
+        },
+        "POSTGRES_URI_CORE": {
+          "isOptional": false,
+          "description": "Postgres uri core resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql+asyncpg://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_core"
+        },
+        "POSTGRES_URI_TRACING": {
+          "isOptional": false,
+          "description": "Postgres uri tracing resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql+asyncpg://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_tracing"
+        },
+        "POSTGRES_URI_SUPERTOKENS": {
+          "isOptional": false,
+          "description": "Postgres uri supertokens resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_supertokens"
+        },
+        "AGENTA_LICENSE": {
+          "isOptional": false,
+          "description": "Agenta license for worker-streams. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "oss"
+        },
+        "AGENTA_API_URL": {
+          "isOptional": false,
+          "description": "Agenta api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/api"
+        },
+        "AGENTA_API_INTERNAL_URL": {
+          "isOptional": false,
+          "description": "Agenta api internal url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/api"
+        },
+        "REDIS_URI": {
+          "isOptional": false,
+          "description": "Redis uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "REDIS_URI_VOLATILE": {
+          "isOptional": false,
+          "description": "Redis uri volatile resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "REDIS_URI_DURABLE": {
+          "isOptional": false,
+          "description": "Redis uri durable resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "SUPERTOKENS_CONNECTION_URI": {
+          "isOptional": false,
+          "description": "Supertokens connection uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{supertokens.RAILWAY_PRIVATE_DOMAIN}}:3567"
+        },
+        "START_ROLE": {
+          "isOptional": false,
+          "description": "Start role for worker-streams. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "worker-streams"
+        },
+        "API_HEALTH_URL": {
+          "isOptional": false,
+          "description": "Api health url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/health"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/agenta/Api.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/agenta/Api.Dockerfile"
+      }
+    },
+    "63b0d925-f686-53c9-b6f3-8c6687fa1a0f": {
+      "name": "worker-queues",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "AGENTA_WEB_URL": {
+          "isOptional": false,
+          "description": "Agenta web url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "AGENTA_SERVICES_URL": {
+          "isOptional": false,
+          "description": "Agenta services url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/services"
+        },
+        "AGENTA_AUTH_KEY": {
+          "isOptional": false,
+          "description": "Agenta auth key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_AUTH_KEY}}"
+        },
+        "AGENTA_CRYPT_KEY": {
+          "isOptional": false,
+          "description": "Agenta crypt key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_CRYPT_KEY}}"
+        },
+        "POSTGRES_URI_CORE": {
+          "isOptional": false,
+          "description": "Postgres uri core resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql+asyncpg://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_core"
+        },
+        "POSTGRES_URI_TRACING": {
+          "isOptional": false,
+          "description": "Postgres uri tracing resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql+asyncpg://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_tracing"
+        },
+        "POSTGRES_URI_SUPERTOKENS": {
+          "isOptional": false,
+          "description": "Postgres uri supertokens resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_supertokens"
+        },
+        "AGENTA_LICENSE": {
+          "isOptional": false,
+          "description": "Agenta license for worker-queues. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "oss"
+        },
+        "AGENTA_API_URL": {
+          "isOptional": false,
+          "description": "Agenta api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/api"
+        },
+        "AGENTA_API_INTERNAL_URL": {
+          "isOptional": false,
+          "description": "Agenta api internal url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/api"
+        },
+        "REDIS_URI": {
+          "isOptional": false,
+          "description": "Redis uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "REDIS_URI_VOLATILE": {
+          "isOptional": false,
+          "description": "Redis uri volatile resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "REDIS_URI_DURABLE": {
+          "isOptional": false,
+          "description": "Redis uri durable resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "SUPERTOKENS_CONNECTION_URI": {
+          "isOptional": false,
+          "description": "Supertokens connection uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{supertokens.RAILWAY_PRIVATE_DOMAIN}}:3567"
+        },
+        "START_ROLE": {
+          "isOptional": false,
+          "description": "Start role for worker-queues. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "worker-queues"
+        },
+        "API_HEALTH_URL": {
+          "isOptional": false,
+          "description": "Api health url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/health"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/agenta/Api.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/agenta/Api.Dockerfile"
+      }
+    },
+    "fcb6c14e-1891-5e56-a4fb-1a4f16277d85": {
+      "name": "cron",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "AGENTA_WEB_URL": {
+          "isOptional": false,
+          "description": "Agenta web url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "AGENTA_SERVICES_URL": {
+          "isOptional": false,
+          "description": "Agenta services url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{agenta.RAILWAY_PUBLIC_DOMAIN}}/services"
+        },
+        "AGENTA_AUTH_KEY": {
+          "isOptional": false,
+          "description": "Agenta auth key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_AUTH_KEY}}"
+        },
+        "AGENTA_CRYPT_KEY": {
+          "isOptional": false,
+          "description": "Agenta crypt key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.AGENTA_CRYPT_KEY}}"
+        },
+        "POSTGRES_URI_CORE": {
+          "isOptional": false,
+          "description": "Postgres uri core resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql+asyncpg://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_core"
+        },
+        "POSTGRES_URI_TRACING": {
+          "isOptional": false,
+          "description": "Postgres uri tracing resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql+asyncpg://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_tracing"
+        },
+        "POSTGRES_URI_SUPERTOKENS": {
+          "isOptional": false,
+          "description": "Postgres uri supertokens resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_supertokens"
+        },
+        "AGENTA_LICENSE": {
+          "isOptional": false,
+          "description": "Agenta license for cron. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "oss"
+        },
+        "AGENTA_API_URL": {
+          "isOptional": false,
+          "description": "Agenta api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/api"
+        },
+        "AGENTA_API_INTERNAL_URL": {
+          "isOptional": false,
+          "description": "Agenta api internal url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/api"
+        },
+        "REDIS_URI": {
+          "isOptional": false,
+          "description": "Redis uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "REDIS_URI_VOLATILE": {
+          "isOptional": false,
+          "description": "Redis uri volatile resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "REDIS_URI_DURABLE": {
+          "isOptional": false,
+          "description": "Redis uri durable resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "SUPERTOKENS_CONNECTION_URI": {
+          "isOptional": false,
+          "description": "Supertokens connection uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{supertokens.RAILWAY_PRIVATE_DOMAIN}}:3567"
+        },
+        "START_ROLE": {
+          "isOptional": false,
+          "description": "Start role for cron. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "cron"
+        },
+        "API_HEALTH_URL": {
+          "isOptional": false,
+          "description": "Api health url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{api.RAILWAY_PRIVATE_DOMAIN}}:8000/health"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/agenta/Api.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/agenta/Api.Dockerfile"
+      }
+    },
+    "e9c76f79-73ec-5c61-a701-f92e912a74af": {
+      "name": "supertokens",
+      "source": {
+        "image": "supertokens/supertokens-postgresql:11@sha256:7a71606ee6ff6a1173f13e4dc1ee27bd0169c09a74515149a9e0ac82994cfac7"
+      },
+      "variables": {
+        "POSTGRESQL_CONNECTION_URI": {
+          "isOptional": false,
+          "description": "Postgresql connection uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_supertokens"
+        },
+        "POSTGRES_URI_SUPERTOKENS": {
+          "isOptional": false,
+          "description": "Postgres uri supertokens resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "postgresql://${{postgres.POSTGRES_USER}}:${{postgres.POSTGRES_PASSWORD}}@${{postgres.RAILWAY_PRIVATE_DOMAIN}}:${{postgres.PGPORT}}/agenta_oss_supertokens"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "51cc89df-ddfb-5910-be2e-6ef3535eeb3f": {
+      "name": "agenta",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/fifteen-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{web.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for agenta. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8080"
+        },
+        "API_HOST": {
+          "isOptional": false,
+          "description": "Api host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "SERVICES_HOST": {
+          "isOptional": false,
+          "description": "Services host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{services.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "MOBILE_HOST": {
+          "isOptional": false,
+          "description": "Mobile host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{web-mobile.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for agenta. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/agenta/Gateway.Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/agenta/Gateway.Dockerfile"
+      }
+    }
+  }
+}
