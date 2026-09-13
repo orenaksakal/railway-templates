@@ -16,7 +16,7 @@ All 25 marketplace listings are published. See [VALIDATION.md](VALIDATION.md) fo
 
 ## New unpublished drafts
 
-Fifteen additional templates covering 53 services are prepared in [DRAFTS-ROUND-6.md](DRAFTS-ROUND-6.md): Plunk, Bugsink, Notifuse, Lago, DocuSeal, Frappe Learning, DB-GPT, Frappe Insights, Frappe Builder, Unla, MCPJungle, Perses, TimeTagger, Vespa and Agenta. Their source is `scripts/catalog_round6.py`; container builds and application acceptance workflows remain unverified.
+Fifteen additional templates covering 53 services are saved and verified as Railway editor drafts; see [DRAFTS-ROUND-6.md](DRAFTS-ROUND-6.md): Plunk, Bugsink, Notifuse, Lago, DocuSeal, Frappe Learning, DB-GPT, Frappe Insights, Frappe Builder, Unla, MCPJungle, Perses, TimeTagger, Vespa and Agenta. Their source is `scripts/catalog_round6.py`; container builds and application acceptance workflows remain unverified.
 
 ## Additional published templates
 
