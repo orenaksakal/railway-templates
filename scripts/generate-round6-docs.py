@@ -75,7 +75,7 @@ def main():
   metadata[slug]={'name':title,'description':description,'category':category,'image':'https://github.com/'+src['repo'].split('/')[0]+'.png'}
   services=factory()
   lines=[f'# Deploy and Host {title} on Railway\n',description+'\n',
-   '**Unpublished draft. Image builds and Railway application workflows have not been validated.** The template defines services; saving a draft creates no running application. Deploying it later incurs Railway usage and any external provider charges.\n',
+   '**Validation scope: static configuration checks only. Image builds and Railway application workflows have not been validated.** Deploying this template incurs Railway usage and any external provider charges.\n',
    f'## About Hosting {title}\n',scope+'\n','## Setup\n',setup+'\n',
    '### Deployment Dependencies\n','| Service | Source | Persistent volume | Public HTTP port |','| --- | --- | --- | --- |']
   for s in services:
@@ -97,7 +97,7 @@ def main():
    f'## Dependencies for {title}\n',f"Reviewed upstream release: [{src['tag']}](https://github.com/{src['repo']}/tree/{src['sha']}). Image digests are recorded in `images.round6.lock.json`; source receipts are in `sources.round6.lock.json`. A matching version label does not independently prove image-to-source provenance. Base-image pins do not lock later apt/apk or language-package resolution.\n",
    '## Recommended acceptance checks\n',acceptance+'\n',
    '## Operations and recovery\n','Back up every listed persistent volume and export every application database, preserving the generated encryption/signing secrets. Restore into a separate test instance and repeat the functional workflow before relying on the backup. Keep internal databases private. An owner gateway `/healthz` response proves only that gateway is alive, not that its application or dependencies are ready. After changing a public domain, update all application origin and callback settings. Review upstream migrations before upgrading; record the old source/image pins and a recoverable backup. No scheduled backup service is configured by this draft.\n',
-   '## Validation status\n','The checked-in catalog supports static pin, reference, Docker COPY-path and script-syntax validation. Container builds, native proxy behavior, fresh Railway deployment, provider integrations, persistence and restore remain release gates. See `DRAFTS-ROUND-6.md` for the batch record.\n']
+   '## Validation status\n','The checked-in catalog supports static pin, reference, Docker COPY-path and script-syntax validation. Container builds, native proxy behavior, fresh Railway deployment, provider integrations, persistence and restore remain release gates. See `RELEASES-ROUND-6.md` for the publication record.\n']
   (ROOT/'templates'/slug/'README.md').write_text('\n'.join(lines))
  (ROOT/'marketplace.round6.json').write_text(json.dumps(metadata,indent=2)+'\n')
  print('Wrote 15 marketplace overviews and metadata records')

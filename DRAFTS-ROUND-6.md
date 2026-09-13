@@ -1,5 +1,7 @@
 # Fifteen new Railway template drafts
 
+**Historical preparation record:** all fifteen are now published. See [RELEASES-ROUND-6.md](RELEASES-ROUND-6.md) for verified status and public links.
+
 Prepared September 13, 2026. This batch adds Plunk, Bugsink, Notifuse, Lago, DocuSeal, Frappe Learning, DB-GPT, Frappe Insights, Frappe Builder, Unla, MCPJungle, Perses, TimeTagger, Vespa and Agenta. The existing 25 published templates are unchanged.
 
 The fifteen definitions contain 53 services with image digest pins, generated secrets, operator inputs, private dependencies and explicit persistent volumes. Every template has a marketplace overview and product-specific acceptance workflow. Sources build from `codex/fifteen-template-drafts`, using the repository root as Docker context.

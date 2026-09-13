@@ -1,6 +1,6 @@
 # Railway self-hosting templates
 
-Twenty-five published deployment definitions, including **Formbricks, Firecrawl, AFFiNE, OpenProject, and ToolJet**. Each definition uses pinned images, generated per-deployment secrets, private dependencies, persistent data, and a product-specific startup adapter.
+Forty published deployment definitions, including **Formbricks, Firecrawl, AFFiNE, OpenProject, and ToolJet**. Each definition uses pinned images, generated per-deployment secrets, private dependencies, persistent data, and a product-specific startup adapter.
 
 | Template | Services | Included |
 | --- | --- | --- |
@@ -12,11 +12,11 @@ Twenty-five published deployment definitions, including **Formbricks, Firecrawl,
 
 ## Status
 
-All 25 marketplace listings are published. See [VALIDATION.md](VALIDATION.md) for the original five, [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md) for the next ten, and [RELEASES-ROUND-4.md](RELEASES-ROUND-4.md) for the latest ten. These records distinguish local checks from tested Railway workflows and remaining limitations. Temporary release-test projects have been deleted.
+All 40 marketplace listings are published. See [RELEASES-ROUND-6.md](RELEASES-ROUND-6.md) for the newest fifteen. See [VALIDATION.md](VALIDATION.md) for the original five, [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md) for the next ten, and [RELEASES-ROUND-4.md](RELEASES-ROUND-4.md) for the latest ten. These records distinguish local checks from tested Railway workflows and remaining limitations. Temporary release-test projects have been deleted.
 
-## New unpublished drafts
+## Fifteen newly published templates
 
-Fifteen additional templates covering 53 services are saved and verified as Railway editor drafts; see [DRAFTS-ROUND-6.md](DRAFTS-ROUND-6.md): Plunk, Bugsink, Notifuse, Lago, DocuSeal, Frappe Learning, DB-GPT, Frappe Insights, Frappe Builder, Unla, MCPJungle, Perses, TimeTagger, Vespa and Agenta. Their source is `scripts/catalog_round6.py`; container builds and application acceptance workflows remain unverified.
+Fifteen additional templates covering 53 services are published and verified; see [RELEASES-ROUND-6.md](RELEASES-ROUND-6.md): Plunk, Bugsink, Notifuse, Lago, DocuSeal, Frappe Learning, DB-GPT, Frappe Insights, Frappe Builder, Unla, MCPJungle, Perses, TimeTagger, Vespa and Agenta. Their source is `scripts/catalog_round6.py`; container builds and application acceptance workflows remain unverified.
 
 ## Additional published templates
 
