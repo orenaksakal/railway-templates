@@ -13,6 +13,14 @@ Persistent HTTP API stubs behind generated owner access.
 
 The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **wiremock** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
 
+## Why Deploy WireMock Private API Stubs on Railway
+
+This template wires a protected HTTPS entry point to private application services, uses generated owner credentials, and declares the persistent mounts shown above. Repository adapters and pinned image references keep the deployment configuration reviewable. Application setup and the acceptance checks below remain operator responsibilities.
+
+## Common Use Cases
+
+Stub third-party HTTP APIs; reproduce deterministic integration responses; retain mappings across restarts.
+
 ## First use
 
 Use the gateway header X-Template-Key with its generated ACCESS_PASSWORD when calling the admin API and stub endpoints. Create mappings with persistent=true, or save mappings through /__admin/mappings/save.
@@ -29,7 +37,13 @@ No public open proxy or production traffic capture is configured. Request journa
 
 This template has source/configuration review and static checks only. No container build, Railway startup, browser/API workflow, volume recovery or cost measurement was performed. Saved editor fidelity is not deployment proof; `/healthz` proves only gateway readiness. Set operator-owned provider credentials only where needed and inspect the selected upstream license before commercial use.
 
-## Dependencies and sources
+## Dependencies for WireMock Private API Stubs
+
+### Deployment Dependencies
+
+A Railway account with capacity for the 2 services listed above, access to the selected image registries and GitHub source branch, and persistent volumes where shown are required. Keep volume-backed services at one replica. Provider accounts, SMTP and other optional integrations are supplied by the operator as described in First use and Scope and limitations.
+
+### Upstream sources
 
 - [Upstream project](https://github.com/wiremock/wiremock-docker)
 - [Selected source reference](https://github.com/wiremock/wiremock-docker/releases/tag/3.13.2-3)

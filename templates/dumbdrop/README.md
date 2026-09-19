@@ -13,6 +13,14 @@ A persistent file-upload inbox protected by gateway and generated PIN.
 
 The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **dumbdrop** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
 
+## Why Deploy DumbDrop Private File Inbox on Railway
+
+This template wires a protected HTTPS entry point to private application services, uses generated owner credentials, and declares the persistent mounts shown above. Repository adapters and pinned image references keep the deployment configuration reviewable. Application setup and the acceptance checks below remain operator responsibilities.
+
+## Common Use Cases
+
+Collect files from trusted uploaders; receive small project deliverables; maintain a private upload inbox.
+
 ## First use
 
 Unlock the gateway and enter DUMBDROP_PIN from core. Files are stored in /app/uploads. The application limit is 25 MB and gateway request limit is 32 MiB.
@@ -29,7 +37,13 @@ An upload inbox, not an anonymous sharing site. No automatic retention or offsit
 
 This template has source/configuration review and static checks only. No container build, Railway startup, browser/API workflow, volume recovery or cost measurement was performed. Saved editor fidelity is not deployment proof; `/healthz` proves only gateway readiness. Set operator-owned provider credentials only where needed and inspect the selected upstream license before commercial use.
 
-## Dependencies and sources
+## Dependencies for DumbDrop Private File Inbox
+
+### Deployment Dependencies
+
+A Railway account with capacity for the 2 services listed above, access to the selected image registries and GitHub source branch, and persistent volumes where shown are required. Keep volume-backed services at one replica. Provider accounts, SMTP and other optional integrations are supplied by the operator as described in First use and Scope and limitations.
+
+### Upstream sources
 
 - [Upstream project](https://github.com/DumbWareio/DumbDrop)
 - [Selected source reference](https://github.com/DumbWareio/DumbDrop/tree/ff8f813f493e89c7da056e7a3101ce2ef48e3960)

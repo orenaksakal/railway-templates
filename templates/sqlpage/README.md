@@ -13,6 +13,14 @@ A private SQL-driven web app with persistent pages and SQLite.
 
 The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **sqlpage** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
 
+## Why Deploy SQLPage Private App Starter on Railway
+
+This template wires a protected HTTPS entry point to private application services, uses generated owner credentials, and declares the persistent mounts shown above. Repository adapters and pinned image references keep the deployment configuration reviewable. Application setup and the acceptance checks below remain operator responsibilities.
+
+## Common Use Cases
+
+Prototype a SQL-driven internal tool; render SQLite records; build private read-only reports.
+
 ## First use
 
 Open the starter page through the gateway. Edit /data/www/index.sql or add SQL pages through an authenticated Railway shell. The SQLite database is /data/app.db.
@@ -29,7 +37,13 @@ The starter does not implement per-user application permissions. All gateway use
 
 This template has source/configuration review and static checks only. No container build, Railway startup, browser/API workflow, volume recovery or cost measurement was performed. Saved editor fidelity is not deployment proof; `/healthz` proves only gateway readiness. Set operator-owned provider credentials only where needed and inspect the selected upstream license before commercial use.
 
-## Dependencies and sources
+## Dependencies for SQLPage Private App Starter
+
+### Deployment Dependencies
+
+A Railway account with capacity for the 2 services listed above, access to the selected image registries and GitHub source branch, and persistent volumes where shown are required. Keep volume-backed services at one replica. Provider accounts, SMTP and other optional integrations are supplied by the operator as described in First use and Scope and limitations.
+
+### Upstream sources
 
 - [Upstream project](https://github.com/sqlpage/SQLPage)
 - [Selected source reference](https://github.com/sqlpage/SQLPage/releases/tag/v0.46.3)

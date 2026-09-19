@@ -75,7 +75,7 @@ def validate():
                     if field == 'RAILWAY_PUBLIC_DOMAIN':
                         assert by_name[target]['networking']['serviceDomains']
         readme = (ROOT / 'templates' / slug / 'README.md').read_text()
-        for required in ['marketplace gap', 'Validation scope: source review and static checks', 'First use', 'Recommended acceptance checks', 'Scope and limitations']:
+        for required in ['marketplace gap', 'Validation scope: source review and static checks', 'First use', 'Recommended acceptance checks', 'Scope and limitations', '## Why Deploy', '## Common Use Cases', '## Dependencies for', '### Deployment Dependencies']:
             assert required in readme, (slug, required)
         for path in (ROOT / 'templates' / slug).glob('*.sh'):
             subprocess.run(['sh', '-n', str(path)], check=True)

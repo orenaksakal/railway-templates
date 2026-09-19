@@ -13,6 +13,14 @@ A private collaborative API client with persistent request collections.
 
 The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **yaade** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
 
+## Why Deploy Yaade API Workspace on Railway
+
+This template wires a protected HTTPS entry point to private application services, uses generated owner credentials, and declares the persistent mounts shown above. Repository adapters and pinned image references keep the deployment configuration reviewable. Application setup and the acceptance checks below remain operator responsibilities.
+
+## Common Use Cases
+
+Save reusable API requests; organize request collections; maintain environments for development APIs.
+
 ## First use
 
 After the gateway, log in as admin with the upstream initial password password and immediately change it in Account settings. The default account is never exposed directly.
@@ -29,7 +37,13 @@ The upstream latest image is digest-pinned; its source has an older update caden
 
 This template has source/configuration review and static checks only. No container build, Railway startup, browser/API workflow, volume recovery or cost measurement was performed. Saved editor fidelity is not deployment proof; `/healthz` proves only gateway readiness. Set operator-owned provider credentials only where needed and inspect the selected upstream license before commercial use.
 
-## Dependencies and sources
+## Dependencies for Yaade API Workspace
+
+### Deployment Dependencies
+
+A Railway account with capacity for the 2 services listed above, access to the selected image registries and GitHub source branch, and persistent volumes where shown are required. Keep volume-backed services at one replica. Provider accounts, SMTP and other optional integrations are supplied by the operator as described in First use and Scope and limitations.
+
+### Upstream sources
 
 - [Upstream project](https://github.com/EsperoTech/yaade)
 - [Selected source reference](https://github.com/EsperoTech/yaade/tree/0b4dea7e9b140e029e29210c7694217b464eab41)

@@ -14,6 +14,14 @@ Project time tracking with private authenticated MongoDB.
 
 The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **titra** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
 
+## Why Deploy Titra Project Time Tracking on Railway
+
+This template wires a protected HTTPS entry point to private application services, uses generated owner credentials, and declares the persistent mounts shown above. Repository adapters and pinned image references keep the deployment configuration reviewable. Application setup and the acceptance checks below remain operator responsibilities.
+
+## Common Use Cases
+
+Log project hours; review time reports; export records for client billing.
+
 ## First use
 
 Register the owner behind the gateway and review registration permissions in Titra before inviting anyone. ROOT_URL and the private MongoDB URL are prewired.
@@ -30,7 +38,13 @@ This is a single MongoDB node, not a replica set or high-availability service. T
 
 This template has source/configuration review and static checks only. No container build, Railway startup, browser/API workflow, volume recovery or cost measurement was performed. Saved editor fidelity is not deployment proof; `/healthz` proves only gateway readiness. Set operator-owned provider credentials only where needed and inspect the selected upstream license before commercial use.
 
-## Dependencies and sources
+## Dependencies for Titra Project Time Tracking
+
+### Deployment Dependencies
+
+A Railway account with capacity for the 3 services listed above, access to the selected image registries and GitHub source branch, and persistent volumes where shown are required. Keep volume-backed services at one replica. Provider accounts, SMTP and other optional integrations are supplied by the operator as described in First use and Scope and limitations.
+
+### Upstream sources
 
 - [Upstream project](https://github.com/titraio/titra)
 - [Selected source reference](https://github.com/titraio/titra/releases/tag/v1.1.0)

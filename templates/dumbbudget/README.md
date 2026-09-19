@@ -13,6 +13,14 @@ Manual budgets and transactions with persistent owner-protected data.
 
 The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **dumbbudget** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
 
+## Why Deploy DumbBudget Personal Finance on Railway
+
+This template wires a protected HTTPS entry point to private application services, uses generated owner credentials, and declares the persistent mounts shown above. Repository adapters and pinned image references keep the deployment configuration reviewable. Application setup and the acceptance checks below remain operator responsibilities.
+
+## Common Use Cases
+
+Record manual income and expenses; monitor personal budgets; export transaction history.
+
 ## First use
 
 Unlock the gateway and enter DUMBBUDGET_PIN from core. Set your currency and create an initial budget.
@@ -29,7 +37,13 @@ Manual personal finance tracking. No bank synchronization, regulated accounting 
 
 This template has source/configuration review and static checks only. No container build, Railway startup, browser/API workflow, volume recovery or cost measurement was performed. Saved editor fidelity is not deployment proof; `/healthz` proves only gateway readiness. Set operator-owned provider credentials only where needed and inspect the selected upstream license before commercial use.
 
-## Dependencies and sources
+## Dependencies for DumbBudget Personal Finance
+
+### Deployment Dependencies
+
+A Railway account with capacity for the 2 services listed above, access to the selected image registries and GitHub source branch, and persistent volumes where shown are required. Keep volume-backed services at one replica. Provider accounts, SMTP and other optional integrations are supplied by the operator as described in First use and Scope and limitations.
+
+### Upstream sources
 
 - [Upstream project](https://github.com/DumbWareio/DumbBudget)
 - [Selected source reference](https://github.com/DumbWareio/DumbBudget/tree/b9db5cb32d14b7b78675d8be054611d4829253ef)
