@@ -1,0 +1,216 @@
+{
+  "typemill": {
+    "repo": "typemill/typemill",
+    "sha": "52f88d278743bcb1cca64bc7a2b4ac7ce8c6a32b",
+    "files": [
+      "Dockerfile"
+    ]
+  },
+  "errbit": {
+    "repo": "errbit/errbit",
+    "sha": "fa7ae712a89b115c0229675642bbe4eb2b9cfc9b",
+    "files": [
+      "Dockerfile",
+      "README.md",
+      "docker-compose.yml"
+    ]
+  },
+  "otterwiki": {
+    "repo": "redimp/otterwiki",
+    "sha": "623903665d38d7f1c2ef11df007e0e7f313e4cfc",
+    "files": [
+      "Dockerfile",
+      "README.md",
+      "docker-compose.override.yml.skeleton",
+      "docker-compose.yml",
+      "docker/Dockerfile.slim",
+      "docker/entrypoint-slim.sh",
+      "docker/entrypoint.sh",
+      "docs/custom_css_example/README.md",
+      "docs/custom_css_example/docker-compose.yaml",
+      "docs/custom_html_example/README.md",
+      "docs/custom_html_example/docker-compose.yaml",
+      "docs/plugin_examples/README.md",
+      "docs/plugin_examples/docker-compose.yaml",
+      "helm/README.md"
+    ]
+  },
+  "maloja": {
+    "repo": "krateng/maloja",
+    "sha": "52aae997fb6b8ad62c65498f4e91e7d65fbe242d",
+    "files": [
+      "README.md",
+      "auxiliary/malojalib/README.md",
+      "dev/docker-compose.yml"
+    ]
+  },
+  "part-db": {
+    "repo": "Part-DB/Part-DB-server",
+    "sha": "0f0ee60dd887e141c480f9caa30e0d576ce8c99a",
+    "files": [
+      ".docker/debian-manual-guide/Dockerfile",
+      ".docker/debian-manual-guide/docker-compose.yml",
+      ".docker/debian-manual-guide/entrypoint.sh",
+      ".docker/frankenphp/docker-entrypoint.sh",
+      "Dockerfile",
+      "Dockerfile-frankenphp",
+      "Dockerfile.dev",
+      "README.md"
+    ]
+  },
+  "gonic": {
+    "repo": "sentriz/gonic",
+    "sha": "5ae99e8af550e4d5cbd45a3b430419d32cb54aed",
+    "files": [
+      "Dockerfile",
+      "README.md"
+    ]
+  },
+  "phpipam": {
+    "repo": "phpipam/phpipam",
+    "sha": "e8010751d491e485acefa5787fb0e518eb948771",
+    "files": [
+      "README.md"
+    ]
+  },
+  "plik": {
+    "repo": "root-gg/plik",
+    "sha": "ed7f43fbe1bd0a8a3d3365fd83c17c75e9ee4bcc",
+    "files": [
+      "Dockerfile",
+      "README.md",
+      "charts/plik/README.md",
+      "testing/keycloak/run.sh",
+      "testing/mariadb/run.sh",
+      "testing/minio/run.sh",
+      "testing/mssql/run.sh",
+      "testing/mysql/run.sh",
+      "testing/postgres/run.sh",
+      "testing/swift/run.sh"
+    ]
+  },
+  "wastebin": {
+    "repo": "matze/wastebin",
+    "sha": "dfca1dc82b78394d8e2dfe209d9ef3fb539da605",
+    "files": [
+      "Dockerfile",
+      "README.md",
+      "assets/README.md"
+    ]
+  },
+  "jellystat": {
+    "repo": "CyferShepard/Jellystat",
+    "sha": "10678476792bc88700c574b97d09f300f47f7291",
+    "files": [
+      "Dockerfile",
+      "README.md",
+      "docker-compose.yml"
+    ]
+  },
+  "dumbdrop": {
+    "repo": "DumbWareio/DumbDrop",
+    "sha": "ff8f813f493e89c7da056e7a3101ce2ef48e3960",
+    "files": [
+      "Dockerfile",
+      "README.md",
+      "docker-compose.yml"
+    ]
+  },
+  "linkace": {
+    "repo": "Kovah/LinkAce",
+    "sha": "049702ba0aae0c57fe1f319a4567cff7115e7992",
+    "files": [
+      ".deploystack/docker-compose.yml",
+      "README.md",
+      "deploy/README.md",
+      "docker-compose.production.yml",
+      "docker-compose.yml"
+    ]
+  },
+  "automad": {
+    "repo": "marcantondahmen/automad",
+    "sha": "1272edbbc54a8b9634fe0759d2a12fdb26a825ce",
+    "files": [
+      ".github/workflows/docker.sh",
+      "README.md",
+      "automad/lang/README.md",
+      "cache/README.md",
+      "config/README.md",
+      "docker/apache/Dockerfile",
+      "docker/apache/compose.yml",
+      "docker/caddy/Dockerfile",
+      "docker/caddy/compose.yml",
+      "docker/frankenphp/Dockerfile",
+      "docker/frankenphp/compose.yml",
+      "docker/litespeed/Dockerfile",
+      "docker/litespeed/compose.yml",
+      "docker/nginx/Dockerfile",
+      "docker/nginx/compose.yml"
+    ]
+  },
+  "commafeed": {
+    "repo": "Athou/commafeed",
+    "sha": "689c20d3672dce9e6bc40f64f737b38a66db2aa0",
+    "files": [
+      "README.md"
+    ]
+  },
+  "bar-assistant": {
+    "repo": "karlomikus/bar-assistant",
+    "sha": "b97e215dee11ebffb2dc1e2bfc949876549e098b",
+    "files": [
+      "Dockerfile",
+      "README.md",
+      "docker-compose.yml"
+    ]
+  },
+  "bewcloud": {
+    "repo": "bewcloud/bewcloud",
+    "sha": "bdc439123c4703ad87efcf035111a335af616b82",
+    "files": [
+      "Dockerfile",
+      "README.md",
+      "docker-compose.dev.yml",
+      "docker-compose.yml"
+    ]
+  },
+  "chibisafe": {
+    "repo": "chibisafe/chibisafe",
+    "sha": "3e050cb581512665ec912b038ed24388625f9994",
+    "files": [
+      "README.md",
+      "docker-compose.dev.yml",
+      "docker-compose.example.yml",
+      "docker/Dockerfile",
+      "docker/DockerfileServer",
+      "packages/next/README.md"
+    ]
+  },
+  "gramps-web": {
+    "repo": "gramps-project/gramps-web",
+    "sha": "4bc259a027ac4854338728cd1f7cf49c4700758a",
+    "files": [
+      "Dockerfile",
+      "Dockerfile.devel",
+      "Dockerfile.nginx",
+      "README.md"
+    ]
+  },
+  "dbhub": {
+    "repo": "bytebase/dbhub",
+    "sha": "9b57283a1b415711f846b9247a7d273e11bfa366",
+    "files": [
+      "Dockerfile",
+      "README.md",
+      "docs/README.md",
+      "plugin/README.md"
+    ]
+  },
+  "bludit": {
+    "repo": "bludit/bludit",
+    "sha": "c573a995a97dc80bf4eadd454f466d7a6ad2bba0",
+    "files": [
+      "README.md"
+    ]
+  }
+}

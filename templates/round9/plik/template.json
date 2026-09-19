@@ -1,0 +1,76 @@
+{
+  "services": {
+    "8b9dfe31-a2fb-5c0c-a8c8-e054fd239277": {
+      "name": "plik",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round9/plik/Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/health",
+        "requiredMountPath": "/data",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "PLIKD_PLIK_DOMAIN": {
+          "isOptional": false,
+          "description": "Plikd plik domain resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{plik.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "PLIKD_MAX_FILE_SIZE_STR": {
+          "isOptional": false,
+          "description": "Plikd max file size str for plik. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "100MB"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "templates/round9/plik/Dockerfile"
+        },
+        "PLIKD_DEFAULT_ADMIN_LOGIN": {
+          "isOptional": false,
+          "description": "Plikd default admin login for plik. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "PLIKD_FEATURE_LOCAL_LOGIN": {
+          "isOptional": false,
+          "description": "Plikd feature local login for plik. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "enabled"
+        },
+        "PLIKD_DEFAULT_ADMIN_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated plikd default admin password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "PLIKD_FEATURE_AUTHENTICATION": {
+          "isOptional": false,
+          "description": "Plikd feature authentication for plik. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "forced"
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "volumeMounts": {
+        "d7861f61-0093-5c59-b5b8-c09ffa0bbb18": {
+          "mountPath": "/data"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "services": {
+    "11392c83-3e5d-53be-b9b2-993b4ade745c": {
+      "name": "search",
+      "deploy": {
+        "requiredMountPath": "/meili_data",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "getmeili/meilisearch:v1.50@sha256:9694a59df43ee3f54b3fda9c5de381a3ee9852678e3e31cadf37d6bddea7fc1b"
+      },
+      "variables": {
+        "MEILI_ENV": {
+          "isOptional": false,
+          "description": "Meili env for search. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "production"
+        },
+        "MEILI_DB_PATH": {
+          "isOptional": false,
+          "description": "Meili db path for search. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/meili_data/db"
+        },
+        "MEILI_MASTER_KEY": {
+          "isOptional": false,
+          "description": "Generated meili master key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "MEILI_NO_ANALYTICS": {
+          "isOptional": false,
+          "description": "Meili no analytics for search. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "69fcdc9d-2298-5c14-88a7-f543bd933da2": {
+          "mountPath": "/meili_data"
+        }
+      }
+    },
+    "3e83a989-8228-5741-8128-dbde67036d50": {
+      "name": "web",
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "barassistant/salt-rim:v5@sha256:77f2e5f55a494c93617b7fd2da43899d505fc2f87d2f5b9290442ae93d95a1ec"
+      },
+      "variables": {
+        "API_URL": {
+          "isOptional": false,
+          "description": "Api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{bar-assistant.RAILWAY_PUBLIC_DOMAIN}}/bar"
+        },
+        "MEILISEARCH_URL": {
+          "isOptional": false,
+          "description": "Meilisearch url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{bar-assistant.RAILWAY_PUBLIC_DOMAIN}}/search"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {}
+    },
+    "9c22ae2d-8e5c-504b-b288-6a30eb5dd0b1": {
+      "name": "bar-assistant",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round9/bar-assistant/Gateway.Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/healthz",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "API_HOST": {
+          "isOptional": false,
+          "description": "Api host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{api.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "WEB_HOST": {
+          "isOptional": false,
+          "description": "Web host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{web.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "SEARCH_HOST": {
+          "isOptional": false,
+          "description": "Search host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{search.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "templates/round9/bar-assistant/Gateway.Dockerfile"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}",
+          "description": "Owner gateway password. Keep it enabled to protect registration and all routes."
+        },
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "defaultValue": "${{web.RAILWAY_PRIVATE_DOMAIN}}",
+          "description": "Owner gateway routing and authentication; retain the supplied value."
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "defaultValue": "8080",
+          "description": "Owner gateway routing and authentication; retain the supplied value."
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "defaultValue": "true",
+          "description": "Owner gateway routing and authentication; retain the supplied value."
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "defaultValue": "all",
+          "description": "Owner gateway routing and authentication; retain the supplied value."
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "volumeMounts": {}
+    },
+    "deefc9c8-d36f-5d49-8042-8ff105e2aa15": {
+      "name": "api",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round9/bar-assistant/Api.Dockerfile"
+      },
+      "deploy": {
+        "requiredMountPath": "/var/www/cocktails/storage/bar-assistant",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "APP_KEY": {
+          "isOptional": false,
+          "description": "Generated app key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "APP_URL": {
+          "isOptional": false,
+          "description": "App url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{bar-assistant.RAILWAY_PUBLIC_DOMAIN}}/bar"
+        },
+        "CACHE_DRIVER": {
+          "isOptional": false,
+          "description": "Cache driver for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "file"
+        },
+        "SESSION_DRIVER": {
+          "isOptional": false,
+          "description": "Session driver for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "file"
+        },
+        "MEILISEARCH_KEY": {
+          "isOptional": false,
+          "description": "Meilisearch key resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{search.MEILI_MASTER_KEY}}"
+        },
+        "MEILISEARCH_HOST": {
+          "isOptional": false,
+          "description": "Meilisearch host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{search.RAILWAY_PRIVATE_DOMAIN}}:7700"
+        },
+        "QUEUE_CONNECTION": {
+          "isOptional": false,
+          "description": "Queue connection for api. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "sync"
+        },
+        "ALLOW_REGISTRATION": {
+          "isOptional": false,
+          "description": "Create your account, then set false to close registration. This draft initially permits public signup.",
+          "defaultValue": "true"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "templates/round9/bar-assistant/Api.Dockerfile"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "78172867-3681-5019-94b2-fa8624792940": {
+          "mountPath": "/var/www/cocktails/storage/bar-assistant"
+        }
+      }
+    }
+  }
+}

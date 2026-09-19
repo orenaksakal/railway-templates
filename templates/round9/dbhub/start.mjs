@@ -1,0 +1,11 @@
+import {writeFileSync, chmodSync} from 'node:fs';
+import {buildConfig} from './config.mjs';
+import {spawn} from 'node:child_process';
+const config = buildConfig(process.env.DSN);
+writeFileSync('/tmp/railway-dbhub.toml', config, {mode: 0o600});
+chmodSync('/tmp/railway-dbhub.toml', 0o600);
+const env = {...process.env}; delete env.READONLY;
+const child = spawn(process.execPath, ['/app/dist/index.js', '--config=/tmp/railway-dbhub.toml'], {stdio: 'inherit', env});
+for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, () => child.kill(signal));
+child.on('error', () => {process.exitCode = 1;});
+child.on('exit', code => process.exit(code ?? 1));

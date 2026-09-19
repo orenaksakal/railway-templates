@@ -1,0 +1,110 @@
+{
+  "typemill": {
+    "name": "Typemill Documentation CMS",
+    "category": "CMS",
+    "description": "Markdown documentation CMS with persistent content and settings.",
+    "image": "https://github.com/typemill.png"
+  },
+  "errbit": {
+    "name": "Errbit",
+    "category": "Observability",
+    "description": "Airbrake-compatible error tracking with MongoDB and generated owner access.",
+    "image": "https://github.com/errbit.png"
+  },
+  "otterwiki": {
+    "name": "An Otter Wiki",
+    "category": "CMS",
+    "description": "Markdown wiki with Git history, attachments, and persistent user accounts.",
+    "image": "https://github.com/redimp.png"
+  },
+  "maloja": {
+    "name": "Maloja Listening Statistics",
+    "category": "Other",
+    "description": "Personal music scrobbling and listening statistics with persistent storage.",
+    "image": "https://github.com/krateng.png"
+  },
+  "part-db": {
+    "name": "Part-DB",
+    "category": "Other",
+    "description": "Electronic parts inventory with SQLite, attachments, and persistent media.",
+    "image": "https://github.com/Part-DB.png"
+  },
+  "gonic": {
+    "name": "Gonic Music Server",
+    "category": "Other",
+    "description": "Subsonic music and podcast server with persistent library storage.",
+    "image": "https://github.com/sentriz.png"
+  },
+  "phpipam": {
+    "name": "phpIPAM Address Inventory",
+    "category": "Other",
+    "description": "IP address and subnet inventory with MariaDB and protected administration.",
+    "image": "https://github.com/phpipam.png"
+  },
+  "plik": {
+    "name": "Plik File Sharing",
+    "category": "Storage",
+    "description": "Expiring file sharing with authenticated uploads and persistent metadata.",
+    "image": "https://github.com/root-gg.png"
+  },
+  "wastebin": {
+    "name": "Wastebin",
+    "category": "Other",
+    "description": "Lightweight Rust pastebin with SQLite persistence and authenticated access.",
+    "image": "https://github.com/matze.png"
+  },
+  "jellystat": {
+    "name": "Jellystat",
+    "category": "Analytics",
+    "description": "Jellyfin viewing statistics with PostgreSQL and persistent backup storage.",
+    "image": "https://github.com/CyferShepard.png"
+  },
+  "automad": {
+    "name": "Automad CMS v2",
+    "category": "CMS",
+    "description": "Flat-file visual CMS with a persistent site and a protected editor setup.",
+    "image": "https://github.com/marcantondahmen.png"
+  },
+  "commafeed": {
+    "name": "CommaFeed",
+    "category": "Other",
+    "description": "Self-hosted RSS reader with PostgreSQL and private gateway access.",
+    "image": "https://github.com/Athou.png"
+  },
+  "bar-assistant": {
+    "name": "Bar Assistant + Salt Rim",
+    "category": "Other",
+    "description": "Cocktail recipes and home-bar inventory with Salt Rim and Meilisearch.",
+    "image": "https://github.com/karlomikus.png"
+  },
+  "bewcloud": {
+    "name": "bewCloud Personal Cloud",
+    "category": "Storage",
+    "description": "Personal files, notes, feeds, photos, and expenses with PostgreSQL.",
+    "image": "https://github.com/bewcloud.png"
+  },
+  "chibisafe": {
+    "name": "Chibisafe",
+    "category": "Storage",
+    "description": "File and image sharing with a web dashboard and persistent upload storage.",
+    "image": "https://github.com/chibisafe.png"
+  },
+  "gramps-web": {
+    "name": "Gramps Web",
+    "category": "Other",
+    "description": "Family history with persistent trees, media and background jobs.",
+    "image": "https://github.com/gramps-project.png"
+  },
+  "dbhub": {
+    "name": "DBHub Database MCP",
+    "category": "AI/ML",
+    "description": "Read-only database MCP tools and web UI behind an owner gateway.",
+    "image": "https://github.com/bytebase.png"
+  },
+  "bludit": {
+    "name": "Bludit CMS",
+    "category": "CMS",
+    "description": "Flat-file website CMS with persistent content, themes and plugins.",
+    "image": "https://github.com/bludit.png"
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "services": {
+    "47a517ce-5223-51cc-9c43-a3489a648daa": {
+      "name": "app",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round9/gonic/Dockerfile"
+      },
+      "deploy": {
+        "requiredMountPath": "/data",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "GONIC_DB_PATH": {
+          "isOptional": false,
+          "description": "Gonic db path for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/gonic.db"
+        },
+        "GONIC_CACHE_PATH": {
+          "isOptional": false,
+          "description": "Gonic cache path for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/cache"
+        },
+        "GONIC_MUSIC_PATH": {
+          "isOptional": false,
+          "description": "Gonic music path for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/music"
+        },
+        "GONIC_LISTEN_ADDR": {
+          "isOptional": false,
+          "description": "Gonic listen addr for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": ":4747"
+        },
+        "GONIC_PODCAST_PATH": {
+          "isOptional": false,
+          "description": "Gonic podcast path for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/podcasts"
+        },
+        "GONIC_SCAN_INTERVAL": {
+          "isOptional": false,
+          "description": "Gonic scan interval for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "15"
+        },
+        "GONIC_PLAYLISTS_PATH": {
+          "isOptional": false,
+          "description": "Gonic playlists path for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/playlists"
+        },
+        "GONIC_JUKEBOX_ENABLED": {
+          "isOptional": false,
+          "description": "Gonic jukebox enabled for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "templates/round9/gonic/Dockerfile"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "37bc6bd2-0c0e-51a4-9c99-cfa3cbed2f7f": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "6008315b-c0c6-5fb5-9af5-94156ab60fcb": {
+      "name": "gonic",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/healthz",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for gonic. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "4747"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "shared/round6-gateway/Dockerfile"
+        },
+        "OWNER_AUTH": {
+          "defaultValue": "true",
+          "isOptional": false,
+          "description": "Require owner authentication for every application route."
+        },
+        "OWNER_SCOPE": {
+          "defaultValue": "all",
+          "isOptional": false,
+          "description": "Protect all application routes."
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "volumeMounts": {}
+    }
+  }
+}

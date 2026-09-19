@@ -1,0 +1,126 @@
+{
+  "services": {
+    "7c8476f0-c149-5fb1-b97e-a4089297a111": {
+      "name": "otterwiki",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/healthz",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for otterwiki. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "80"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "shared/round6-gateway/Dockerfile"
+        },
+        "OWNER_AUTH": {
+          "defaultValue": "true",
+          "isOptional": false,
+          "description": "Require owner authentication for every application route."
+        },
+        "OWNER_SCOPE": {
+          "defaultValue": "all",
+          "isOptional": false,
+          "description": "Protect all application routes."
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "volumeMounts": {}
+    },
+    "dd98fa4d-f401-57a0-8993-3425217a36b0": {
+      "name": "app",
+      "deploy": {
+        "requiredMountPath": "/app-data",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "redimp/otterwiki:2.24.1@sha256:d87a26b98d1a442b6a11d066857432d49188be51ddbb1f31dc04e3b89e86cafa"
+      },
+      "variables": {
+        "SECRET_KEY": {
+          "isOptional": false,
+          "description": "Generated secret key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "READ_ACCESS": {
+          "isOptional": false,
+          "description": "Read access for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "APPROVED"
+        },
+        "SERVER_NAME": {
+          "isOptional": false,
+          "description": "Server name resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{otterwiki.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "WRITE_ACCESS": {
+          "isOptional": false,
+          "description": "Write access for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "APPROVED"
+        },
+        "AUTO_APPROVAL": {
+          "isOptional": false,
+          "description": "Auto approval for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "ADMIN_USER_EMAIL": {
+          "isOptional": false,
+          "description": "Email address to use for the first administrator signup behind the gateway."
+        },
+        "ATTACHMENT_ACCESS": {
+          "isOptional": false,
+          "description": "Attachment access for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "APPROVED"
+        },
+        "EMAIL_NEEDS_CONFIRMATION": {
+          "isOptional": false,
+          "description": "Email needs confirmation for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "4b24c0ed-23b9-5266-8a2a-618cbc172781": {
+          "mountPath": "/app-data"
+        }
+      }
+    }
+  }
+}

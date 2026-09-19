@@ -1,0 +1,182 @@
+{
+  "services": {
+    "42060bed-e4c9-572b-9df3-16997b9784ea": {
+      "name": "gramps-web",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round9/gramps-web/Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/",
+        "requiredMountPath": "/data",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "5000"
+        },
+        "OWNER_EMAIL": {
+          "isOptional": false,
+          "description": "Email for the initial Gramps Web owner."
+        },
+        "GRAMPSWEB_TREE": {
+          "isOptional": false,
+          "description": "Grampsweb tree for gramps-web. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "Family Tree"
+        },
+        "OWNER_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated owner password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "GRAMPSWEB_BASE_URL": {
+          "isOptional": false,
+          "description": "Grampsweb base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{gramps-web.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "GRAMPSWEB_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Generated grampsweb secret key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "GUNICORN_NUM_WORKERS": {
+          "isOptional": false,
+          "description": "Gunicorn num workers for gramps-web. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "2"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "templates/round9/gramps-web/Dockerfile"
+        },
+        "GRAMPSWEB_DISABLE_TELEMETRY": {
+          "isOptional": false,
+          "description": "Grampsweb disable telemetry for gramps-web. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "GRAMPSWEB_RATELIMIT_STORAGE_URI": {
+          "isOptional": false,
+          "description": "Grampsweb ratelimit storage uri resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/1"
+        },
+        "GRAMPSWEB_REGISTRATION_DISABLED": {
+          "isOptional": false,
+          "description": "Grampsweb registration disabled for gramps-web. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "GRAMPSWEB_CELERY_CONFIG__broker_url": {
+          "isOptional": false,
+          "description": "Grampsweb celery config  broker url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "GRAMPSWEB_CELERY_CONFIG__result_backend": {
+          "isOptional": false,
+          "description": "Grampsweb celery config  result backend resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{redis.REDIS_URL}}/0"
+        },
+        "GRAMPSWEB_USER_DB_URI": {
+          "isOptional": false,
+          "defaultValue": "sqlite:////data/users/users.sqlite",
+          "description": "Persistent Gramps data location inside the single /data volume."
+        },
+        "GRAMPSWEB_MEDIA_BASE_DIR": {
+          "isOptional": false,
+          "defaultValue": "/data/media",
+          "description": "Persistent Gramps data location inside the single /data volume."
+        },
+        "GRAMPSWEB_SEARCH_INDEX_DB_URI": {
+          "isOptional": false,
+          "defaultValue": "sqlite:////data/index/search_index.db",
+          "description": "Persistent Gramps data location inside the single /data volume."
+        },
+        "GRAMPSWEB_THUMBNAIL_CACHE_CONFIG__CACHE_DIR": {
+          "isOptional": false,
+          "defaultValue": "/data/thumbnail_cache",
+          "description": "Persistent Gramps data location inside the single /data volume."
+        },
+        "GRAMPSWEB_REQUEST_CACHE_CONFIG__CACHE_DIR": {
+          "isOptional": false,
+          "defaultValue": "/data/cache/request_cache",
+          "description": "Persistent Gramps data location inside the single /data volume."
+        },
+        "GRAMPSWEB_PERSISTENT_CACHE_CONFIG__CACHE_DIR": {
+          "isOptional": false,
+          "defaultValue": "/data/cache/persistent_cache",
+          "description": "Persistent Gramps data location inside the single /data volume."
+        },
+        "GRAMPSWEB_REPORT_DIR": {
+          "isOptional": false,
+          "defaultValue": "/data/cache/reports",
+          "description": "Persistent Gramps data location inside the single /data volume."
+        },
+        "GRAMPSWEB_EXPORT_DIR": {
+          "isOptional": false,
+          "defaultValue": "/data/cache/export",
+          "description": "Persistent Gramps data location inside the single /data volume."
+        },
+        "GRAMPSHOME": {
+          "isOptional": false,
+          "defaultValue": "/data/home",
+          "description": "Persistent Gramps data location inside the single /data volume."
+        },
+        "GRAMPS_DATABASE_PATH": {
+          "isOptional": false,
+          "defaultValue": "/data/grampsdb",
+          "description": "Persistent Gramps data location inside the single /data volume."
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:5000": {
+            "port": 5000
+          }
+        }
+      },
+      "volumeMounts": {
+        "05b19f47-c019-55a7-b0c1-4c49647689cb": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "f55c72d8-ac79-5e3e-b141-46688a31a7f4": {
+      "name": "redis",
+      "deploy": {
+        "startCommand": "sh -c 'exec redis-server --bind 0.0.0.0 :: --appendonly yes --maxmemory-policy noeviction --requirepass \"$REDIS_PASSWORD\"'",
+        "requiredMountPath": "/data",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "redis:7.4@sha256:c6eabf748fc7a61dbb5a705c78bcf3d6377b1127a97d0ce965c11c44ba46896f"
+      },
+      "variables": {
+        "REDIS_URL": {
+          "isOptional": false,
+          "description": "Private authenticated Redis/Valkey connection URL. Automatically assembled from service references.",
+          "defaultValue": "redis://:${{redis.REDIS_PASSWORD}}@${{redis.RAILWAY_PRIVATE_DOMAIN}}:6379"
+        },
+        "REDIS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated private Redis/Valkey password, or a reference to that password. Keep secret.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "623ea7a2-1826-5278-87cc-fb0123bbac1d": {
+          "mountPath": "/data"
+        }
+      }
+    }
+  }
+}

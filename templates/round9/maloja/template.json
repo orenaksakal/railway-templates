@@ -1,0 +1,56 @@
+{
+  "services": {
+    "743ba91e-3b04-5232-ad63-ffe003caf34d": {
+      "name": "maloja",
+      "deploy": {
+        "healthcheckPath": "/",
+        "requiredMountPath": "/mljdata",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "krateng/maloja:latest@sha256:1ccc7f4f78256242ada110efffe255617c974714455199c59a1fb0696ab23734"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "42010"
+        },
+        "MALOJA_NAME": {
+          "isOptional": false,
+          "description": "Maloja name for maloja. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "My listening history"
+        },
+        "MALOJA_SKIP_SETUP": {
+          "isOptional": false,
+          "description": "Maloja skip setup for maloja. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "MALOJA_DATA_DIRECTORY": {
+          "isOptional": false,
+          "description": "Maloja data directory for maloja. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/mljdata"
+        },
+        "MALOJA_FORCE_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated maloja force password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:42010": {
+            "port": 42010
+          }
+        }
+      },
+      "volumeMounts": {
+        "e68bc672-5ad9-596b-af8d-e1c0afc7d16e": {
+          "mountPath": "/mljdata"
+        }
+      }
+    }
+  }
+}

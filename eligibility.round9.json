@@ -1,0 +1,678 @@
+{
+  "typemill": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Typemill",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Type mill",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "errbit": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Errbit",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Err bit",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "otterwiki": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Otter Wiki",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Otterwiki",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "maloja": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Maloja",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Maloja scrobbler",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "part-db": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Part-DB",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "PartDB",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Part DB",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "gonic": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Gonic",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "sentriz gonic",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "phpipam": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "phpIPAM",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "php IPAM",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "plik": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Plik",
+        "edges": [
+          {
+            "cursor": "eyJvZmZzZXQiOjF9",
+            "node": {
+              "id": "b8814356-c24d-44dd-a054-a46e0dfb7652",
+              "code": "F97XO2",
+              "name": "Plikshare",
+              "description": "file sharing platform, unlimited users, safe and flexible storage options",
+              "image": "https://raw.githubusercontent.com/chinpeerapat/plikshare/main/Frontend/src/icons/favicon.png",
+              "deploymentCount": 4,
+              "healthScore": 100.0,
+              "creatorName": "chin's Projects",
+              "isVerified": false
+            }
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJvZmZzZXQiOjF9",
+          "endCursor": "eyJvZmZzZXQiOjF9"
+        }
+      },
+      {
+        "query": "root-gg plik",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": [
+      {
+        "code": "F97XO2",
+        "reason": "Plikshare is a different product from root-gg/plik"
+      }
+    ]
+  },
+  "wastebin": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Wastebin",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Waste bin",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "jellystat": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Jellystat",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Jelly stat",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "dumbdrop": {
+    "criterion": "duplicate_existing_listing",
+    "queries": [
+      {
+        "query": "DumbDrop",
+        "edges": [
+          {
+            "cursor": "eyJvZmZzZXQiOjF9",
+            "node": {
+              "id": "c8a9a90e-59fc-408b-bb10-ddb6320a843e",
+              "code": "dumbdrop-private-file-inbox",
+              "name": "DumbDrop Private File Inbox",
+              "description": "A persistent file-upload inbox protected by gateway and generated PIN.",
+              "image": "https://github.com/DumbWareio.png",
+              "deploymentCount": 0,
+              "healthScore": null,
+              "creatorName": "orenaksakal",
+              "isVerified": false
+            }
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJvZmZzZXQiOjF9",
+          "endCursor": "eyJvZmZzZXQiOjF9"
+        }
+      },
+      {
+        "query": "Dumb Drop",
+        "edges": [
+          {
+            "cursor": "eyJvZmZzZXQiOjF9",
+            "node": {
+              "id": "c8a9a90e-59fc-408b-bb10-ddb6320a843e",
+              "code": "dumbdrop-private-file-inbox",
+              "name": "DumbDrop Private File Inbox",
+              "description": "A persistent file-upload inbox protected by gateway and generated PIN.",
+              "image": "https://github.com/DumbWareio.png",
+              "deploymentCount": 0,
+              "healthScore": null,
+              "creatorName": "orenaksakal",
+              "isVerified": false
+            }
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJvZmZzZXQiOjF9",
+          "endCursor": "eyJvZmZzZXQiOjF9"
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "linkace": {
+    "criterion": "duplicate_existing_listing",
+    "queries": [
+      {
+        "query": "LinkAce",
+        "edges": [
+          {
+            "cursor": "eyJvZmZzZXQiOjF9",
+            "node": {
+              "id": "940d179f-3385-4153-b737-03f048246447",
+              "code": "linkace-bookmark-archive",
+              "name": "LinkAce Bookmark Archive",
+              "description": "Bookmarks with SQLite search, persistent storage and protected setup.",
+              "image": "https://github.com/Kovah.png",
+              "deploymentCount": 0,
+              "healthScore": null,
+              "creatorName": "orenaksakal",
+              "isVerified": false
+            }
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJvZmZzZXQiOjF9",
+          "endCursor": "eyJvZmZzZXQiOjF9"
+        }
+      },
+      {
+        "query": "Link Ace",
+        "edges": [
+          {
+            "cursor": "eyJvZmZzZXQiOjF9",
+            "node": {
+              "id": "940d179f-3385-4153-b737-03f048246447",
+              "code": "linkace-bookmark-archive",
+              "name": "LinkAce Bookmark Archive",
+              "description": "Bookmarks with SQLite search, persistent storage and protected setup.",
+              "image": "https://github.com/Kovah.png",
+              "deploymentCount": 0,
+              "healthScore": null,
+              "creatorName": "orenaksakal",
+              "isVerified": false
+            }
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJvZmZzZXQiOjF9",
+          "endCursor": "eyJvZmZzZXQiOjF9"
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "automad": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Automad",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Automad CMS",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "commafeed": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "CommaFeed",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Comma Feed",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "bar-assistant": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Bar Assistant",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "barassistant",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Salt Rim",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "bewcloud": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "bewcloud",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "bew cloud",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "chibisafe": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Chibisafe",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Chibi Safe",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "gramps-web": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Gramps Web",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Gramps",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  },
+  "dbhub": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "DBHub",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Bytebase DBHub",
+        "edges": [
+          {
+            "cursor": "eyJvZmZzZXQiOjF9",
+            "node": {
+              "id": "5aa00d0e-aa38-44c5-afd1-cc1476be0323",
+              "code": "bytebase-on-railway",
+              "name": "Bytebase",
+              "description": "Deploy Bytebase with Railway-native Postgres metadata storage.",
+              "image": null,
+              "deploymentCount": 0,
+              "healthScore": null,
+              "creatorName": "l4time's Projects",
+              "isVerified": false
+            }
+          },
+          {
+            "cursor": "eyJvZmZzZXQiOjJ9",
+            "node": {
+              "id": "319734c4-b2c0-4c4e-ae41-568e1cbebfdf",
+              "code": "bytebase",
+              "name": "Bytebase",
+              "description": "Database DevOps: schema change review, versioning and access governance",
+              "image": "https://raw.githubusercontent.com/bytebase/bytebase/main/frontend/src/assets/logo-full-dark.svg",
+              "deploymentCount": 0,
+              "healthScore": null,
+              "creatorName": "A3A",
+              "isVerified": false
+            }
+          },
+          {
+            "cursor": "eyJvZmZzZXQiOjN9",
+            "node": {
+              "id": "f44166f9-600b-485b-9615-0950fa452903",
+              "code": "bytebase-1",
+              "name": "bytebase",
+              "description": "Database governance built for humans and agents",
+              "image": "https://bytebase-production-8e3a.up.railway.app/assets/logo-full-B93Z8uvR.svg",
+              "deploymentCount": 0,
+              "healthScore": null,
+              "creatorName": "kmaki's Projects",
+              "isVerified": false
+            }
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJvZmZzZXQiOjF9",
+          "endCursor": "eyJvZmZzZXQiOjN9"
+        }
+      }
+    ],
+    "excludedMatches": [
+      {
+        "code": "bytebase-on-railway",
+        "reason": "Bytebase is a different product from Bytebase DBHub"
+      },
+      {
+        "code": "bytebase",
+        "reason": "Bytebase is a different product from Bytebase DBHub"
+      },
+      {
+        "code": "bytebase-1",
+        "reason": "Bytebase is a different product from Bytebase DBHub"
+      }
+    ]
+  },
+  "bludit": {
+    "criterion": "no_matching_public_listing_found",
+    "queries": [
+      {
+        "query": "Bludit",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      },
+      {
+        "query": "Bludit CMS",
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null
+        }
+      }
+    ],
+    "excludedMatches": []
+  }
+}

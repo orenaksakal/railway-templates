@@ -1,0 +1,86 @@
+{
+  "services": {
+    "7da8d417-d674-55e4-abf3-e16eb56cbb50": {
+      "name": "automad",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/healthz",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for automad. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "80"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "shared/round6-gateway/Dockerfile"
+        },
+        "OWNER_AUTH": {
+          "defaultValue": "true",
+          "isOptional": false,
+          "description": "Require owner authentication for every application route."
+        },
+        "OWNER_SCOPE": {
+          "defaultValue": "all",
+          "isOptional": false,
+          "description": "Protect all application routes."
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "volumeMounts": {}
+    },
+    "a9413273-2286-5229-abcc-df16905200ef": {
+      "name": "app",
+      "deploy": {
+        "requiredMountPath": "/app",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "automad/automad:v2@sha256:5af9d80ae307fa2cc5afa504adfa66f3cfc8c6967cb00a1ac2e5f4b5cb88042d"
+      },
+      "variables": {},
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "9f33a1f3-a4e7-5ee8-8db6-72ca65a8978c": {
+          "mountPath": "/app"
+        }
+      }
+    }
+  }
+}

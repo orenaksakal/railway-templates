@@ -1,0 +1,127 @@
+{
+  "services": {
+    "2cc50485-407e-5c99-9426-d51cf26a9c1f": {
+      "name": "wastebin",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/healthz",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for wastebin. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8088"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "shared/round6-gateway/Dockerfile"
+        },
+        "OWNER_AUTH": {
+          "defaultValue": "true",
+          "isOptional": false,
+          "description": "Require owner authentication for every application route."
+        },
+        "OWNER_SCOPE": {
+          "defaultValue": "all",
+          "isOptional": false,
+          "description": "Protect all application routes."
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "volumeMounts": {}
+    },
+    "3e6078a1-ae16-55c8-9f8e-5362fca55d25": {
+      "name": "app",
+      "deploy": {
+        "requiredMountPath": "/data",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "quxfoo/wastebin:3.7.2@sha256:8ad3a7b7a757b3df9483c3e512ae98fd8e2a0c785205dd1dd20ac521fca91479"
+      },
+      "variables": {
+        "TMPDIR": {
+          "isOptional": false,
+          "description": "Tmpdir for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data"
+        },
+        "RAILWAY_RUN_UID": {
+          "isOptional": false,
+          "description": "Run as root so the scratch image can write the Railway volume; no shell is available in this image.",
+          "defaultValue": "0"
+        },
+        "WASTEBIN_BASE_URL": {
+          "isOptional": false,
+          "description": "Wastebin base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{wastebin.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "WASTEBIN_SIGNING_KEY": {
+          "isOptional": false,
+          "description": "Generated wastebin signing key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "WASTEBIN_ADDRESS_PORT": {
+          "isOptional": false,
+          "description": "Wastebin address port for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "[::]:8088"
+        },
+        "WASTEBIN_DATABASE_PATH": {
+          "isOptional": false,
+          "description": "Wastebin database path for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/state.db"
+        },
+        "WASTEBIN_MAX_BODY_SIZE": {
+          "isOptional": false,
+          "description": "Wastebin max body size for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1048576"
+        },
+        "WASTEBIN_PASSWORD_SALT": {
+          "isOptional": false,
+          "description": "Generated wastebin password salt. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "37bc6bd2-0c0e-51a4-9c99-cfa3cbed2f7f": {
+          "mountPath": "/data"
+        }
+      }
+    }
+  }
+}

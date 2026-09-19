@@ -1,0 +1,87 @@
+{
+  "services": {
+    "1a33f58f-ad22-5fc9-a476-31087ed98911": {
+      "name": "web",
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "chibisafe/chibisafe:v6.5.5@sha256:836467a50792b08c29d90e32447a1480208723751e8a0f7ecd7ede17fe393ea3"
+      },
+      "variables": {
+        "BASE_API_URL": {
+          "isOptional": false,
+          "description": "Base api url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "http://${{chibisafe.RAILWAY_PRIVATE_DOMAIN}}:8000"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {}
+    },
+    "f5cddb08-5420-53d2-9f21-e84486b74241": {
+      "name": "chibisafe",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round9/chibisafe/Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/healthz",
+        "requiredMountPath": "/data",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "HOST": {
+          "isOptional": false,
+          "description": "HTTP bind address. Keep 0.0.0.0 so Railway can reach the service.",
+          "defaultValue": "0.0.0.0"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8000"
+        },
+        "HOSTNAME": {
+          "isOptional": false,
+          "description": "Application bind address. Keep 0.0.0.0 for container networking.",
+          "defaultValue": "0.0.0.0"
+        },
+        "WEB_HOST": {
+          "isOptional": false,
+          "description": "Web host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{web.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "ADMIN_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated admin password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "templates/round9/chibisafe/Dockerfile"
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "volumeMounts": {
+        "a04ae3e6-fc67-5279-83f6-e00ff2dc9c61": {
+          "mountPath": "/data"
+        }
+      }
+    }
+  }
+}

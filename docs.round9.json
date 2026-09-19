@@ -1,0 +1,92 @@
+{
+  "typemill": {
+    "setup": "Use gateway username admin and ACCESS_PASSWORD, then create your initial Typemill administrator in the setup UI. Configure trusted proxies in Developer settings and create your first document. All seven mutable upstream directories are stored below /data.",
+    "acceptance": "Create and publish a Markdown document, upload media, change a setting, restart, and verify content, media and user persistence.",
+    "limitations": "The private gateway applies to readers as well as editors. Optional paid features, plugins and ebook publishing retain their upstream license requirements. The adapter removes upstream multi-volume metadata and keeps runtime state in one volume. SMTP and AI services need separate setup."
+  },
+  "errbit": {
+    "setup": "- `errbit.ERRBIT_ADMIN_EMAIL`: Required initial administrator email address.\n\nSet ERRBIT_ADMIN_EMAIL before deploying. The bootstrap creates one administrator only if no user exists; use ERRBIT_ADMIN_PASSWORD to sign in. Create an application and configure an Airbrake-compatible notifier with its API key and this instance URL.",
+    "acceptance": "Log in, create an app, submit a real Airbrake notice, verify grouping and backtrace rendering, resolve it, redeploy, and confirm user credentials and notices persist.",
+    "limitations": "The current official latest image is frozen by digest. The bootstrap intentionally avoids upstream db:seed, which resets and prints the admin password. Existing passwords are not reset on restart. MongoDB is private and authenticated. Email, OAuth, external issue trackers and scheduled retention cleanup require additional setup."
+  },
+  "otterwiki": {
+    "setup": "- `app.ADMIN_USER_EMAIL`: Email address to use for the first administrator signup behind the gateway.\n\nSet ADMIN_USER_EMAIL before deploying. Authenticate to the public gateway with username admin and ACCESS_PASSWORD, then sign up using that email. In Settings, close registration once onboarding is complete. Reads, edits and attachments require approved accounts; email verification is disabled because SMTP is not configured.",
+    "acceptance": "Register the intended administrator, create and revise a page, upload an attachment, inspect history, approve a second user, and verify everything after restart.",
+    "limitations": "The first administrator signup must be tested behind the gateway. Settings saved in the UI override environment values. The gateway limits requests to 32 MiB. Git-over-HTTP clients need testing with the additional Basic authentication layer."
+  },
+  "maloja": {
+    "setup": "Open the public site and enter admin mode using MALOJA_FORCE_PASSWORD. Create a separate API key for each scrobbling client in the administration UI. Import an existing supported listening-history export if desired.",
+    "acceptance": "Enter admin mode, submit a scrobble with an API key, verify charts show it, restart and verify retained history. Reject requests with an invalid key.",
+    "limitations": "Listening statistics are public by default; administrative changes require the configured password. This is a single-owner statistics service, not a music player. Last.fm and Spotify artwork integrations require operator API credentials. The latest image is frozen by digest."
+  },
+  "part-db": {
+    "setup": "Choose BASE_CURRENCY before first deployment. Sign in as admin using INITIAL_ADMIN_PW after the initial migration completes, then change that password in the application. The adapter initializes the database with upstream migrations and preserves uploads, media and SQLite together under /data.",
+    "acceptance": "Create a component and storage location, adjust stock, attach a datasheet and image, export data, restart, and verify stock counts and attachment bytes.",
+    "limitations": "One replica with SQLite. Startup applies upstream database migrations; back up before updating the pinned image. Existing administrator passwords are not reset by the adapter. Currency changes do not convert recorded prices."
+  },
+  "gonic": {
+    "setup": "Use the outer gateway username admin and ACCESS_PASSWORD, then change the upstream admin/admin login. Copy your own music into /data/music through Railway SSH or a controlled volume import; scan it from the administration UI. There is no bundled music or browser upload tool.",
+    "acceptance": "Import a licensed test track, scan, authenticate a Subsonic client, stream the track, create a playlist, and verify playback metadata and files after restart.",
+    "limitations": "The gateway protects initial credentials. Subsonic clients must support additional HTTP Basic authentication; client compatibility is not yet verified. No sound device or jukebox is supplied. Cache, playlists, podcasts and the database are colocated on /data."
+  },
+  "phpipam": {
+    "setup": "Use gateway username admin and ACCESS_PASSWORD. In the installation wizard use the supplied database user to import the schema into the existing phpipam database. Set the admin password, then set IPAM_DISABLE_INSTALLER=1. Store sections, subnets and address assignments in the UI.",
+    "acceptance": "Initialize the schema, sign in, create a section/subnet/address, export the inventory, restart MariaDB and the app, and verify the records.",
+    "limitations": "Scope is IP address inventory. No network-scanning cron service, host network access, NET_ADMIN or NET_RAW capabilities are supplied. Railway cannot discover your home or company LAN without connectivity you separately arrange. API clients must account for the outer Basic gateway."
+  },
+  "plik": {
+    "setup": "Log in as admin with PLIKD_DEFAULT_ADMIN_PASSWORD. Authentication is required for upload creation; downloads are available via sharing URLs according to each upload policy. The adapter stores metadata in /data/plik.db and files under /data/files.",
+    "acceptance": "Reject anonymous upload creation, authenticate, upload and download a test file, verify expiration settings, restart, and check stored bytes and metadata.",
+    "limitations": "Default file size is 100 MB and retention is seven days, with a thirty-day maximum. Platform request limits still apply. The generated administrator is only created when absent. This is root-gg/plik, a different product from Plikshare."
+  },
+  "wastebin": {
+    "setup": "No mandatory operator-supplied variables. Generated credentials are available in service variables after deployment.\n\nUse the public gateway credentials ACCESS_USER and ACCESS_PASSWORD. Create a paste in the UI or POST JSON to / using HTTP Basic authentication. Keep WASTEBIN_SIGNING_KEY and WASTEBIN_PASSWORD_SALT with the database backup.",
+    "acceptance": "Create and retrieve a paste, verify syntax highlighting, delete an owned paste, test password and expiration behavior, and retrieve a surviving paste after a redeploy.",
+    "limitations": "This is a private shared-credential pastebin. Upstream has no account or administration system. The scratch image runs with RAILWAY_RUN_UID=0 to write the volume. Paste payloads are limited to 1 MiB; files are not supported."
+  },
+  "jellystat": {
+    "setup": "Sign in using JS_USER=admin and the generated JS_PASSWORD. Connect your existing reachable Jellyfin server and its API key in the setup UI. PostgreSQL connection details are preconfigured; backups persist under /app/backend/backup-data.",
+    "acceptance": "Log in, connect a test Jellyfin server, sync a library, record playback, verify history, create a backup and verify data after restart.",
+    "limitations": "An external Jellyfin or Emby server is required for useful statistics and is not included. Upstream describes the current generation as under redevelopment; existing functionality should be validated against your server. API keys, media playback and server-specific integration remain operator-supplied."
+  },
+  "automad": {
+    "setup": "Authenticate to the gateway, then follow the Automad dashboard setup at /dashboard. Check application logs for any generated first-run credentials. The image installs its exact AUTOMAD_VERSION into /app on the first boot.",
+    "acceptance": "Initialize the dashboard, create a page with an image, publish it, restart, and verify content and account persistence.",
+    "limitations": "This uses upstream v2 beta (2.0.0-beta.58) and is explicitly a beta deployment. First boot needs outbound Composer/package access. The whole /app site is persistent; upgrading the container does not automatically replace the existing site. The gateway makes the entire site private."
+  },
+  "commafeed": {
+    "setup": "No mandatory operator-supplied variables. Generated credentials are available in service variables after deployment.\n\nOpen the public gateway using ACCESS_USER and ACCESS_PASSWORD from its variables. Sign in to CommaFeed with the upstream initial admin/admin account and immediately change its password. Public self-registration and demo accounts are disabled. Add feeds or import OPML.",
+    "acceptance": "Import an OPML file, refresh a feed, mark an entry read, star an entry, restart both services, and verify subscriptions and reading state persist.",
+    "limitations": "The gateway protects the initial default account. Native RSS clients must support the additional HTTP Basic credentials. SMTP/password recovery is not configured. Feed fetching requires outbound Internet access."
+  },
+  "bar-assistant": {
+    "setup": "Authenticate to the gateway as admin with ACCESS_PASSWORD. Register the first application owner in Salt Rim, then disable ALLOW_REGISTRATION before sharing access. The gateway routes /bar/ to the private API, /search/ to authenticated Meilisearch and / to Salt Rim. The generated APP_KEY is preserved on restart.",
+    "acceptance": "Create a bar, add an ingredient and cocktail with a photo, search for it, test access as another user, and restart to verify data, sessions and media survive.",
+    "limitations": "All routes require owner gateway access. API clients can send X-Template-Key. Meilisearch also requires its own native key; the gateway never injects the master key. The shared owner gateway is not per-user authorization. No queue worker, SMTP or external storage is configured."
+  },
+  "bewcloud": {
+    "setup": "Open the gateway using username admin and ACCESS_PASSWORD, then create the first bewCloud administrator. Later public signup is disabled. PUBLIC_URL configures the HTTPS origin. Startup runs the upstream database migrations before the application; uploaded files live in /app/data-files and account data in PostgreSQL.",
+    "acceptance": "Create the administrator, upload and download a file, create a note and feed subscription, add an expense, restart, and confirm account, database records and files survive.",
+    "limitations": "Contacts and calendar apps are excluded because Radicale is not bundled. Public file sharing is disabled. DAV clients must account for the extra gateway authentication; Basic Authorization is consumed by the gateway. Optional SMTP and external providers require separate setup."
+  },
+  "chibisafe": {
+    "setup": "No mandatory operator-supplied variables. Generated credentials are available in service variables after deployment.\n\nOpen the chibisafe public domain. Log in as admin with ADMIN_PASSWORD from its variables. Configure the public service URL and registration policy in the dashboard, then create your uploader API key. The web frontend uses the private backend on port 8000.",
+    "acceptance": "Log in with the generated password, upload an image through the UI and API, retrieve its sharing URL, delete it, restart, and verify both database records and remaining file bytes.",
+    "limitations": "The adapter supervises the backend and Caddy together with a single /data volume for database, uploads and logs. Sharing URLs intentionally serve files publicly, following the upstream topology; restrict uploads through native application accounts and review registration settings. S3 and CDN integrations are not configured. /healthz measures Caddy readiness only."
+  },
+  "gramps-web": {
+    "setup": "Set OWNER_EMAIL and retrieve OWNER_PASSWORD. Sign in as owner. The adapter creates the owner before opening HTTP, initializes user database migrations, and runs one Celery worker with two web workers. Import a Gramps XML family tree or create one in the UI.",
+    "acceptance": "Log in as owner, create two people and a relationship, upload a photo, run an export through the worker, and verify the tree and photo survive a redeploy.",
+    "limitations": "Web and one Celery worker share the same /data volume. The upstream entrypoint migrates the user database before owner creation; the adapter creates an owner only when no user exists. The web/API bootstrap interface requires a deployment check on the pinned image. Redis is private and authenticated. SMTP, external providers, S3 and multi-tree administration are not configured."
+  },
+  "dbhub": {
+    "setup": "Supply DSN for an existing database using a database-level read-only account. Use username admin and ACCESS_PASSWORD at the gateway, or send X-Template-Key with that password. The MCP endpoint is /mcp. The adapter writes a private TOML configuration exposing execute_sql with readonly=true and search_objects; the removed READONLY environment option is not used.",
+    "acceptance": "Connect a read-only test database, initialize an MCP session, list tools, query a known row, verify a write is rejected and confirm anonymous requests receive 401.",
+    "limitations": "No database is included. A read-only database account remains required even with the tool-level restriction. Native MCP clients must support the gateway header or Basic authentication. Credentials stay in runtime environment variables and a mode-0600 temporary configuration file."
+  },
+  "bludit": {
+    "setup": "Authenticate to the private gateway with username admin and ACCESS_PASSWORD, then complete the Bludit installer and choose your administrator credentials. Publish a page from /admin. This template is a private CMS by default because the gateway protects the entire site.",
+    "acceptance": "Complete installation, publish and edit a page, upload an image, restart, and verify both published content and administrator login.",
+    "limitations": "The official digest-pinned Docker image currently contains Bludit 3.20.0, although the repository has a newer 3.22.0 release. No claim of deploying the latest source release is made. Data, themes and plugins share /data. Public-site access requires an intentional gateway policy change after setup. The official Docker image selected here is 3.20.0, while the saved application documentation reference is 3.22.0; no version equivalence is claimed. Debug mode is disabled by the adapter."
+  }
+}

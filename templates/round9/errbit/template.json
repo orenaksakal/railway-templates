@@ -1,0 +1,126 @@
+{
+  "services": {
+    "214056ea-067e-5f51-82be-067f089f5777": {
+      "name": "mongo",
+      "deploy": {
+        "requiredMountPath": "/data/db",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "mongo:8.0@sha256:4968f22d0c6c10ef29952f3e807f62872ba22b3312f25803564fbfc08255efc2"
+      },
+      "variables": {
+        "MONGO_INITDB_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mongo initdb root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "MONGO_INITDB_ROOT_USERNAME": {
+          "isOptional": false,
+          "description": "Mongo initdb root username for mongo. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "errbit"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "679aad7a-52d7-5ddf-ae9c-b02645cc57f6": {
+          "mountPath": "/data/db"
+        }
+      }
+    },
+    "991fe822-816c-51f3-a721-6e0836046209": {
+      "name": "errbit",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round9/errbit/Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/users/sign_in",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
+        "MONGO_URL": {
+          "isOptional": false,
+          "description": "Mongo url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "mongodb://errbit:${{mongo.MONGO_INITDB_ROOT_PASSWORD}}@${{mongo.RAILWAY_PRIVATE_DOMAIN}}:27017/errbit?authSource=admin"
+        },
+        "RAILS_ENV": {
+          "isOptional": false,
+          "description": "Rails env for errbit. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "production"
+        },
+        "ERRBIT_HOST": {
+          "isOptional": false,
+          "description": "Errbit host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{errbit.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "SECRET_KEY_BASE": {
+          "isOptional": false,
+          "description": "Generated application signing secret. Preserve across restarts and backup restores.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "ERRBIT_ADMIN_USER": {
+          "isOptional": false,
+          "description": "Errbit admin user for errbit. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "RAILS_MAX_THREADS": {
+          "isOptional": false,
+          "description": "Maximum Rails request threads. Tune with available memory and database capacity.",
+          "defaultValue": "2"
+        },
+        "ERRBIT_ADMIN_EMAIL": {
+          "isOptional": false,
+          "description": "Required initial administrator email address."
+        },
+        "ERRBIT_USE_GRAVATAR": {
+          "isOptional": false,
+          "description": "Errbit use gravatar for errbit. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "ERRBIT_ADMIN_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated errbit admin password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "GITHUB_AUTHENTICATION": {
+          "isOptional": false,
+          "description": "Github authentication for errbit. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "GOOGLE_AUTHENTICATION": {
+          "isOptional": false,
+          "description": "Google authentication for errbit. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "templates/round9/errbit/Dockerfile"
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:80": {
+            "port": 80
+          }
+        }
+      },
+      "volumeMounts": {}
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "services": {
+    "a891f8eb-079e-5a10-906e-4cc64fd913ef": {
+      "name": "part-db",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round9/part-db/Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/login",
+        "requiredMountPath": "/data",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "80"
+        },
+        "APP_ENV": {
+          "isOptional": false,
+          "description": "App env for part-db. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "docker"
+        },
+        "APP_SECRET": {
+          "isOptional": false,
+          "description": "Generated app secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "SQLite database on the persistent /data volume. Back up together with uploaded files.",
+          "defaultValue": "sqlite:////data/db/app.db"
+        },
+        "DEFAULT_LANG": {
+          "isOptional": false,
+          "description": "Default lang for part-db. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "en"
+        },
+        "USE_GRAVATAR": {
+          "isOptional": false,
+          "description": "Use gravatar for part-db. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0"
+        },
+        "BASE_CURRENCY": {
+          "isOptional": false,
+          "description": "Choose the accounting currency before first boot; changing this does not convert stored prices.",
+          "defaultValue": "EUR"
+        },
+        "DB_AUTOMIGRATE": {
+          "isOptional": false,
+          "description": "Db automigrate for part-db. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "TRUSTED_PROXIES": {
+          "isOptional": false,
+          "description": "Trusted proxies for part-db. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "127.0.0.0/8,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7"
+        },
+        "DEFAULT_TIMEZONE": {
+          "isOptional": false,
+          "description": "Default timezone for part-db. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "UTC"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "templates/round9/part-db/Dockerfile"
+        },
+        "ALLOW_ATTACHMENT_DOWNLOADS": {
+          "isOptional": false,
+          "description": "Allow attachment downloads for part-db. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0"
+        },
+        "DATABASE_SQLITE_ENFORCE_FOREIGN_KEYS": {
+          "isOptional": false,
+          "description": "Database sqlite enforce foreign keys for part-db. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "INITIAL_ADMIN_PW": {
+          "isOptional": false,
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}",
+          "description": "Generated initial administrator password; used only by the first database migration. Change it in the app after setup."
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:80": {
+            "port": 80
+          }
+        }
+      },
+      "volumeMounts": {
+        "5b5870b3-3a90-5acf-b782-c40370b78c2c": {
+          "mountPath": "/data"
+        }
+      }
+    }
+  }
+}

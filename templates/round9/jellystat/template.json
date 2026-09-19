@@ -1,0 +1,127 @@
+{
+  "services": {
+    "3d977b27-454e-5e54-af9e-724a79ba771f": {
+      "name": "jellystat",
+      "deploy": {
+        "healthcheckPath": "/auth/isConfigured",
+        "requiredMountPath": "/app/backend/backup-data",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "cyfershepard/jellystat:1.1.12@sha256:e61c759ec706da378bc8374e797da1dfd298ab30f804cefd82d192c301a888c7"
+      },
+      "variables": {
+        "TZ": {
+          "isOptional": false,
+          "description": "Tz for jellystat. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "Etc/UTC"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
+        "JS_USER": {
+          "isOptional": false,
+          "description": "Js user for jellystat. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "admin"
+        },
+        "JWT_SECRET": {
+          "isOptional": false,
+          "description": "Generated jwt secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "JS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated js password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "jfstat"
+        },
+        "POSTGRES_IP": {
+          "isOptional": false,
+          "description": "Postgres ip resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "JS_LISTEN_IP": {
+          "isOptional": false,
+          "description": "Js listen ip for jellystat. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "::"
+        },
+        "POSTGRES_PORT": {
+          "isOptional": false,
+          "description": "Private PostgreSQL TCP port. Keep 5432.",
+          "defaultValue": "5432"
+        },
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "jfstat"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}"
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:3000": {
+            "port": 3000
+          }
+        }
+      },
+      "volumeMounts": {
+        "31a3806c-c2fa-5220-ab64-942abfbabbe6": {
+          "mountPath": "/app/backend/backup-data"
+        }
+      }
+    },
+    "835c11f7-7315-562a-b7d3-acf596d23c12": {
+      "name": "postgres",
+      "deploy": {
+        "requiredMountPath": "/var/lib/postgresql/data",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "postgres:17@sha256:f4c66b820c6f974249089d3d16d86a3698eae11e8746eb6644b2271031e91232"
+      },
+      "variables": {
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "jfstat"
+        },
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "jfstat"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    }
+  }
+}

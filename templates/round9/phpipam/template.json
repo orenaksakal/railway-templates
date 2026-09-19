@@ -1,0 +1,163 @@
+{
+  "services": {
+    "00806c5d-9127-54a8-af96-45decc47baa2": {
+      "name": "app",
+      "deploy": {
+        "requiredMountPath": "/phpipam/css/images/logo",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "phpipam/phpipam-www:v1.8.3@sha256:1ec1035d7e650bbe722faecc56ded7231c479b08297437dd8a37fde4f314fb04"
+      },
+      "variables": {
+        "TZ": {
+          "isOptional": false,
+          "description": "Tz for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "UTC"
+        },
+        "IPAM_DATABASE_HOST": {
+          "isOptional": false,
+          "description": "Ipam database host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mariadb.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "IPAM_DATABASE_NAME": {
+          "isOptional": false,
+          "description": "Ipam database name for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "phpipam"
+        },
+        "IPAM_DATABASE_PASS": {
+          "isOptional": false,
+          "description": "Ipam database pass resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mariadb.MARIADB_PASSWORD}}"
+        },
+        "IPAM_DATABASE_USER": {
+          "isOptional": false,
+          "description": "Ipam database user for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "phpipam"
+        },
+        "IPAM_DATABASE_WEBHOST": {
+          "isOptional": false,
+          "description": "Ipam database webhost for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "%"
+        },
+        "IPAM_TRUST_X_FORWARDED": {
+          "isOptional": false,
+          "description": "Ipam trust x forwarded for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "26489e7f-f7cf-54a8-ab2c-2739478b6f1c": {
+          "mountPath": "/phpipam/css/images/logo"
+        }
+      }
+    },
+    "d9603754-e71a-57d2-8451-496846063f05": {
+      "name": "phpipam",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/healthz",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for phpipam. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "80"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "shared/round6-gateway/Dockerfile"
+        },
+        "OWNER_AUTH": {
+          "defaultValue": "true",
+          "isOptional": false,
+          "description": "Require owner authentication for every application route."
+        },
+        "OWNER_SCOPE": {
+          "defaultValue": "all",
+          "isOptional": false,
+          "description": "Protect all application routes."
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "volumeMounts": {}
+    },
+    "ec56ed22-b641-5e98-b256-ccbd2ecd2961": {
+      "name": "mariadb",
+      "deploy": {
+        "requiredMountPath": "/var/lib/mysql",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "mariadb:11.4@sha256:70cc072b29b4a89ae07abb2d4da2c64678a7f2dfe092751bb51c87d67dc1338b"
+      },
+      "variables": {
+        "MARIADB_USER": {
+          "isOptional": false,
+          "description": "Mariadb user for mariadb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "phpipam"
+        },
+        "MARIADB_DATABASE": {
+          "isOptional": false,
+          "description": "Mariadb database for mariadb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "phpipam"
+        },
+        "MARIADB_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mariadb password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "MARIADB_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mariadb root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "0ed1fdcd-07f3-5630-9ec9-95794a648445": {
+          "mountPath": "/var/lib/mysql"
+        }
+      }
+    }
+  }
+}

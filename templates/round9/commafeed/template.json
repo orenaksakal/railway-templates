@@ -1,0 +1,168 @@
+{
+  "services": {
+    "336e7d54-5c02-5a32-874c-11e71d37c194": {
+      "name": "commafeed",
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      },
+      "deploy": {
+        "healthcheckPath": "/healthz",
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 600,
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for commafeed. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8082"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path.",
+          "defaultValue": "shared/round6-gateway/Dockerfile"
+        },
+        "OWNER_AUTH": {
+          "defaultValue": "true",
+          "isOptional": false,
+          "description": "Require owner authentication for every application route."
+        },
+        "OWNER_SCOPE": {
+          "defaultValue": "all",
+          "isOptional": false,
+          "description": "Protect all application routes."
+        }
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "volumeMounts": {}
+    },
+    "3c3d4d4f-61d4-5e4b-bf21-16096198155c": {
+      "name": "app",
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "athou/commafeed:7.3.2-postgresql@sha256:d6bc790a175c29ba5c3b37ccd71297ededc000615dbb7fe32e13d2df0592f95d"
+      },
+      "variables": {
+        "QUARKUS_HTTP_HOST": {
+          "isOptional": false,
+          "description": "Quarkus http host for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0.0.0.0"
+        },
+        "QUARKUS_HTTP_PORT": {
+          "isOptional": false,
+          "description": "Quarkus http port for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8082"
+        },
+        "QUARKUS_DATASOURCE_JDBC_URL": {
+          "isOptional": false,
+          "description": "Quarkus datasource jdbc url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "jdbc:postgresql://${{postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/commafeed"
+        },
+        "QUARKUS_DATASOURCE_PASSWORD": {
+          "isOptional": false,
+          "description": "Quarkus datasource password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}"
+        },
+        "QUARKUS_DATASOURCE_USERNAME": {
+          "isOptional": false,
+          "description": "Quarkus datasource username for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "commafeed"
+        },
+        "COMMAFEED_USERS_ALLOW_REGISTRATIONS": {
+          "isOptional": false,
+          "description": "Commafeed users allow registrations for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "COMMAFEED_USERS_CREATE_DEMO_ACCOUNT": {
+          "isOptional": false,
+          "description": "Commafeed users create demo account for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "COMMAFEED_USERS_MINIMUM_PASSWORD_LENGTH": {
+          "isOptional": false,
+          "description": "Commafeed users minimum password length for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "12"
+        },
+        "QUARKUS_HTTP_AUTH_SESSION_ENCRYPTION_KEY": {
+          "isOptional": false,
+          "description": "Generated quarkus http auth session encryption key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {}
+    },
+    "f7c4ea1e-d4b0-5c91-a56f-555be8e77938": {
+      "name": "postgres",
+      "deploy": {
+        "requiredMountPath": "/var/lib/postgresql/data",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "postgres:17@sha256:f4c66b820c6f974249089d3d16d86a3698eae11e8746eb6644b2271031e91232"
+      },
+      "variables": {
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "commafeed"
+        },
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "commafeed"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        }
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    }
+  }
+}
