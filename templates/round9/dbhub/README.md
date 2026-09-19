@@ -31,7 +31,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 No database is included. A read-only database account remains required even with the tool-level restriction. Native MCP clients must support the gateway header or Basic authentication. Credentials stay in runtime environment variables and a mode-0600 temporary configuration file.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

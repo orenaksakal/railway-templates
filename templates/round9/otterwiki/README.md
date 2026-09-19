@@ -33,7 +33,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 The first administrator signup must be tested behind the gateway. Settings saved in the UI override environment values. The gateway limits requests to 32 MiB. Git-over-HTTP clients need testing with the additional Basic authentication layer.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

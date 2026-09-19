@@ -33,7 +33,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 All routes require owner gateway access. API clients can send X-Template-Key. Meilisearch also requires its own native key; the gateway never injects the master key. The shared owner gateway is not per-user authorization. No queue worker, SMTP or external storage is configured.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

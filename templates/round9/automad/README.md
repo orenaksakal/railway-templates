@@ -31,7 +31,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 This uses upstream v2 beta (2.0.0-beta.58) and is explicitly a beta deployment. First boot needs outbound Composer/package access. The whole /app site is persistent; upgrading the container does not automatically replace the existing site. The gateway makes the entire site private.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

@@ -1,4 +1,4 @@
-"""Generate marketplace overviews for the recovered, eligible unpublished batch."""
+"""Generate marketplace overviews for the recovered, eligible release batch."""
 import json
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,7 +46,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 {d['limitations']}
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

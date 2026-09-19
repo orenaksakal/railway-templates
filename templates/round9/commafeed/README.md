@@ -34,7 +34,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 The gateway protects the initial default account. Native RSS clients must support the additional HTTP Basic credentials. SMTP/password recovery is not configured. Feed fetching requires outbound Internet access.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

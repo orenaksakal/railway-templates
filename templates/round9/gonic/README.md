@@ -31,7 +31,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 The gateway protects initial credentials. Subsonic clients must support additional HTTP Basic authentication; client compatibility is not yet verified. No sound device or jukebox is supplied. Cache, playlists, podcasts and the database are colocated on /data.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

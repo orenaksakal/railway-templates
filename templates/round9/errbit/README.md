@@ -33,7 +33,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 The current official latest image is frozen by digest. The bootstrap intentionally avoids upstream db:seed, which resets and prints the admin password. Existing passwords are not reset on restart. MongoDB is private and authenticated. Email, OAuth, external issue trackers and scheduled retention cleanup require additional setup.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

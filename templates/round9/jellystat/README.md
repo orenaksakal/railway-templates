@@ -31,7 +31,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 An external Jellyfin or Emby server is required for useful statistics and is not included. Upstream describes the current generation as under redevelopment; existing functionality should be validated against your server. API keys, media playback and server-specific integration remain operator-supplied.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

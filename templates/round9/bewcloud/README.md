@@ -32,7 +32,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 Contacts and calendar apps are excluded because Radicale is not bundled. Public file sharing is disabled. DAV clients must account for the extra gateway authentication; Basic Authorization is consumed by the gateway. Optional SMTP and external providers require separate setup.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

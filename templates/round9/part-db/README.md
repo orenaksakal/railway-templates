@@ -30,7 +30,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 One replica with SQLite. Startup applies upstream database migrations; back up before updating the pinned image. Existing administrator passwords are not reset by the adapter. Currency changes do not convert recorded prices.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

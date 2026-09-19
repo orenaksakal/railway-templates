@@ -31,7 +31,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 The official digest-pinned Docker image currently contains Bludit 3.20.0, although the repository has a newer 3.22.0 release. No claim of deploying the latest source release is made. Data, themes and plugins share /data. Public-site access requires an intentional gateway policy change after setup. The official Docker image selected here is 3.20.0, while the saved application documentation reference is 3.22.0; no version equivalence is claimed. Debug mode is disabled by the adapter.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 

@@ -30,7 +30,7 @@ Where an owner gateway is included, the username is admin. API clients can use `
 
 Listening statistics are public by default; administrative changes require the configured password. This is a single-owner statistics service, not a music player. Last.fm and Spotify artwork integrations require operator API credentials. The latest image is frozen by digest.
 
-This is a prepared, unpublished draft. Source and static configuration checks are recorded in the repository's preparation report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
+Source and static configuration checks are recorded in the repository's release report. Container builds, fresh Railway startup, native-client compatibility, full application workflows, backup restoration and costs have not been verified. A proxy healthcheck is not application readiness.
 
 ## Acceptance checks
 
