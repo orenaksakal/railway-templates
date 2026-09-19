@@ -1,0 +1,6 @@
+FROM jamesread/olivetin:3000.20.0@sha256:f3066e207efd35ab8f9ffd71cf7e2abb78d2b1edaf77ea924113bdbe6ef4f989
+USER root
+COPY templates/olivetin/config.yaml /opt/railway-config.yaml
+COPY templates/olivetin/config.yaml /config/config.yaml
+COPY --chmod=755 templates/olivetin/start.sh /railway-start.sh
+ENTRYPOINT ["/railway-start.sh"]

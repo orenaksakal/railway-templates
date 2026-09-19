@@ -1,0 +1,101 @@
+{
+  "services": {
+    "68635655-8532-5e42-8c7c-8beb5e7baceb": {
+      "name": "core",
+      "source": {
+        "image": "ghcr.io/lingarr-translate/lingarr:1.3.0@sha256:12473f6f40beac1bb91ffadc7d8c7f1c2a0cd99ba336e4bf2c1dfa617c27a763"
+      },
+      "variables": {
+        "ASPNETCORE_URLS": {
+          "isOptional": false,
+          "description": "Aspnetcore urls for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "http://+:9876"
+        },
+        "DB_CONNECTION": {
+          "isOptional": false,
+          "description": "Db connection for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "sqlite"
+        },
+        "DB_HANGFIRE_SQLITE_PATH": {
+          "isOptional": false,
+          "description": "Db hangfire sqlite path for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/app/config/Hangfire.db"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/app/config"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "72bb8054-a8f7-5484-aeb7-ff97b10f7cab": {
+          "mountPath": "/app/config"
+        }
+      }
+    },
+    "14051426-28fa-57b9-bc89-b6222c4bed23": {
+      "name": "lingarr",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for lingarr. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "9876"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for lingarr. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for lingarr. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "services": {
+    "ec1929c9-1d80-55c0-be2c-74ad95eda95d": {
+      "name": "core",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "MOCKSERVER_SERVER_PORT": {
+          "isOptional": false,
+          "description": "Mockserver server port for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1080"
+        },
+        "MOCKSERVER_PERSIST_EXPECTATIONS": {
+          "isOptional": false,
+          "description": "Mockserver persist expectations for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "MOCKSERVER_PERSISTED_EXPECTATIONS_PATH": {
+          "isOptional": false,
+          "description": "Mockserver persisted expectations path for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/config/expectations.json"
+        },
+        "MOCKSERVER_INITIALIZATION_JSON_PATH": {
+          "isOptional": false,
+          "description": "Mockserver initialization json path for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/config/expectations.json"
+        },
+        "MOCKSERVER_MAX_EXPECTATIONS": {
+          "isOptional": false,
+          "description": "Mockserver max expectations for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1000"
+        },
+        "MOCKSERVER_MAX_LOG_ENTRIES": {
+          "isOptional": false,
+          "description": "Mockserver max log entries for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1000"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/mockserver/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/config"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/mockserver/Dockerfile"
+      },
+      "volumeMounts": {
+        "1b479dba-a312-5902-a3bc-66a36ad8a7b6": {
+          "mountPath": "/config"
+        }
+      }
+    },
+    "118c3a9c-ee72-5415-8587-057bb897b6c2": {
+      "name": "mockserver",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for mockserver. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1080"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for mockserver. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for mockserver. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "services": {
+    "992b0397-4416-573b-81a3-9d4697f071a6": {
+      "name": "core",
+      "source": {
+        "image": "wiremock/wiremock:3.13.2@sha256:0d4ecb3e4dc8213fd7a4d37d6a78f6e6b553a6d2e15bd51b0999781282ac61b3"
+      },
+      "variables": {
+        "WIREMOCK_OPTIONS": {
+          "isOptional": false,
+          "description": "Wiremock options for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "--port 8080 --disable-request-logging --max-request-journal-entries 1000"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/home/wiremock"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "ab54a5d3-ac65-5109-b609-dd1999befd68": {
+          "mountPath": "/home/wiremock"
+        }
+      }
+    },
+    "2cae15bf-b3d6-508b-a2d3-121f73a1383f": {
+      "name": "wiremock",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for wiremock. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8080"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for wiremock. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for wiremock. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

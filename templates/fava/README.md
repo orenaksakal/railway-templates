@@ -1,0 +1,39 @@
+# Deploy and Host Fava Beancount Ledger
+
+A private Beancount web ledger with a persistent starter journal.
+
+**Unpublished draft.** This candidate meets the selection criterion through a public marketplace gap: no matching listing was found on September 19, 2026 using `Fava`, `Fava Beancount`, `Beancount`. Searches are bounded; private, unindexed and differently named listings may exist. The selection does not claim any competitor is broken.
+
+## About Hosting
+
+| Service | Network | Persistent mount |
+| --- | --- | --- |
+| core | Private | /data |
+| fava | Public HTTPS | None |
+
+The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **fava** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before release.
+
+## First use
+
+Open the seeded ledger behind the gateway. Replace the clearly marked example transaction with your own journal through the editor or an authenticated file-management workflow.
+
+## Recommended acceptance checks
+
+Edit and balance a small synthetic transaction, view account balances, download the journal and confirm changes after restart. A pre-existing main.beancount file is never overwritten by startup.
+
+Test a volume-preserving redeploy as well as a restart. For stateful apps, take an application-consistent backup, including database/WAL and uploaded files, restore it into a separate disposable instance and verify account access and records. For configuration-as-code services, verify a clean rebuild from the saved source. Keep the original data until restoration passes.
+
+## Scope and limitations
+
+Fava 1.30.16 is package-pinned; transitive Python dependencies are resolved at build time. This is ledger software, not bank synchronization or accounting certification. Preserve included journal files together.
+
+This draft has source/configuration review and static checks only. No container build, Railway startup, browser/API workflow, volume recovery or cost measurement was performed. Saved editor fidelity is not deployment proof; `/healthz` proves only gateway readiness. The template has not been published. Set operator-owned provider credentials only where needed and inspect the selected upstream license before commercial use.
+
+## Dependencies and sources
+
+- [Upstream project](https://github.com/beancount/fava)
+- [Selected source reference](https://github.com/beancount/fava/tree/7096e25c6dcc48ab0059643b5592197492ddd0dc)
+- Upstream source receipt: `7096e25c6dcc48ab0059643b5592197492ddd0dc`.
+- Images are digest-pinned in `images.round8.lock.json`. Rolling image tags are frozen at the captured digest, not asserted to match the source commit unless independently established.
+- Adapters and the gateway use `orenaksakal/railway-templates`, branch `codex/unique-template-drafts`, with repository-root Docker build context. Keep the branch available.
+- [Configuration reference](https://github.com/beancount/fava/blob/main/contrib/docker/Dockerfile)

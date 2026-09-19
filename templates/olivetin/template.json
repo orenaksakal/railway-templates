@@ -1,0 +1,101 @@
+{
+  "services": {
+    "5e6f2897-5fd8-5b1d-8116-9fee14d6f528": {
+      "name": "core",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "1337"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/olivetin/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/config"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/olivetin/Dockerfile"
+      },
+      "volumeMounts": {
+        "1b479dba-a312-5902-a3bc-66a36ad8a7b6": {
+          "mountPath": "/config"
+        }
+      }
+    },
+    "1a6f500d-82b9-593c-8ad8-0296122fbcea": {
+      "name": "olivetin",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for olivetin. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1337"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for olivetin. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for olivetin. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "jelu": {
+    "name": "Jelu Reading Tracker",
+    "category": "Other",
+    "description": "Reading lists, book metadata and reviews with persistent SQLite.",
+    "image": "https://github.com/bayang.png"
+  },
+  "grimoire": {
+    "name": "Grimoire Bookmark Workspace",
+    "category": "Other",
+    "description": "Local-first bookmarks and search in a private persistent workspace.",
+    "image": "https://github.com/goniszewski.png"
+  },
+  "linkace": {
+    "name": "LinkAce Bookmark Archive",
+    "category": "Other",
+    "description": "Bookmarks with SQLite search, persistent storage and protected setup.",
+    "image": "https://github.com/Kovah.png"
+  },
+  "solidinvoice": {
+    "name": "SolidInvoice Billing Workspace",
+    "category": "Other",
+    "description": "Quotes and invoices with private MySQL and protected installation.",
+    "image": "https://github.com/SolidInvoice.png"
+  },
+  "titra": {
+    "name": "Titra Project Time Tracking",
+    "category": "Other",
+    "description": "Project time tracking with private authenticated MongoDB.",
+    "image": "https://github.com/titraio.png"
+  },
+  "fava": {
+    "name": "Fava Beancount Ledger",
+    "category": "Other",
+    "description": "A private Beancount web ledger with a persistent starter journal.",
+    "image": "https://github.com/beancount.png"
+  },
+  "yaade": {
+    "name": "Yaade API Workspace",
+    "category": "Other",
+    "description": "A private collaborative API client with persistent request collections.",
+    "image": "https://github.com/EsperoTech.png"
+  },
+  "wiremock": {
+    "name": "WireMock Private API Stubs",
+    "category": "Starters",
+    "description": "Persistent HTTP API stubs behind generated owner access.",
+    "image": "https://github.com/wiremock.png"
+  },
+  "mockserver": {
+    "name": "MockServer Private Expectations",
+    "category": "Starters",
+    "description": "HTTP mock expectations with bounded logs and persistent configuration.",
+    "image": "https://github.com/mock-server.png"
+  },
+  "sqlpage": {
+    "name": "SQLPage Private App Starter",
+    "category": "Starters",
+    "description": "A private SQL-driven web app with persistent pages and SQLite.",
+    "image": "https://github.com/sqlpage.png"
+  },
+  "lingarr": {
+    "name": "Lingarr Subtitle Translation",
+    "category": "Other",
+    "description": "A private subtitle translation service with persistent SQLite settings.",
+    "image": "https://github.com/lingarr-translate.png"
+  },
+  "dumbpad": {
+    "name": "DumbPad Private Notepad",
+    "category": "Other",
+    "description": "Autosaving Markdown notes with generated PIN and persistent files.",
+    "image": "https://github.com/DumbWareio.png"
+  },
+  "dumbassets": {
+    "name": "DumbAssets Private Inventory",
+    "category": "Other",
+    "description": "Asset records, receipts and warranties with generated owner access.",
+    "image": "https://github.com/DumbWareio.png"
+  },
+  "dumbbudget": {
+    "name": "DumbBudget Personal Finance",
+    "category": "Other",
+    "description": "Manual budgets and transactions with persistent owner-protected data.",
+    "image": "https://github.com/DumbWareio.png"
+  },
+  "dumbkan": {
+    "name": "DumbKan Private Kanban",
+    "category": "Other",
+    "description": "A lightweight persistent Kanban board with generated owner access.",
+    "image": "https://github.com/DumbWareio.png"
+  },
+  "dumbdrop": {
+    "name": "DumbDrop Private File Inbox",
+    "category": "Storage",
+    "description": "A persistent file-upload inbox protected by gateway and generated PIN.",
+    "image": "https://github.com/DumbWareio.png"
+  },
+  "maintainerr": {
+    "name": "Maintainerr Media Rules",
+    "category": "Automation",
+    "description": "Media-library review rules with persistent configuration and owner access.",
+    "image": "https://github.com/Maintainerr.png"
+  },
+  "olivetin": {
+    "name": "OliveTin Private Action Panel",
+    "category": "Automation",
+    "description": "A protected command panel with two harmless starter actions.",
+    "image": "https://github.com/OliveTin.png"
+  },
+  "go-feature-flag": {
+    "name": "GO Feature Flag Relay",
+    "category": "Starters",
+    "description": "A private feature-flag relay with a deterministic starter flag.",
+    "image": "https://github.com/thomaspoignant.png"
+  },
+  "flagd": {
+    "name": "Flagd OpenFeature Starter",
+    "category": "Starters",
+    "description": "An OpenFeature-compatible evaluator with a private starter flag.",
+    "image": "https://github.com/open-feature.png"
+  }
+}

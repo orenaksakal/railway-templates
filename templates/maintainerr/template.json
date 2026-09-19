@@ -1,0 +1,101 @@
+{
+  "services": {
+    "48dcacf9-9b49-54d4-95cd-84e97c873525": {
+      "name": "core",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "TZ": {
+          "isOptional": false,
+          "description": "Tz for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "UTC"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/maintainerr/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/opt/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/maintainerr/Dockerfile"
+      },
+      "volumeMounts": {
+        "aaceef2b-8827-5e39-af4b-714a3bcafd02": {
+          "mountPath": "/opt/data"
+        }
+      }
+    },
+    "67f88570-cef2-50c9-b09a-dcaba3d9a6f4": {
+      "name": "maintainerr",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for maintainerr. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "6246"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for maintainerr. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for maintainerr. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+option "title" "My ledger"
+option "operating_currency" "USD"
+2026-01-01 open Assets:Checking USD
+2026-01-01 open Equity:Opening-Balances USD
+2026-01-01 * "Example opening balance"
+  Assets:Checking             100.00 USD
+  Equity:Opening-Balances     -100.00 USD

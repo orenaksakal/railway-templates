@@ -1,0 +1,111 @@
+{
+  "services": {
+    "720af82e-812e-592d-831c-1a4198a94c97": {
+      "name": "core",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "SQLPAGE_WEB_ROOT": {
+          "isOptional": false,
+          "description": "Sqlpage web root for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/www"
+        },
+        "SQLPAGE_CONFIGURATION_DIRECTORY": {
+          "isOptional": false,
+          "description": "Sqlpage configuration directory for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/config"
+        },
+        "DATABASE_URL": {
+          "isOptional": false,
+          "description": "Private PostgreSQL connection URL assembled from generated credentials and service references. No manual value is needed.",
+          "defaultValue": "sqlite:///data/app.db?mode=rwc"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/sqlpage/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/sqlpage/Dockerfile"
+      },
+      "volumeMounts": {
+        "00be78aa-d23d-52b6-8939-07ba72082160": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "39151940-a6e2-547a-b7c6-6a3505e77056": {
+      "name": "sqlpage",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for sqlpage. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8080"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for sqlpage. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for sqlpage. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

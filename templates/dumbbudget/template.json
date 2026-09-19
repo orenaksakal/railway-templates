@@ -1,0 +1,116 @@
+{
+  "services": {
+    "801702f9-9aba-59ab-8440-fc33c0192fe9": {
+      "name": "core",
+      "source": {
+        "image": "dumbwareio/dumbbudget:latest@sha256:e845d989765caceb07b48986764e6b06871d6788a749e7857bfbbea0ae4db5fc"
+      },
+      "variables": {
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
+        "NODE_ENV": {
+          "isOptional": false,
+          "description": "Node.js runtime mode. Keep production for hosted deployments.",
+          "defaultValue": "production"
+        },
+        "BASE_URL": {
+          "isOptional": false,
+          "description": "Base url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{dumbbudget.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "ALLOWED_ORIGINS": {
+          "isOptional": false,
+          "description": "Allowed origins resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{dumbbudget.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "DUMBBUDGET_PIN": {
+          "isOptional": false,
+          "description": "Generated ten-digit native PIN. The separate owner gateway must also remain enabled.",
+          "defaultValue": "${{secret(10, \"0123456789\")}}"
+        },
+        "CURRENCY": {
+          "isOptional": false,
+          "description": "Currency for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "USD"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/app/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "b8bdcf68-4112-5e15-97a4-6ff3af885a9d": {
+          "mountPath": "/app/data"
+        }
+      }
+    },
+    "604b040d-fb82-5d12-9ca8-5cfa5ba97a17": {
+      "name": "dumbbudget",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for dumbbudget. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "3000"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for dumbbudget. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for dumbbudget. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

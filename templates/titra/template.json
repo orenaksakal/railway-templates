@@ -1,0 +1,126 @@
+{
+  "services": {
+    "7966c025-42bc-552f-89c9-3935b4c7fcf1": {
+      "name": "mongodb",
+      "source": {
+        "image": "mongo:7.0@sha256:9854f7139445d766a9523571d6f047530c45547460ffcf8259eb2bf4264632ca"
+      },
+      "variables": {
+        "MONGO_INITDB_ROOT_USERNAME": {
+          "isOptional": false,
+          "description": "Mongo initdb root username for mongodb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "titra_admin"
+        },
+        "MONGO_INITDB_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mongo initdb root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data/db"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "01b96374-d762-5d9d-a70f-469b7163c60e": {
+          "mountPath": "/data/db"
+        }
+      }
+    },
+    "97f04767-b786-573a-8b75-60090ef5cfb6": {
+      "name": "core",
+      "source": {
+        "image": "titraio/titra:v1.1.0@sha256:27394f9604f9bcf008370c1f933c3729c868c89b0e7d8ca4271914569549042a"
+      },
+      "variables": {
+        "ROOT_URL": {
+          "isOptional": false,
+          "description": "Root url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{titra.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "3000"
+        },
+        "MONGO_URL": {
+          "isOptional": false,
+          "description": "Mongo url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "mongodb://titra_admin:${{mongodb.MONGO_INITDB_ROOT_PASSWORD}}@${{mongodb.RAILWAY_PRIVATE_DOMAIN}}:27017/titra?authSource=admin&directConnection=true"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "networking": {
+        "serviceDomains": {}
+      }
+    },
+    "9bdc3619-5ff5-56e8-b425-19da78535325": {
+      "name": "titra",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for titra. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "3000"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for titra. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for titra. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}

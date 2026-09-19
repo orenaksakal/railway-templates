@@ -1,0 +1,10 @@
+server:
+  mode: http
+  port: 1031
+pollingInterval: 60000
+retriever:
+  kind: file
+  path: /goff/flags.yaml
+startWithRetrieverError: false
+loglevel: info
+enableSwagger: false

@@ -1,0 +1,285 @@
+{
+  "jelu": {
+    "repo": "bayang/jelu",
+    "sha": "1e570bf65512cde2595bd145ccd54e934e181207",
+    "ref": "v0.87.3",
+    "releaseUrl": "https://github.com/bayang/jelu/releases/tag/v0.87.3",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/bayang/jelu/blob/v0.87.3/Dockerfile",
+      "https://github.com/bayang/jelu/blob/v0.87.3/src/main/resources/application.yml"
+    ],
+    "stars": 742,
+    "archived": false
+  },
+  "grimoire": {
+    "repo": "goniszewski/grimoire",
+    "sha": "ca974f3561399302b56e2b2b7f52036766dc4117",
+    "ref": "v1.2.0",
+    "releaseUrl": "https://github.com/goniszewski/grimoire/releases/tag/v1.2.0",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/goniszewski/grimoire/blob/v1.2.0/Dockerfile",
+      "https://github.com/goniszewski/grimoire/blob/v1.2.0/daemon/.env.example",
+      "https://github.com/goniszewski/grimoire/blob/v1.2.0/docker-compose.yml"
+    ],
+    "stars": 2858,
+    "archived": false,
+    "archiveUrl": "https://codeload.github.com/goniszewski/grimoire/tar.gz/ca974f3561399302b56e2b2b7f52036766dc4117",
+    "archiveSha256": "9a69c48fae62eb1938cbe25b9d3a4f3276b9908b4576fd27938027ab0bc2022e"
+  },
+  "linkace": {
+    "repo": "Kovah/LinkAce",
+    "sha": "049702ba0aae0c57fe1f319a4567cff7115e7992",
+    "ref": "v2.6.1",
+    "releaseUrl": "https://github.com/Kovah/LinkAce/releases/tag/v2.6.1",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/Kovah/LinkAce/blob/v2.6.1/.env.sqlite.production",
+      "https://github.com/Kovah/LinkAce/blob/v2.6.1/config/app.php",
+      "https://github.com/Kovah/LinkAce/blob/v2.6.1/config/scout.php",
+      "https://github.com/Kovah/LinkAce/blob/v2.6.1/docker-compose.production.yml",
+      "https://github.com/Kovah/LinkAce/blob/v2.6.1/docker-compose.yml",
+      "https://github.com/Kovah/LinkAce/blob/v2.6.1/resources/docker/dockerfiles/release-multiplatform.Dockerfile",
+      "https://github.com/Kovah/LinkAce/blob/v2.6.1/resources/docker/supervisord.ini"
+    ],
+    "stars": 3337,
+    "archived": false
+  },
+  "solidinvoice": {
+    "repo": "SolidInvoice/SolidInvoice",
+    "sha": "43c16ecac6eca20a8f0001dfe3f1fa95732a0050",
+    "ref": "3.0.1",
+    "releaseUrl": "https://github.com/SolidInvoice/SolidInvoice/releases/tag/3.0.1",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/SolidInvoice/SolidInvoice/blob/3.0.1/docker-compose.yml",
+      "https://github.com/SolidInvoice/SolidInvoice/blob/3.0.1/docker/package.Dockerfile"
+    ],
+    "stars": 972,
+    "archived": false
+  },
+  "titra": {
+    "repo": "titraio/titra",
+    "sha": "82117471c86bea0a672dd75b4fd45fcd9fa44fc6",
+    "ref": "v1.1.0",
+    "releaseUrl": "https://github.com/titraio/titra/releases/tag/v1.1.0",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/kromitgmbh/titra/blob/v1.1.0/Dockerfile",
+      "https://github.com/kromitgmbh/titra/blob/v1.1.0/docker-compose.yml"
+    ],
+    "stars": 497,
+    "archived": false
+  },
+  "fava": {
+    "repo": "beancount/fava",
+    "sha": "7096e25c6dcc48ab0059643b5592197492ddd0dc",
+    "ref": "main",
+    "releaseUrl": "https://github.com/beancount/fava/tree/7096e25c6dcc48ab0059643b5592197492ddd0dc",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/beancount/fava/blob/main/contrib/docker/Dockerfile"
+    ],
+    "stars": 2575,
+    "archived": false,
+    "packageVersion": "1.30.16"
+  },
+  "yaade": {
+    "repo": "EsperoTech/yaade",
+    "sha": "0b4dea7e9b140e029e29210c7694217b464eab41",
+    "ref": "main",
+    "releaseUrl": "https://github.com/EsperoTech/yaade/tree/0b4dea7e9b140e029e29210c7694217b464eab41",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/EsperoTech/yaade/blob/main/server/Dockerfile"
+    ],
+    "stars": 1991,
+    "archived": false
+  },
+  "wiremock": {
+    "repo": "wiremock/wiremock-docker",
+    "sha": "9210e86a4db4a57474728d45a352678ea0dbfe62",
+    "ref": "3.13.2-3",
+    "releaseUrl": "https://github.com/wiremock/wiremock-docker/releases/tag/3.13.2-3",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/wiremock/wiremock-docker/blob/3.13.2-3/Dockerfile"
+    ],
+    "stars": 240,
+    "archived": false
+  },
+  "mockserver": {
+    "repo": "mock-server/mockserver-monorepo",
+    "sha": "a9db199328775afece93f68cf6988234a9e31b43",
+    "ref": "mockserver-8.0.0",
+    "releaseUrl": "https://github.com/mock-server/mockserver-monorepo/releases/tag/mockserver-8.0.0",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/mock-server/mockserver-monorepo/blob/mockserver-8.0.0/container_integration_tests/docker_compose_with_persisted_expectations/docker-compose.override.yml",
+      "https://github.com/mock-server/mockserver-monorepo/blob/mockserver-8.0.0/docker/Dockerfile",
+      "https://github.com/mock-server/mockserver-monorepo/blob/mockserver-8.0.0/docker/docker-compose/configure_by_volume_mount/initializerJson.json",
+      "https://github.com/mock-server/mockserver-monorepo/blob/mockserver-8.0.0/helm/mockserver-config/static/initializerJson.json",
+      "https://github.com/mock-server/mockserver-monorepo/blob/mockserver-8.0.0/mockserver/mockserver-core/src/test/resources/org/mockserver/server/initialize/initializerJson.json",
+      "https://github.com/mock-server/mockserver-monorepo/blob/mockserver-8.0.0/mockserver/mockserver-maven-plugin/src/integration-tests/mockserver-initializer-json-main-classpath/src/main/resources/org/mockserver/initializerJson.json"
+    ],
+    "stars": 4973,
+    "archived": false
+  },
+  "sqlpage": {
+    "repo": "sqlpage/SQLPage",
+    "sha": "d30487b019bbd9a3bb971abd46a9616891b63d27",
+    "ref": "v0.46.3",
+    "releaseUrl": "https://github.com/sqlpage/SQLPage/releases/tag/v0.46.3",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/sqlpage/SQLPage/blob/v0.46.3/Dockerfile",
+      "https://github.com/sqlpage/SQLPage/blob/v0.46.3/docker-compose.yml"
+    ],
+    "stars": 2565,
+    "archived": false
+  },
+  "lingarr": {
+    "repo": "lingarr-translate/lingarr",
+    "sha": "5eadc9335c2ecdc7583d1887d6349f382f2e9092",
+    "ref": "1.3.0",
+    "releaseUrl": "https://github.com/lingarr-translate/lingarr/releases/tag/1.3.0",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/lingarr-translate/lingarr/blob/1.3.0/Lingarr.Server/Dockerfile"
+    ],
+    "stars": 876,
+    "archived": false
+  },
+  "dumbpad": {
+    "repo": "DumbWareio/DumbPad",
+    "sha": "8ae0c48cb12c2c222f8c22fbbf06bb674f4b181c",
+    "ref": "v1.0.4",
+    "releaseUrl": "https://github.com/DumbWareio/DumbPad/releases/tag/v1.0.4",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/DumbWareio/DumbPad/blob/v1.0.4/.env.example",
+      "https://github.com/DumbWareio/DumbPad/blob/v1.0.4/Dockerfile",
+      "https://github.com/DumbWareio/DumbPad/blob/v1.0.4/docker-compose.yml"
+    ],
+    "stars": 475,
+    "archived": false
+  },
+  "dumbassets": {
+    "repo": "DumbWareio/DumbAssets",
+    "sha": "0868fe328fd1118a680fc3f2871f920c46f68976",
+    "ref": "v1.0.11",
+    "releaseUrl": "https://github.com/DumbWareio/DumbAssets/releases/tag/v1.0.11",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/DumbWareio/DumbAssets/blob/v1.0.11/.env.example",
+      "https://github.com/DumbWareio/DumbAssets/blob/v1.0.11/Dockerfile",
+      "https://github.com/DumbWareio/DumbAssets/blob/v1.0.11/docker-compose.yml"
+    ],
+    "stars": 1241,
+    "archived": false
+  },
+  "dumbbudget": {
+    "repo": "DumbWareio/DumbBudget",
+    "sha": "b9db5cb32d14b7b78675d8be054611d4829253ef",
+    "ref": "main",
+    "releaseUrl": "https://github.com/DumbWareio/DumbBudget/tree/b9db5cb32d14b7b78675d8be054611d4829253ef",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/DumbWareio/DumbBudget/blob/main/Dockerfile",
+      "https://github.com/DumbWareio/DumbBudget/blob/main/docker-compose.yml"
+    ],
+    "stars": 328,
+    "archived": false
+  },
+  "dumbkan": {
+    "repo": "DumbWareio/DumbKan",
+    "sha": "a1dc943e6b259fc0cccd1456233268ca9f40122a",
+    "ref": "main",
+    "releaseUrl": "https://github.com/DumbWareio/DumbKan/tree/a1dc943e6b259fc0cccd1456233268ca9f40122a",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/DumbWareio/DumbKan/blob/main/.env.example",
+      "https://github.com/DumbWareio/DumbKan/blob/main/Dockerfile",
+      "https://github.com/DumbWareio/DumbKan/blob/main/README.md",
+      "https://github.com/DumbWareio/DumbKan/blob/main/server.js"
+    ],
+    "stars": 179,
+    "archived": false
+  },
+  "dumbdrop": {
+    "repo": "DumbWareio/DumbDrop",
+    "sha": "ff8f813f493e89c7da056e7a3101ce2ef48e3960",
+    "ref": "main",
+    "releaseUrl": "https://github.com/DumbWareio/DumbDrop/tree/ff8f813f493e89c7da056e7a3101ce2ef48e3960",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/DumbWareio/DumbDrop/blob/main/.env.example",
+      "https://github.com/DumbWareio/DumbDrop/blob/main/Dockerfile",
+      "https://github.com/DumbWareio/DumbDrop/blob/main/docker-compose.yml"
+    ],
+    "stars": 571,
+    "archived": false
+  },
+  "maintainerr": {
+    "repo": "Maintainerr/Maintainerr",
+    "sha": "34776039e26113291a46fcbde9de73fb99728788",
+    "ref": "v3.29.0",
+    "releaseUrl": "https://github.com/Maintainerr/Maintainerr/releases/tag/v3.29.0",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/Maintainerr/Maintainerr/blob/v3.29.0/Dockerfile"
+    ],
+    "stars": 2276,
+    "archived": false
+  },
+  "olivetin": {
+    "repo": "OliveTin/OliveTin",
+    "sha": "ed570ff888e2a4021d41cab1b18b44d353086c2c",
+    "ref": "3000.20.0",
+    "releaseUrl": "https://github.com/OliveTin/OliveTin/releases/tag/3000.20.0",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/OliveTin/OliveTin/blob/3000.20.0/Dockerfile.singlearch",
+      "https://github.com/OliveTin/OliveTin/blob/3000.20.0/config.yaml"
+    ],
+    "stars": 3806,
+    "archived": false
+  },
+  "go-feature-flag": {
+    "repo": "thomaspoignant/go-feature-flag",
+    "sha": "98a70eada02674760bf94526f8567755089632c4",
+    "ref": "v1.55.3",
+    "releaseUrl": "https://github.com/thomaspoignant/go-feature-flag/releases/tag/v1.55.3",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/thomaspoignant/go-feature-flag/blob/v1.55.3/cmd/relayproxy/DockerfileGoreleaser",
+      "https://github.com/thomaspoignant/go-feature-flag/blob/v1.55.3/cmd/relayproxy/testdata/dockerhub-example/flags.goff.yaml",
+      "https://github.com/thomaspoignant/go-feature-flag/blob/v1.55.3/cmd/relayproxy/testdata/dockerhub-example/goff-proxy.yaml",
+      "https://github.com/thomaspoignant/go-feature-flag/blob/v1.55.3/cmd/relayproxy/testdata/goff/all_flags/valid_request_specify_flags.json",
+      "https://github.com/thomaspoignant/go-feature-flag/blob/v1.55.3/cmd/relayproxy/testdata/goff/all_flags/valid_response_specify_flags.json",
+      "https://github.com/thomaspoignant/go-feature-flag/blob/v1.55.3/cmd/relayproxy/testdata/goff/configuration/requests/filter-flags.json",
+      "https://github.com/thomaspoignant/go-feature-flag/blob/v1.55.3/examples/openfeature_nodejs/docker-compose.yaml"
+    ],
+    "stars": 2110,
+    "archived": false
+  },
+  "flagd": {
+    "repo": "open-feature/flagd",
+    "sha": "c643e5f033f64b2e192ad871133582a62069c568",
+    "ref": "flagd/v0.16.3",
+    "releaseUrl": "https://github.com/open-feature/flagd/releases/tag/flagd/v0.16.3",
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/open-feature/flagd/blob/core/v0.17.0/README.md",
+      "https://github.com/open-feature/flagd/blob/core/v0.17.0/config/samples/example_flags.flagd.json",
+      "https://github.com/open-feature/flagd/blob/core/v0.17.0/config/samples/example_flags.json",
+      "https://github.com/open-feature/flagd/blob/core/v0.17.0/docs/assets/cheat-sheet-flags.json",
+      "https://github.com/open-feature/flagd/blob/core/v0.17.0/docs/schema/v0/flags.json",
+      "https://github.com/open-feature/flagd/blob/core/v0.17.0/flagd/build.Dockerfile",
+      "https://github.com/open-feature/flagd/blob/core/v0.17.0/samples/example_flags.flagd.json"
+    ],
+    "stars": 997,
+    "archived": false
+  }
+}

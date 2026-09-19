@@ -1,0 +1,167 @@
+{
+  "services": {
+    "78981584-6e12-5528-bb5a-c6af2a52f99b": {
+      "name": "mysql",
+      "source": {
+        "image": "mysql:8.0@sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b"
+      },
+      "variables": {
+        "MYSQL_DATABASE": {
+          "isOptional": false,
+          "description": "Mysql database for mysql. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "solidinvoice"
+        },
+        "MYSQL_USER": {
+          "isOptional": false,
+          "description": "Mysql user for mysql. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "solidinvoice"
+        },
+        "MYSQL_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mysql password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "MYSQL_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mysql root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/mysql"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "6caa3481-2c0f-5d50-9480-904c57280752": {
+          "mountPath": "/var/lib/mysql"
+        }
+      }
+    },
+    "a21091ef-2152-5b90-8255-18f76f94822c": {
+      "name": "core",
+      "source": {
+        "image": "solidinvoice/solidinvoice:3.0.1@sha256:ae7c0e155cb5e515b49c83a4d2c003dc07d30b48952b6fd87b27e66e1d56b162"
+      },
+      "variables": {
+        "SOLIDINVOICE_ENV": {
+          "isOptional": false,
+          "description": "Solidinvoice env for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "prod"
+        },
+        "SOLIDINVOICE_DEBUG": {
+          "isOptional": false,
+          "description": "Solidinvoice debug for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0"
+        },
+        "SOLIDINVOICE_CONFIG_DIR": {
+          "isOptional": false,
+          "description": "Solidinvoice config dir for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/etc/solidinvoice"
+        },
+        "SETUP_DATABASE_HOST": {
+          "isOptional": false,
+          "description": "Copy this private host into the protected database installer; not an application configuration key.",
+          "defaultValue": "${{mysql.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "SETUP_DATABASE_PORT": {
+          "isOptional": false,
+          "description": "Use this port in the database installer.",
+          "defaultValue": "3306"
+        },
+        "SETUP_DATABASE_NAME": {
+          "isOptional": false,
+          "description": "Use this database name in the installer.",
+          "defaultValue": "solidinvoice"
+        },
+        "SETUP_DATABASE_USER": {
+          "isOptional": false,
+          "description": "Use this restricted database user in the installer.",
+          "defaultValue": "solidinvoice"
+        },
+        "SETUP_DATABASE_PASSWORD": {
+          "isOptional": false,
+          "description": "Copy this generated password into the protected installer; keep it private.",
+          "defaultValue": "${{mysql.MYSQL_PASSWORD}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/etc/solidinvoice"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "712769d0-36ab-514f-9190-ef0aba109fd0": {
+          "mountPath": "/etc/solidinvoice"
+        }
+      }
+    },
+    "7ca2443e-3e6f-57e0-a3bd-5e75aa5dd089": {
+      "name": "solidinvoice",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for solidinvoice. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8765"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for solidinvoice. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for solidinvoice. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round6-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round6-gateway/Dockerfile"
+      }
+    }
+  }
+}
