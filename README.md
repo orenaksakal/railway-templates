@@ -1,6 +1,6 @@
 # Railway self-hosting templates
 
-Forty published deployment definitions, including **Formbricks, Firecrawl, AFFiNE, OpenProject, and ToolJet**. Each definition uses pinned images, generated per-deployment secrets, private dependencies, persistent data, and a product-specific startup adapter.
+Sixty published deployment definitions, including **Formbricks, Firecrawl, AFFiNE, OpenProject, and ToolJet**. Each definition uses pinned images, generated per-deployment secrets, private dependencies, persistent data, and a product-specific startup adapter.
 
 | Template | Services | Included |
 | --- | --- | --- |
@@ -12,15 +12,15 @@ Forty published deployment definitions, including **Formbricks, Firecrawl, AFFiN
 
 ## Status
 
-The existing 40 marketplace listings are published. Twenty qualifying unpublished drafts are listed in [DRAFTS-ROUND-8.md](DRAFTS-ROUND-8.md), with the marketplace-gap evidence in [SELECTION-ROUND-8.md](SELECTION-ROUND-8.md). An earlier twenty-product selection did not meet the owner's gap-or-verified-defect criterion; those drafts are marked superseded and excluded.
+All 60 recorded marketplace listings are published. The newest twenty are listed in [RELEASES-ROUND-8.md](RELEASES-ROUND-8.md), with the marketplace-gap evidence in [SELECTION-ROUND-8.md](SELECTION-ROUND-8.md). An earlier twenty-product selection did not meet the owner's gap-or-verified-defect criterion; those drafts are marked superseded and excluded.
 
-See [RELEASES-ROUND-6.md](RELEASES-ROUND-6.md) for the newest fifteen published listings, [VALIDATION.md](VALIDATION.md) for the original five, [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md) for the next ten, and [RELEASES-ROUND-4.md](RELEASES-ROUND-4.md) for round four. These records distinguish local checks from Railway runtime evidence.
+See [RELEASES-ROUND-6.md](RELEASES-ROUND-6.md) for the previous fifteen published listings, [VALIDATION.md](VALIDATION.md) for the original five, [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md) for the next ten, and [RELEASES-ROUND-4.md](RELEASES-ROUND-4.md) for round four. These records distinguish local checks from Railway runtime evidence.
 
-## Twenty marketplace-gap drafts
+## Twenty published marketplace-gap templates
 
 The replacement batch contains Jelu, Grimoire, LinkAce, SolidInvoice, Titra, Fava, Yaade, WireMock, MockServer, SQLPage, Lingarr, DumbPad, DumbAssets, DumbBudget, DumbKan, DumbDrop, Maintainerr, OliveTin, GO Feature Flag and flagd. No matching public listing was found across 56 product/alias checks. The two broad GO Feature Flag hits were verified as different projects. This is a bounded public-search finding, not a claim about private or unindexed templates.
 
-The batch contains 42 services. Generate with `python3 scripts/catalog_round8.py`, `python3 scripts/generate-round8-adapters.py` and `python3 scripts/generate-round8-docs.py`; validate with `python3 scripts/validate-round8.py`. Sources are on `codex/unique-template-drafts`. All drafts remain unpublished, and container builds and application workflows have not been runtime-tested.
+The batch contains 42 services. Generate with `python3 scripts/catalog_round8.py`, `python3 scripts/generate-round8-adapters.py` and `python3 scripts/generate-round8-docs.py`; validate with `python3 scripts/validate-round8.py`. Sources are on `codex/unique-template-drafts`. All twenty were published and their configurations and marketplace metadata read back exactly. Public listing pages were checked. Container builds and application workflows have not been runtime-tested.
 
 ## Fifteen newly published templates
 

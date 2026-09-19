@@ -1,4 +1,6 @@
-# Twenty qualifying unpublished drafts
+# Twenty qualifying drafts: preparation record
+
+**Published September 19, 2026.** All twenty are now published; see [RELEASES-ROUND-8.md](RELEASES-ROUND-8.md) for public links and current verification. The record below describes the earlier preparation stage.
 
 Saved and individually read back on September 19, 2026 in the `orenaksakal` Railway workspace. **All twenty are UNPUBLISHED.** Saved service configurations and every supplied metadata field, including each README, match the local files exactly. No application project or deployment was created.
 
