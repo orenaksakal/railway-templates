@@ -16,6 +16,10 @@ All 60 recorded marketplace listings are published. The newest twenty are listed
 
 See [RELEASES-ROUND-6.md](RELEASES-ROUND-6.md) for the previous fifteen published listings, [VALIDATION.md](VALIDATION.md) for the original five, [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md) for the next ten, and [RELEASES-ROUND-4.md](RELEASES-ROUND-4.md) for round four. These records distinguish local checks from Railway runtime evidence.
 
+## Recovered unpublished drafts
+
+Eighteen additional definitions are prepared under `templates/round9/`; see [PREPARATION-ROUND-9.md](PREPARATION-ROUND-9.md) for the existing editor links, restored adapters, selection evidence and remaining runtime checks. The older LinkAce and DumbDrop drafts are held as duplicates of published listings. This preparation does not publish any additional templates.
+
 ## Twenty published marketplace-gap templates
 
 The replacement batch contains Jelu, Grimoire, LinkAce, SolidInvoice, Titra, Fava, Yaade, WireMock, MockServer, SQLPage, Lingarr, DumbPad, DumbAssets, DumbBudget, DumbKan, DumbDrop, Maintainerr, OliveTin, GO Feature Flag and flagd. No matching public listing was found across 56 product/alias checks. The two broad GO Feature Flag hits were verified as different projects. This is a bounded public-search finding, not a claim about private or unindexed templates.

@@ -2,6 +2,8 @@
 
 Scope: the 20 non-superseded drafts from the workspace list. Eighteen qualify as public marketplace gaps; two are held as duplicates of the previous publication batch. The separate 20 Superseded drafts are excluded.
 
+All eighteen were updated in place and individually read back as `UNPUBLISHED` on September 19, 2026. Their full service configurations and every supplied metadata field, including each README, match the local files exactly. Adapter sources were pushed in commit `c52b862`.
+
 These are **prepared, unpublished definitions, not runtime-certified releases**. No application projects, deployments, or publication calls are part of this preparation. Fresh build, Railway startup, product workflows and recovery remain release checks.
 
 ## Prepared candidates
@@ -55,6 +57,7 @@ Twelve adapter image references were resolved and inspected without downloading 
 
 - Static validator: 18 templates / 38 services; existing IDs; eligibility; Dockerfile/COPY paths; digest syntax; private dependencies; generated variable references; persistent mounts; required overview sections; shell, Python and Node syntax.
 - All 17 Python tests pass, including four new persistence/credential configuration tests. These do not execute the 18 applications.
+- Chibisafe proxy configuration passes `caddy validate` using checksum-verified official Caddy 2.11.4. Errbit bootstrap passes Ruby syntax validation. The temporary Caddy binary was removed after the check.
 - Docker is unavailable on this host. Container builds, live Railway startup, registration/login, provider connectivity, volume-preserving restart, backup restoration and resource usage remain unverified. Each README provides the concrete product workflow.
 - The original live snapshots and full draft readbacks remain private in `.local/round9/`. Use the verifier below for the authoritative saved editor state.
 
