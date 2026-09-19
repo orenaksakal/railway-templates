@@ -1,7 +1,7 @@
 # Fifteen additional marketplace templates
 
 Selection date: September 19, 2026. Starting workspace inventory: 85 published
-templates and no unpublished drafts. The authorized target is 100 published.
+templates and no unpublished drafts. Publication is complete: the verified final inventory is 100 published with no drafts. See [release details](RELEASES-ROUND-10.md).
 
 Each candidate qualifies through product and alias searches that found no
 matching public Railway listing. This is bounded marketplace evidence; private,
@@ -48,3 +48,5 @@ fresh Railway application deployments, functional workflows, restart behavior,
 backup restoration and measured cost remain unverified. The individual overviews
 disclose these limits and provide acceptance steps. Publication creates template
 listings; it does not create application deployments.
+
+Nine actual Nginx authentication tests subsequently passed for the round-ten owner gateway, including cookie issuance, native Bearer forwarding, credential rejection and healthcheck isolation. Application runtime verification remains outstanding.

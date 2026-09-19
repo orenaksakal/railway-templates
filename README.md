@@ -1,6 +1,6 @@
 # Railway self-hosting templates
 
-Seventy-eight published deployment definitions, including **Formbricks, Firecrawl, AFFiNE, OpenProject, and ToolJet**. Each definition uses pinned images, generated per-deployment secrets, private dependencies, persistent data, and a product-specific startup adapter.
+Ninety-three published deployment definitions maintained in this repository; the owner’s Railway workspace has **100 published templates** in total. Included here are **Formbricks, Firecrawl, AFFiNE, OpenProject, and ToolJet**. The definitions use pinned images, generated per-deployment secrets, private dependencies, persistent data, and startup adapters where needed.
 
 | Template | Services | Included |
 | --- | --- | --- |
@@ -12,13 +12,19 @@ Seventy-eight published deployment definitions, including **Formbricks, Firecraw
 
 ## Status
 
-All 78 recorded marketplace listings are published. The newest eighteen are listed in [RELEASES-ROUND-9.md](RELEASES-ROUND-9.md). The preceding twenty are listed in [RELEASES-ROUND-8.md](RELEASES-ROUND-8.md), with the marketplace-gap evidence in [SELECTION-ROUND-8.md](SELECTION-ROUND-8.md). An earlier twenty-product selection did not meet the owner's gap-or-verified-defect criterion; those drafts are marked superseded and excluded.
+The workspace contains **100 published templates and zero unpublished drafts**, verified September 19, 2026. This repository records 93 of those published listings; seven additional listings predate these release records. The newest fifteen are listed in [RELEASES-ROUND-10.md](RELEASES-ROUND-10.md). The preceding eighteen are listed in [RELEASES-ROUND-9.md](RELEASES-ROUND-9.md). The preceding twenty are listed in [RELEASES-ROUND-8.md](RELEASES-ROUND-8.md), with the marketplace-gap evidence in [SELECTION-ROUND-8.md](SELECTION-ROUND-8.md). An earlier twenty-product selection did not meet the owner's gap-or-verified-defect criterion; those twenty drafts were deleted along with two older duplicate drafts.
 
 See [RELEASES-ROUND-6.md](RELEASES-ROUND-6.md) for the previous fifteen published listings, [VALIDATION.md](VALIDATION.md) for the original five, [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md) for the next ten, and [RELEASES-ROUND-4.md](RELEASES-ROUND-4.md) for round four. These records distinguish local checks from Railway runtime evidence.
 
+## Fifteen additional published marketplace gaps
+
+Raneto, Movary, Pinry, Mikochi, Airstation, Swagger Editor, Redoc, PlantUML, Mountebank, Stoplight Prism, Speedtest Tracker, Backrest, LibreBooking, DomainMOD and farmOS are published. The 15 definitions contain 33 services, with 46 recorded product/alias searches. See [RELEASES-ROUND-10.md](RELEASES-ROUND-10.md) for public links and verification, and [SELECTION-ROUND-10.md](SELECTION-ROUND-10.md) for selection scope.
+
+The new batch’s owner gateway passed nine actual Nginx authentication tests, including browser sessions with native Bearer tokens, password rotation, forged cookies and unauthenticated healthchecks. Application builds, workflows and recovery remain unverified and are disclosed in the overviews. Generate using the three `scripts/catalog_round10_*.py` files, assemble with `python3 scripts/assemble-round10.py`, and validate with `python3 scripts/validate-round10.py`.
+
 ## Eighteen recovered and published templates
 
-Eighteen additional definitions under `templates/round9/` are published, with exact configuration/metadata readbacks and public-page checks. See [RELEASES-ROUND-9.md](RELEASES-ROUND-9.md) for deploy links and [PREPARATION-ROUND-9.md](PREPARATION-ROUND-9.md) for restored adapters and selection evidence. The older LinkAce and DumbDrop drafts remain unpublished duplicate holds. Application deployment and recovery checks remain unverified.
+Eighteen additional definitions under `templates/round9/` are published, with exact configuration/metadata readbacks and public-page checks. See [RELEASES-ROUND-9.md](RELEASES-ROUND-9.md) for deploy links and [PREPARATION-ROUND-9.md](PREPARATION-ROUND-9.md) for restored adapters and selection evidence. The older duplicate LinkAce and DumbDrop drafts were deleted; their published replacements remain available. Application deployment and recovery checks remain unverified.
 
 ## Twenty published marketplace-gap templates
 
@@ -26,7 +32,7 @@ The replacement batch contains Jelu, Grimoire, LinkAce, SolidInvoice, Titra, Fav
 
 The batch contains 42 services. Generate with `python3 scripts/catalog_round8.py`, `python3 scripts/generate-round8-adapters.py` and `python3 scripts/generate-round8-docs.py`; validate with `python3 scripts/validate-round8.py`. Sources are on `codex/unique-template-drafts`. All twenty were published and their configurations and marketplace metadata read back exactly. Public listing pages were checked. Container builds and application workflows have not been runtime-tested.
 
-## Fifteen newly published templates
+## Fifteen earlier published templates
 
 Fifteen additional templates covering 53 services are published and verified; see [RELEASES-ROUND-6.md](RELEASES-ROUND-6.md): Plunk, Bugsink, Notifuse, Lago, DocuSeal, Frappe Learning, DB-GPT, Frappe Insights, Frappe Builder, Unla, MCPJungle, Perses, TimeTagger, Vespa and Agenta. Their source is `scripts/catalog_round6.py`; container builds and application acceptance workflows remain unverified.
 
