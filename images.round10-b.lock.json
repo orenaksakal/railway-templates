@@ -1,0 +1,7 @@
+{
+  "swaggerapi/swagger-editor:v5.8.8-unprivileged": "swaggerapi/swagger-editor:v5.8.8-unprivileged@sha256:b56bd6a78cd9ba59378353d47bb07b689c18879c677b65fa62710daeac5af80f",
+  "redocly/redoc:v2.5.3": "redocly/redoc:v2.5.3@sha256:2e26bb660574c9b85eacd8e67b4e7a78641f5b63252859450688aeec6d918807",
+  "plantuml/plantuml-server:jetty-v1.2026.8": "plantuml/plantuml-server:jetty-v1.2026.8@sha256:5f6f99ec2fc11c8236e80630d622b0ba22b8d9301b39b18db4bb2b95cae87781",
+  "bbyars/mountebank:2.9.4": "bbyars/mountebank:2.9.4@sha256:32c52e77eab3e075c485e1981512ef14fe35fb59f6bc65924b646ad373489139",
+  "stoplight/prism:5.15.10": "stoplight/prism:5.15.10@sha256:586d1f0f94f8d0eaf20b26b8b41f985f2a2d494bea297bd3988c3de3eb87094e"
+}

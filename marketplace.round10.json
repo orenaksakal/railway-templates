@@ -1,0 +1,92 @@
+{
+  "airstation": {
+    "category": "Other",
+    "description": "Private radio studio and music player with durable tracks and SQLite.",
+    "image": "https://github.com/cheatsnake.png",
+    "name": "Airstation Private Radio"
+  },
+  "backrest": {
+    "category": "Storage",
+    "description": "Manage restic repositories, browse snapshots and restore files privately.",
+    "image": "https://github.com/garethgeorge.png",
+    "name": "Backrest Repository Manager"
+  },
+  "domainmod": {
+    "category": "Other",
+    "description": "Domain and SSL asset inventory with MariaDB and protected administration.",
+    "image": "https://github.com/domainmod.png",
+    "name": "DomainMOD Portfolio Inventory"
+  },
+  "farmos": {
+    "category": "Other",
+    "description": "Farm planning, asset and activity records with PostgreSQL and file storage.",
+    "image": "https://github.com/farmOS.png",
+    "name": "farmOS Farm Records"
+  },
+  "librebooking": {
+    "category": "Other",
+    "description": "Private room and equipment reservations with MariaDB and durable uploads.",
+    "image": "https://github.com/LibreBooking.png",
+    "name": "LibreBooking Resource Scheduler"
+  },
+  "mikochi": {
+    "category": "Storage",
+    "description": "Private file browsing, uploads, downloads, and media streaming.",
+    "image": "https://github.com/zer0tonin.png",
+    "name": "Mikochi File Browser"
+  },
+  "mountebank": {
+    "category": "Other",
+    "description": "Persistent service mocks with protected administration and private ports.",
+    "image": "https://github.com/bbyars.png",
+    "name": "Mountebank Private API Mocks"
+  },
+  "movary": {
+    "category": "Other",
+    "description": "Track, rate, and review watched movies with a persistent SQLite library.",
+    "image": "https://github.com/leepeuker.png",
+    "name": "Movary Movie Diary"
+  },
+  "pinry": {
+    "category": "Other",
+    "description": "Private image bookmarks and visual boards with generated administrator.",
+    "image": "https://github.com/pinry.png",
+    "name": "Pinry Visual Bookmark Boards"
+  },
+  "plantuml": {
+    "category": "Other",
+    "description": "Render UML diagrams from text behind owner access and sandbox controls.",
+    "image": "https://github.com/plantuml.png",
+    "name": "PlantUML Private Diagram Renderer"
+  },
+  "prism": {
+    "category": "Other",
+    "description": "Generate mock API responses from a persistent OpenAPI specification.",
+    "image": "https://github.com/stoplightio.png",
+    "name": "Stoplight Prism OpenAPI Mock Server"
+  },
+  "raneto": {
+    "category": "CMS",
+    "description": "Markdown knowledge base with browser editing and persistent pages.",
+    "image": "https://github.com/raneto.png",
+    "name": "Raneto Private Knowledge Base"
+  },
+  "redoc": {
+    "category": "Other",
+    "description": "Readable OpenAPI documentation with a persistent, replaceable schema.",
+    "image": "https://github.com/Redocly.png",
+    "name": "Redoc Private API Documentation"
+  },
+  "speedtest-tracker": {
+    "category": "Observability",
+    "description": "Track Railway-region Internet performance with persistent test history.",
+    "image": "https://github.com/alexjustesen.png",
+    "name": "Speedtest Tracker Regional Egress"
+  },
+  "swagger-editor": {
+    "category": "Other",
+    "description": "Design and validate OpenAPI and AsyncAPI documents in your browser.",
+    "image": "https://github.com/swagger-api.png",
+    "name": "Swagger Editor Private API Designer"
+  }
+}

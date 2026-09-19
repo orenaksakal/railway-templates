@@ -1,0 +1,13 @@
+proxy_pass http://$upstream;
+proxy_http_version 1.1;
+proxy_set_header Host $host;
+proxy_set_header X-Forwarded-Proto https;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header Authorization $upstream_authorization;
+proxy_set_header X-Template-Key "";
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection $connection_upgrade;
+proxy_buffer_size 16k;
+proxy_buffers 4 16k;
+proxy_buffering off;
+proxy_read_timeout 600s;

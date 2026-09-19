@@ -1,0 +1,623 @@
+{
+  "swagger-editor": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "queries": [
+      {
+        "query": "Swagger Editor",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "swagger-editor",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "SwaggerEditor",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Swagger",
+        "resultCount": 6,
+        "hasNextPage": false,
+        "results": [
+          {
+            "id": "bb3c87cc-cb18-4af4-b800-b26d62a6849e",
+            "code": "swagger-ui",
+            "name": "Swagger UI",
+            "description": "An interactive documentation built from an OpenAPI specification",
+            "image": "https://raw.githubusercontent.com/swagger-api/swagger.io-docs/refs/heads/main/public/favicon.svg",
+            "deploymentCount": 4,
+            "healthScore": 75.0,
+            "creatorName": "Oscar's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "1228ad3d-3b3a-41a5-96eb-a8d18593d6a6",
+            "code": "SE518g",
+            "name": "Flask OpenAPI",
+            "description": "OpenAPI-compatible with Swagger and redoc, using fastopenapi",
+            "image": null,
+            "deploymentCount": 5,
+            "healthScore": 100.0,
+            "creatorName": "chin's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "7ddf81e7-7541-4a02-b5d8-695d83b1897c",
+            "code": "scalar-api-reference",
+            "name": "Scalar API Reference",
+            "description": "Modern API documentation for OpenAPI/Swagger",
+            "image": "https://scalar.com/brand/scalar-logomark-dark.svg",
+            "deploymentCount": 1,
+            "healthScore": 100.0,
+            "creatorName": "datadanmark's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "a06c27f4-38e3-4386-8fb7-23ae2a5f1ebf",
+            "code": "waha",
+            "name": "WAHA",
+            "description": "Deploy WAHA: WhatsApp HTTP API with dashboard and Swagger UI",
+            "image": "https://raw.githubusercontent.com/devlikeapro/waha/refs/heads/core/logo.png",
+            "deploymentCount": 419,
+            "healthScore": 100.0,
+            "creatorName": "myworkspace",
+            "isVerified": false
+          },
+          {
+            "id": "4029b0e9-c811-453e-8469-a96cd71388e3",
+            "code": "-6vLXh",
+            "name": "Elysia-bun-server",
+            "description": "Elysia user management API with real-time WebSockets and Swagger UI",
+            "image": null,
+            "deploymentCount": 2,
+            "healthScore": null,
+            "creatorName": "coding_dynasty",
+            "isVerified": false
+          },
+          {
+            "id": "3a61f077-63b9-45ff-a002-f2f1866ecaf0",
+            "code": "postgrest-api",
+            "name": "PostgREST",
+            "description": "REST API served straight out of a PostgreSQL schema, with Swagger UI",
+            "image": "https://res.cloudinary.com/apideck/image/upload/v1608914746/icons/postgrest-org.png",
+            "deploymentCount": 0,
+            "healthScore": null,
+            "creatorName": "A3A",
+            "isVerified": false
+          }
+        ],
+        "receiptSha256": "abdd5c5c45ee8f0c9ea7c9d2e77d8bdc7f45ae20edda64028a40501736130aee"
+      }
+    ],
+    "matchingListings": [],
+    "excludedMatches": [
+      {
+        "code": "swagger-ui",
+        "name": "Swagger UI",
+        "reason": "Different product: Swagger UI, Scalar, or application starter that renders Swagger documentation; none provides the Swagger Editor application."
+      },
+      {
+        "code": "SE518g",
+        "name": "Flask OpenAPI",
+        "reason": "Different product: Swagger UI, Scalar, or application starter that renders Swagger documentation; none provides the Swagger Editor application."
+      },
+      {
+        "code": "scalar-api-reference",
+        "name": "Scalar API Reference",
+        "reason": "Different product: Swagger UI, Scalar, or application starter that renders Swagger documentation; none provides the Swagger Editor application."
+      },
+      {
+        "code": "waha",
+        "name": "WAHA",
+        "reason": "Different product: Swagger UI, Scalar, or application starter that renders Swagger documentation; none provides the Swagger Editor application."
+      },
+      {
+        "code": "-6vLXh",
+        "name": "Elysia-bun-server",
+        "reason": "Different product: Swagger UI, Scalar, or application starter that renders Swagger documentation; none provides the Swagger Editor application."
+      },
+      {
+        "code": "postgrest-api",
+        "name": "PostgREST",
+        "reason": "Different product: Swagger UI, Scalar, or application starter that renders Swagger documentation; none provides the Swagger Editor application."
+      }
+    ],
+    "scope": "Public Railway product and alias search with complete pagination. Private, unindexed, or differently named listings may exist."
+  },
+  "redoc": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "queries": [
+      {
+        "query": "Redoc",
+        "resultCount": 1,
+        "hasNextPage": false,
+        "results": [
+          {
+            "id": "1228ad3d-3b3a-41a5-96eb-a8d18593d6a6",
+            "code": "SE518g",
+            "name": "Flask OpenAPI",
+            "description": "OpenAPI-compatible with Swagger and redoc, using fastopenapi",
+            "image": null,
+            "deploymentCount": 5,
+            "healthScore": 100.0,
+            "creatorName": "chin's Projects",
+            "isVerified": false
+          }
+        ],
+        "receiptSha256": "075af6e44663df15da486f751b53b216d719b1d7bb19b95985d655fe21df8a33"
+      },
+      {
+        "query": "Redocly",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Redoc API",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "matchingListings": [],
+    "excludedMatches": [
+      {
+        "code": "SE518g",
+        "name": "Flask OpenAPI",
+        "reason": "Flask OpenAPI is an API application starter with Redoc as a documentation integration, not the standalone Redoc document hosting service."
+      }
+    ],
+    "scope": "Public Railway product and alias search with complete pagination. Private, unindexed, or differently named listings may exist."
+  },
+  "plantuml": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "queries": [
+      {
+        "query": "PlantUML",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Plant UML",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "plantuml-server",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "matchingListings": [],
+    "excludedMatches": [],
+    "scope": "Public Railway product and alias search with complete pagination. Private, unindexed, or differently named listings may exist."
+  },
+  "mountebank": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "queries": [
+      {
+        "query": "Mountebank",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "mbtest",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "matchingListings": [],
+    "excludedMatches": [],
+    "scope": "Public Railway product and alias search with complete pagination. Private, unindexed, or differently named listings may exist."
+  },
+  "prism": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "queries": [
+      {
+        "query": "Prism",
+        "resultCount": 22,
+        "hasNextPage": false,
+        "results": [
+          {
+            "id": "c925f323-da97-4ccb-8df6-8163fc8c56d1",
+            "code": "prism-agent-stack",
+            "name": "prism-agent-stack",
+            "description": "a template for the prism stack",
+            "image": "https://hackmd.io/_uploads/ByrAlUHpWg.png",
+            "deploymentCount": 5,
+            "healthScore": 100.0,
+            "creatorName": "Prism Haus",
+            "isVerified": false
+          },
+          {
+            "id": "486240b2-184d-4682-a59c-6ee35b170e4b",
+            "code": "NpN5Jl",
+            "name": "Prisma Studio",
+            "description": "Quickly host the database viewer Prisma Studio with only a database url",
+            "image": "https://raw.githubusercontent.com/OscarNOW/prisma-studio/main/logo.svg",
+            "deploymentCount": 17,
+            "healthScore": 96.0,
+            "creatorName": "Oscar's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "3b07e6f2-1c78-4732-a698-705ce1b2efa5",
+            "code": "prisma-postgres",
+            "name": "Prisma Postgres Starter",
+            "description": "Deploy and Host Prisma Postgres with Railway",
+            "image": "https://i.postimg.cc/9M2xLv0K/Logo-White-128x128.png",
+            "deploymentCount": 17,
+            "healthScore": 29.0,
+            "creatorName": "Prisma's Projects",
+            "isVerified": true
+          },
+          {
+            "id": "a6a25479-4bc3-4def-b89c-b177bead6eac",
+            "code": "HRZqTF",
+            "name": "NextJS Prisma",
+            "description": "An example NextJS app using Prisma",
+            "image": null,
+            "deploymentCount": 1202,
+            "healthScore": 100.0,
+            "creatorName": "opqr's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "2172efe2-2899-4da1-a973-bf5de0e8c95b",
+            "code": "sRATcT",
+            "name": "Sveltekit Prisma",
+            "description": "Sveltekit with Prisma already configured",
+            "image": "https://kit.svelte.dev/favicon.png",
+            "deploymentCount": 19,
+            "healthScore": 80.0,
+            "creatorName": "jachii's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "6fb50dd4-d2c1-41a0-8f56-15f0e70273b1",
+            "code": "next-prisma-trpc-or-typed-full-stack-on-",
+            "name": "Next + Prisma + tRPC | Typed Full-Stack on Current Versions",
+            "description": "Next 16, Prisma 7, tRPC 11. Migrations run before the new version.",
+            "image": "https://raw.githubusercontent.com/trpc/trpc/main/www/static/img/logo.svg",
+            "deploymentCount": 0,
+            "healthScore": null,
+            "creatorName": "Pavel Volkov's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "79907cac-ccdd-47d5-b578-c20bdcf44521",
+            "code": "LqCw_O",
+            "name": "ExpressJS Prisma",
+            "description": "An example ExpressJS application using Prisma",
+            "image": null,
+            "deploymentCount": 251,
+            "healthScore": 35.0,
+            "creatorName": "opqr's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "8ff64f4e-8f26-41f6-9b7c-861db8a61f62",
+            "code": "vCAGzF",
+            "name": "Express+GraphQL+Prisma",
+            "description": "Clean template using Express.js, Prisma, GraphQL, SQLite, and Apollo Server",
+            "image": null,
+            "deploymentCount": 2,
+            "healthScore": 100.0,
+            "creatorName": "izzy's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "8d302b3c-7acd-4fec-9502-58cccf8a3a33",
+            "code": "nextjs-better-auth-prisma-template",
+            "name": "Next.js Better Auth Prisma SaaS Starter Kit",
+            "description": "Next.js starter with Better Auth, Prisma/Postgres and role-based dashboards",
+            "image": "https://www.svgrepo.com/show/354113/nextjs-icon.svg",
+            "deploymentCount": 13,
+            "healthScore": 81.0,
+            "creatorName": "Eduardo Lago's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "99b5f636-09bf-48ba-bc99-29520de24ee8",
+            "code": "CgBw9O",
+            "name": "Next Prisma tRPC",
+            "description": "A sample NextJS app using tRPC",
+            "image": null,
+            "deploymentCount": 66,
+            "healthScore": 0.0,
+            "creatorName": "Milo's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "14475872-dd3e-4419-ab13-56eb278f940b",
+            "code": "express-prisma-or-api-with-postgres-and-",
+            "name": "Express + Prisma | API with Postgres and Migrations That Run",
+            "description": "Express 5 and Prisma 7 on Railway, migrations run in the pre-deploy step",
+            "image": "https://devicons.railway.com/i/prisma-dark.svg",
+            "deploymentCount": 1,
+            "healthScore": 0.0,
+            "creatorName": "Pavel Volkov's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "5593a0c0-5ae0-4534-aff6-743fa80c726d",
+            "code": "wj1mcU",
+            "name": "Next.js + Supabase (Prisma + tRPC)",
+            "description": "A sensible modern set of defaults for a Next.js app with Supabase (+ auth!)",
+            "image": "https://asset.brandfetch.io/id2alue-rx/idGu8IJBd3.svg",
+            "deploymentCount": 5,
+            "healthScore": 0.0,
+            "creatorName": "Bob Ambrose's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "627fc2c3-f75a-4671-8c39-99f9dfa6f03f",
+            "code": "nodejs-multimodal-rag-starter",
+            "name": "Node.js Starter with Advanced Auth, Prisma, Postgres (pgvector), background jobs and Multimodal RAG + more",
+            "description": "Node.js, Postgres (pgvector), Redis & Prisma Production Starter",
+            "image": "https://pub-ce2718d3322e486d97486bc7e573557d.r2.dev/nodejs-enterprise-template_railway-icon.jpg",
+            "deploymentCount": 21,
+            "healthScore": 83.0,
+            "creatorName": "aymen kani's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "6209b8bf-ee79-4aa1-ac54-c96ce04384f6",
+            "code": "nestjs-or-api-with-postgres-and-no-requi",
+            "name": "NestJS | API with Postgres and No Required Secrets",
+            "description": "NestJS 11 and Prisma 7 on Railway, deploys without any required secrets",
+            "image": "https://devicons.railway.com/i/nestjs.svg",
+            "deploymentCount": 3,
+            "healthScore": 100.0,
+            "creatorName": "Pavel Volkov's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "7d407737-66fe-4e90-a68a-04482c826fd6",
+            "code": "nextjs",
+            "name": "Next.js",
+            "description": "[Jul'26] A minimal NextJS application with Prisma ORM and PostgreSQL \u25b2\ud83d\udc18",
+            "image": null,
+            "deploymentCount": 28,
+            "healthScore": 88.0,
+            "creatorName": "codestorm",
+            "isVerified": false
+          },
+          {
+            "id": "05e4184f-f4eb-4a7b-814d-07d7e0742059",
+            "code": "oovLiW",
+            "name": "Sveltekit NestJS",
+            "description": "Full-stack with SvelteKit + NestJS + Prisma + Postgresql with utils",
+            "image": "https://termkub.s3.ap-southeast-1.amazonaws.com/sv-nest.png",
+            "deploymentCount": 2,
+            "healthScore": null,
+            "creatorName": "Zasxcv's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "72497e85-c604-40ea-a50b-9747df141a5b",
+            "code": "react-router-or-accounts-and-per-user-da",
+            "name": "React Router | Accounts and Per-User Data on Postgres",
+            "description": "React Router 8, Prisma 7. Accounts and per-user data, ready to use.",
+            "image": "https://raw.githubusercontent.com/reactjs/react.dev/main/public/images/brand/logo_light.svg",
+            "deploymentCount": 0,
+            "healthScore": null,
+            "creatorName": "Pavel Volkov's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "3fcee919-8722-450d-976a-0842e9c66854",
+            "code": "idn-area-api",
+            "name": "idn-area API",
+            "description": "Indonesia administrative area API \ud83c\uddee\ud83c\udde9 built with Nest.js + Prisma",
+            "image": "https://devicons.railway.com/i/nestjs.svg",
+            "deploymentCount": 0,
+            "healthScore": null,
+            "creatorName": "Fityan's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "43e9a8cb-d41c-4306-b669-d22a5b91b467",
+            "code": "open-saas",
+            "name": "Open SaaS ",
+            "description": "full-featured SaaS starter for React, NodeJS, & Prisma powered by Wasp =}",
+            "image": "https://wasp.sh/img/lp/wasp-logo.webp",
+            "deploymentCount": 139,
+            "healthScore": 84.0,
+            "creatorName": "Wasp",
+            "isVerified": true
+          },
+          {
+            "id": "6a8cb263-dfef-43cf-8219-50a9fb516bf1",
+            "code": "remix-railway-template",
+            "name": "remix-railway-template",
+            "description": "The Remix-lineage full-stack starter: RRv7, Postgres, Prisma, auth",
+            "image": null,
+            "deploymentCount": 1,
+            "healthScore": 100.0,
+            "creatorName": "Nameless 's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "a87e87c6-78d0-41d7-9011-94c61da079c0",
+            "code": "nextjs-production-starter-suite",
+            "name": "Next.js Production Starter Suite",
+            "description": "Vercel-like stack: ISR (Redis), cached Images, Postgres (Prisma) & Auth.",
+            "image": "https://devicons.railway.com/i/nextjs-dark.svg",
+            "deploymentCount": 1,
+            "healthScore": null,
+            "creatorName": "Mohamed Samir Zahran's Projects",
+            "isVerified": false
+          },
+          {
+            "id": "f2ff1acd-2559-4d37-8321-67b8b7a65e55",
+            "code": "VeLWVf",
+            "name": "remix-postgresql",
+            "description": "A Railway starter template based on Remix, PostgreSQL (Prisma) and Radix UI",
+            "image": null,
+            "deploymentCount": 3,
+            "healthScore": 0.0,
+            "creatorName": "janmonschke's Projects",
+            "isVerified": false
+          }
+        ],
+        "receiptSha256": "d4d2aad86fe461cf3fd2727e70b7149ca366eff406faaa6f2bd2ba5bd9d6f3a5"
+      },
+      {
+        "query": "Stoplight",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "stoplight prism",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "matchingListings": [],
+    "excludedMatches": [
+      {
+        "code": "prism-agent-stack",
+        "name": "prism-agent-stack",
+        "reason": "Live definition and README identify superprismio/prism-railway-template, a Codex/Discord multi-service agent workspace, not the Stoplight Prism OpenAPI mock server.",
+        "definitionReceiptSha256": "2b50459370925fd59172d2908b1773cc35ecd1d41d0582ccd5e75fba5b6c5e86"
+      },
+      {
+        "code": "NpN5Jl",
+        "name": "Prisma Studio",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "prisma-postgres",
+        "name": "Prisma Postgres Starter",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "HRZqTF",
+        "name": "NextJS Prisma",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "sRATcT",
+        "name": "Sveltekit Prisma",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "next-prisma-trpc-or-typed-full-stack-on-",
+        "name": "Next + Prisma + tRPC | Typed Full-Stack on Current Versions",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "LqCw_O",
+        "name": "ExpressJS Prisma",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "vCAGzF",
+        "name": "Express+GraphQL+Prisma",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "nextjs-better-auth-prisma-template",
+        "name": "Next.js Better Auth Prisma SaaS Starter Kit",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "CgBw9O",
+        "name": "Next Prisma tRPC",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "express-prisma-or-api-with-postgres-and-",
+        "name": "Express + Prisma | API with Postgres and Migrations That Run",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "wj1mcU",
+        "name": "Next.js + Supabase (Prisma + tRPC)",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "nodejs-multimodal-rag-starter",
+        "name": "Node.js Starter with Advanced Auth, Prisma, Postgres (pgvector), background jobs and Multimodal RAG + more",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "nestjs-or-api-with-postgres-and-no-requi",
+        "name": "NestJS | API with Postgres and No Required Secrets",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "nextjs",
+        "name": "Next.js",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "oovLiW",
+        "name": "Sveltekit NestJS",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "react-router-or-accounts-and-per-user-da",
+        "name": "React Router | Accounts and Per-User Data on Postgres",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "idn-area-api",
+        "name": "idn-area API",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "open-saas",
+        "name": "Open SaaS ",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "remix-railway-template",
+        "name": "remix-railway-template",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "nextjs-production-starter-suite",
+        "name": "Next.js Production Starter Suite",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      },
+      {
+        "code": "VeLWVf",
+        "name": "remix-postgresql",
+        "reason": "Name substring match for Prisma database tooling or an unrelated Prism agent stack; not the Stoplight Prism OpenAPI mock server."
+      }
+    ],
+    "scope": "Public Railway product and alias search with complete pagination. Private, unindexed, or differently named listings may exist."
+  }
+}

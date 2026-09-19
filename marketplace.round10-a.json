@@ -1,0 +1,32 @@
+{
+  "raneto": {
+    "name": "Raneto Private Knowledge Base",
+    "category": "CMS",
+    "description": "Markdown knowledge base with browser editing and persistent pages.",
+    "image": "https://github.com/raneto.png"
+  },
+  "movary": {
+    "name": "Movary Movie Diary",
+    "category": "Other",
+    "description": "Track, rate, and review watched movies with a persistent SQLite library.",
+    "image": "https://github.com/leepeuker.png"
+  },
+  "pinry": {
+    "name": "Pinry Visual Bookmark Boards",
+    "category": "Other",
+    "description": "Private image bookmarks and visual boards with generated administrator.",
+    "image": "https://github.com/pinry.png"
+  },
+  "mikochi": {
+    "name": "Mikochi File Browser",
+    "category": "Storage",
+    "description": "Private file browsing, uploads, downloads, and media streaming.",
+    "image": "https://github.com/zer0tonin.png"
+  },
+  "airstation": {
+    "name": "Airstation Private Radio",
+    "category": "Other",
+    "description": "Private radio studio and music player with durable tracks and SQLite.",
+    "image": "https://github.com/cheatsnake.png"
+  }
+}

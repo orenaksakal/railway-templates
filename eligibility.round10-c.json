@@ -1,0 +1,249 @@
+{
+  "backrest": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "queries": [
+      {
+        "query": "Backrest",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "back rest",
+        "resultCount": 1,
+        "hasNextPage": false,
+        "results": [
+          {
+            "id": "7bcdd683-f4bf-47ac-8fab-c9ac9bfe8089",
+            "code": "jodconverter",
+            "name": "JODConverter",
+            "description": "Convert Word, Excel and others to PDF (and back) through a simple REST API",
+            "image": "https://raw.githubusercontent.com/olivier4429/JODTemplateRailway/main//documentation/icon.png",
+            "deploymentCount": 0,
+            "healthScore": null,
+            "creatorName": "olivier4429's Projects",
+            "isVerified": false
+          }
+        ],
+        "receiptSha256": "bbf23d6dbf153f294a591d698a8faef9a48d810426408f45170268d77f059dd0"
+      },
+      {
+        "query": "garethgeorge",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "restic",
+        "resultCount": 1,
+        "hasNextPage": false,
+        "results": [
+          {
+            "id": "6adf5e7a-85f1-4c73-97ac-cb9fa8a24e9e",
+            "code": "pluton",
+            "name": "Pluton",
+            "description": "Modern encrypted backups | Alt to Borg, Restic, Duplicati",
+            "image": "https://lhbaovhjuhitknbfclbg.supabase.co/storage/v1/object/public/logos/pluton.png",
+            "deploymentCount": 1,
+            "healthScore": 100.0,
+            "creatorName": "Ju Li's Projects",
+            "isVerified": false
+          }
+        ],
+        "receiptSha256": "46a8587197d53b8569ab2093346c9290d68867dcf46c11dacb567daedb5d74c6"
+      }
+    ],
+    "matchingListings": [],
+    "excludedMatches": [
+      {
+        "code": "jodconverter",
+        "name": "JODConverter",
+        "reason": "Document conversion product; not Backrest or restic management."
+      },
+      {
+        "code": "pluton",
+        "name": "Pluton",
+        "reason": "Separate backup management product, not Backrest."
+      }
+    ],
+    "scope": "Public Railway marketplace search by product and aliases; private, unindexed and differently named templates may exist. Also absent from the existing 85-template workspace inventory."
+  },
+  "speedtest-tracker": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "queries": [
+      {
+        "query": "Speedtest Tracker",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Speedtest",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "speedtest-tracker",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "alexjustesen",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "speed test",
+        "resultCount": 2,
+        "hasNextPage": false,
+        "results": [
+          {
+            "id": "123aa381-b21f-4901-93a3-70e05356b250",
+            "code": "openspeedtest",
+            "name": "OpenSpeedTest",
+            "description": "Internet Speed testing tool",
+            "image": "https://cdn-icons-png.flaticon.com/128/11892/11892607.png",
+            "deploymentCount": 0,
+            "healthScore": null,
+            "creatorName": "Muhammad Bilal",
+            "isVerified": false
+          },
+          {
+            "id": "ce4f8767-ca16-4eeb-97c9-422011980906",
+            "code": "librespeed",
+            "name": "LibreSpeed",
+            "description": "Browser-based network speed test you run on your own server",
+            "image": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/librespeed-light.svg",
+            "deploymentCount": 0,
+            "healthScore": null,
+            "creatorName": "A3A",
+            "isVerified": false
+          }
+        ],
+        "receiptSha256": "592f53cde11e28900ca4f3a3838eb0e34c758c843cd336903238028800cc6296"
+      }
+    ],
+    "matchingListings": [],
+    "excludedMatches": [
+      {
+        "code": "openspeedtest",
+        "name": "OpenSpeedTest",
+        "reason": "Browser-to-server bandwidth test, not Alex Justesen Speedtest Tracker."
+      },
+      {
+        "code": "librespeed",
+        "name": "LibreSpeed",
+        "reason": "Browser bandwidth-test product, not Alex Justesen Speedtest Tracker."
+      }
+    ],
+    "scope": "Public Railway marketplace search by product and aliases; private, unindexed and differently named templates may exist. Also absent from the existing 85-template workspace inventory."
+  },
+  "librebooking": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "queries": [
+      {
+        "query": "LibreBooking",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Libre Booking",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "libre-booking",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Booked Scheduler",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "matchingListings": [],
+    "excludedMatches": [],
+    "scope": "Public Railway marketplace search by product and aliases; private, unindexed and differently named templates may exist. Also absent from the existing 85-template workspace inventory."
+  },
+  "domainmod": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "queries": [
+      {
+        "query": "DomainMOD",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Domain Mod",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "domain-mod",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "matchingListings": [],
+    "excludedMatches": [],
+    "scope": "Public Railway marketplace search by product and aliases; private, unindexed and differently named templates may exist. Also absent from the existing 85-template workspace inventory."
+  },
+  "farmos": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "queries": [
+      {
+        "query": "FarmOS",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Farm OS",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "farm-os",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "matchingListings": [],
+    "excludedMatches": [],
+    "scope": "Public Railway marketplace search by product and aliases; private, unindexed and differently named templates may exist. Also absent from the existing 85-template workspace inventory."
+  }
+}

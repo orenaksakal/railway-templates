@@ -1,0 +1,126 @@
+{
+  "raneto": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "matchingListings": [],
+    "queries": [
+      {
+        "query": "Raneto",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Ran eto",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Raneto Docs",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "excludedMatches": []
+  },
+  "movary": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "matchingListings": [],
+    "queries": [
+      {
+        "query": "Movary",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Mov ary",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "excludedMatches": []
+  },
+  "pinry": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "matchingListings": [],
+    "queries": [
+      {
+        "query": "Pinry",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Pin ry",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "excludedMatches": []
+  },
+  "mikochi": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "matchingListings": [],
+    "queries": [
+      {
+        "query": "Mikochi",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Miko chi",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "excludedMatches": []
+  },
+  "airstation": {
+    "criterion": "no_matching_public_listing_found",
+    "checkedOn": "2026-09-19",
+    "matchingListings": [],
+    "queries": [
+      {
+        "query": "Airstation",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Air station",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      },
+      {
+        "query": "Airstation radio",
+        "resultCount": 0,
+        "hasNextPage": false,
+        "results": [],
+        "receiptSha256": "2e57e825f2e59313d4aa8d962bcd74d9bcd698041839588ba75daa1c9057482d"
+      }
+    ],
+    "excludedMatches": []
+  }
+}

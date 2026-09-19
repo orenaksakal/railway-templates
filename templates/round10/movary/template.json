@@ -1,0 +1,135 @@
+{
+  "services": {
+    "ad196885-4e92-5c73-816e-edb41956d137": {
+      "name": "app",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "APPLICATION_URL": {
+          "isOptional": false,
+          "description": "Application url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{movary.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "DATABASE_MODE": {
+          "isOptional": false,
+          "description": "Database mode for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "sqlite"
+        },
+        "DATABASE_SQLITE": {
+          "isOptional": false,
+          "description": "Database sqlite for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/app/storage/movary.sqlite"
+        },
+        "TMDB_API_KEY": {
+          "isOptional": false,
+          "description": "Required TMDB API key from themoviedb.org/settings/api. Movie lookup needs your own key; this template does not supply one."
+        },
+        "TMDB_ENABLE_IMAGE_CACHING": {
+          "isOptional": false,
+          "description": "Tmdb enable image caching for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1"
+        },
+        "TIMEZONE": {
+          "isOptional": false,
+          "description": "Timezone for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "UTC"
+        },
+        "ENABLE_REGISTRATION": {
+          "isOptional": false,
+          "description": "Enable registration for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0"
+        },
+        "LOG_ENABLE_FILE_LOGGING": {
+          "isOptional": false,
+          "description": "Log enable file logging for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "0"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/round10/movary/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/app/storage"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round10/movary/Dockerfile"
+      },
+      "volumeMounts": {
+        "9893f5eb-dce3-5d41-b6b1-138d522e68b3": {
+          "mountPath": "/app/storage"
+        }
+      }
+    },
+    "9e3cd37c-5bff-5f58-8e1c-37a9dad5bf47": {
+      "name": "movary",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for movary. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8080"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for movary. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for movary. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round10-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round10-gateway/Dockerfile"
+      }
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "services": {
+    "4e2616d0-25de-5ece-8a4d-6f00eb87e5cc": {
+      "name": "core",
+      "source": {
+        "image": "lscr.io/linuxserver/speedtest-tracker:version-v1.15.0@sha256:9ebe34dd607e0b3eb8f303095d40790817e087c027cfe9224076ec8b43be5e8a"
+      },
+      "variables": {
+        "PUID": {
+          "isOptional": false,
+          "description": "Puid for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1000"
+        },
+        "PGID": {
+          "isOptional": false,
+          "description": "Pgid for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "1000"
+        },
+        "TZ": {
+          "isOptional": false,
+          "description": "Tz for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "UTC"
+        },
+        "APP_ENV": {
+          "isOptional": false,
+          "description": "App env for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "production"
+        },
+        "APP_KEY": {
+          "isOptional": false,
+          "description": "Generated 32-character Laravel encryption key. Preserve with the SQLite database; changing it invalidates encrypted application data.",
+          "defaultValue": "${{secret(32, \"abcdef0123456789\")}}"
+        },
+        "APP_URL": {
+          "isOptional": false,
+          "description": "App url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{speedtest-tracker.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "APP_DEBUG": {
+          "isOptional": false,
+          "description": "App debug for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "DB_CONNECTION": {
+          "isOptional": false,
+          "description": "Db connection for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "sqlite"
+        },
+        "PUBLIC_DASHBOARD": {
+          "isOptional": false,
+          "description": "Public dashboard for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "SPEEDTEST_SCHEDULE": {
+          "isOptional": false,
+          "description": "Automatic speed tests are disabled initially. Tests measure Railway regional egress, not your home Internet, and can consume billable bandwidth. Set a cron schedule only after a manual test.",
+          "defaultValue": ""
+        },
+        "PRUNE_RESULTS_OLDER_THAN": {
+          "isOptional": false,
+          "description": "Remove speed-test results older than 90 days using the upstream scheduler.",
+          "defaultValue": "90"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/config"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "1b479dba-a312-5902-a3bc-66a36ad8a7b6": {
+          "mountPath": "/config"
+        }
+      }
+    },
+    "34fd89ca-459a-58c9-95d1-6178be09f68a": {
+      "name": "speedtest-tracker",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for speedtest-tracker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "80"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for speedtest-tracker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for speedtest-tracker. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round10-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round10-gateway/Dockerfile"
+      }
+    }
+  }
+}

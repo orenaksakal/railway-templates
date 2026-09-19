@@ -1,0 +1,78 @@
+{
+  "backrest": {
+    "repo": "garethgeorge/backrest",
+    "sha": "875c9cb51e626a75276a64da42c6a9ec0695010a",
+    "archived": false,
+    "files": [
+      "Dockerfile.alpine",
+      "README.md",
+      "cmd/docker-entrypoint/main.go"
+    ],
+    "ref": "v1.14.1",
+    "imageSourceRelationship": "Application release source and image digests are pinned separately. A matching source revision has not been attested from image metadata."
+  },
+  "speedtest-tracker": {
+    "repo": "alexjustesen/speedtest-tracker",
+    "sha": "fce6eb36181ed70b5b0763c391a50b806d7e3da7",
+    "archived": false,
+    "files": [
+      "README.md",
+      ".env.example",
+      "bootstrap/app.php",
+      "config/speedtest.php",
+      "app/Providers/AppServiceProvider.php",
+      "database/seeders/DatabaseSeeder.php"
+    ],
+    "ref": "v1.15.0",
+    "imageSourceRelationship": "Application release source and image digests are pinned separately. A matching source revision has not been attested from image metadata.",
+    "containerDocumentation": {
+      "repo": "linuxserver/docker-speedtest-tracker",
+      "sha": "365a469b780500e19bf6aabb14304fef7699e69a"
+    }
+  },
+  "librebooking": {
+    "repo": "LibreBooking/app",
+    "sha": "80928da3ee8f2c8f3a1e5c3abfa19c889c183e17",
+    "archived": false,
+    "files": [
+      "README.md",
+      ".env.example",
+      "lib/Config/Configuration.php",
+      "Presenters/Install/InstallPresenter.php",
+      "Presenters/Install/Installer.php",
+      "Presenters/Install/ConfigurePresenter.php",
+      "tpl/Install/configure.tpl"
+    ],
+    "ref": "v5.3.0",
+    "imageSourceRelationship": "Application release source and image digests are pinned separately. A matching source revision has not been attested from image metadata.",
+    "containerDocumentation": {
+      "repo": "LibreBooking/docker",
+      "sha": "f24a94b45af566cb4b499b9ee6b4ec139748959e"
+    }
+  },
+  "domainmod": {
+    "repo": "domainmod/domainmod",
+    "sha": "9ff9e01070484c0fa519d4c43bf4d9192e081c37",
+    "archived": false,
+    "files": [
+      "README.md",
+      "_includes/config.SAMPLE.inc.php"
+    ],
+    "archiveSha256": "6e407b2fc36d2a9912dd237645f1a0bf46b618957a5ff096693ccb46239cdbd2",
+    "imageSourceRelationship": "Application release source and image digests are pinned separately. A matching source revision has not been attested from image metadata.",
+    "buildScope": "Builds directly from the pinned application archive on PHP 8.2; does not use the archived PHP 7.4 Docker integration."
+  },
+  "farmos": {
+    "repo": "farmOS/farmOS",
+    "sha": "d8ef2413a1730482c01425dd28cbe048c2b834a3",
+    "archived": false,
+    "files": [
+      "docker/Dockerfile",
+      "docker/docker-compose.production.yml",
+      "docker/docker-entrypoint.sh",
+      "docs/hosting/docker.md"
+    ],
+    "ref": "4.0.6",
+    "imageSourceRelationship": "Application release source and image digests are pinned separately. A matching source revision has not been attested from image metadata."
+  }
+}

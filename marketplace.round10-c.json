@@ -1,0 +1,32 @@
+{
+  "backrest": {
+    "name": "Backrest Repository Manager",
+    "description": "Manage restic repositories, browse snapshots and restore files privately.",
+    "category": "Storage",
+    "image": "https://github.com/garethgeorge.png"
+  },
+  "speedtest-tracker": {
+    "name": "Speedtest Tracker Regional Egress",
+    "description": "Track Railway-region Internet performance with persistent test history.",
+    "category": "Observability",
+    "image": "https://github.com/alexjustesen.png"
+  },
+  "librebooking": {
+    "name": "LibreBooking Resource Scheduler",
+    "description": "Private room and equipment reservations with MariaDB and durable uploads.",
+    "category": "Other",
+    "image": "https://github.com/LibreBooking.png"
+  },
+  "domainmod": {
+    "name": "DomainMOD Portfolio Inventory",
+    "description": "Domain and SSL asset inventory with MariaDB and protected administration.",
+    "category": "Other",
+    "image": "https://github.com/domainmod.png"
+  },
+  "farmos": {
+    "name": "farmOS Farm Records",
+    "description": "Farm planning, asset and activity records with PostgreSQL and file storage.",
+    "category": "Other",
+    "image": "https://github.com/farmOS.png"
+  }
+}

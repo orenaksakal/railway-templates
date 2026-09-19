@@ -1,0 +1,167 @@
+{
+  "services": {
+    "b87329d0-9054-59d5-b4cf-2876cd89e7e1": {
+      "name": "postgres",
+      "source": {
+        "image": "postgres:17@sha256:f4c66b820c6f974249089d3d16d86a3698eae11e8746eb6644b2271031e91232"
+      },
+      "variables": {
+        "POSTGRES_USER": {
+          "isOptional": false,
+          "description": "PostgreSQL initialization user, or the matching connection user for the private database.",
+          "defaultValue": "farm"
+        },
+        "POSTGRES_DB": {
+          "isOptional": false,
+          "description": "Initial PostgreSQL database name, or the matching database selected by the application.",
+          "defaultValue": "farm"
+        },
+        "POSTGRES_PASSWORD": {
+          "isOptional": false,
+          "description": "PostgreSQL password. Generated for the database and referenced by dependent services; keep private.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PGDATA": {
+          "isOptional": false,
+          "description": "PostgreSQL data directory within the persistent volume. Do not change on an existing database.",
+          "defaultValue": "/var/lib/postgresql/data/pgdata"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/postgresql/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "fce22db3-b075-5a94-ba1f-d1525bbeaff1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      }
+    },
+    "7eb533d6-df00-52ab-857f-df58f684ceb8": {
+      "name": "core",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "SETUP_DATABASE_HOST": {
+          "isOptional": false,
+          "description": "Copy this private hostname into the protected PostgreSQL installer. This is an operator reference, not an automatic farmOS setting.",
+          "defaultValue": "${{postgres.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "SETUP_DATABASE_PORT": {
+          "isOptional": false,
+          "description": "Use this PostgreSQL port in the installer.",
+          "defaultValue": "5432"
+        },
+        "SETUP_DATABASE_NAME": {
+          "isOptional": false,
+          "description": "Use this existing database name in the installer.",
+          "defaultValue": "farm"
+        },
+        "SETUP_DATABASE_USER": {
+          "isOptional": false,
+          "description": "Use this database user in the installer.",
+          "defaultValue": "farm"
+        },
+        "SETUP_DATABASE_PASSWORD": {
+          "isOptional": false,
+          "description": "Copy this generated password into the installer. Preserve it with the database backup.",
+          "defaultValue": "${{postgres.POSTGRES_PASSWORD}}"
+        },
+        "TZ": {
+          "isOptional": false,
+          "description": "Tz for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "UTC"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/round10/farmos/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round10/farmos/Dockerfile"
+      },
+      "volumeMounts": {
+        "00be78aa-d23d-52b6-8939-07ba72082160": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "a8bef478-47b3-5a09-a23e-3f61fccf4eac": {
+      "name": "farmos",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for farmos. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "80"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for farmos. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for farmos. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round10-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round10-gateway/Dockerfile"
+      }
+    }
+  }
+}

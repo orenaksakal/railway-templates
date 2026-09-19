@@ -1,0 +1,26 @@
+map $http_upgrade $connection_upgrade { default upgrade; '' close; }
+map $http_x_template_key $owner_realm {
+  default "${AUTH_REALM}";
+  "${ACCESS_PASSWORD}" off;
+}
+map $http_authorization $upstream_authorization { default $http_authorization; ~*^Basic\s ""; }
+map $http_cookie $session_owner_realm {
+  default $owner_realm;
+  "~(?:^|;[[:space:]]*)__Host-template-owner=${ACCESS_COOKIE_TOKEN}(?:;|$)" off;
+}
+server {
+  listen 8080;
+  listen [::]:8080;
+  resolver ${DNS_RESOLVER} valid=10s;
+  client_max_body_size 32m;
+  auth_basic $session_owner_realm;
+  auth_basic_user_file /etc/nginx/htpasswd;
+  set $upstream "${UPSTREAM_HOST}:${UPSTREAM_PORT}";
+  location = /healthz { auth_basic off; access_log off; return 200 'gateway ready'; }
+  location / {
+    # add_header without 'always' never issues an owner cookie on a 401/403.
+    # Keep this inside the authenticated location so /healthz cannot mint it.
+    add_header Set-Cookie "__Host-template-owner=${ACCESS_COOKIE_TOKEN}; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=43200";
+    include /etc/nginx/proxy.inc;
+  }
+}

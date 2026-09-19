@@ -1,0 +1,256 @@
+{
+  "airstation": {
+    "archived": false,
+    "files": [
+      ".github/workflows/docker-image.yml",
+      "Dockerfile",
+      "README.md",
+      "cmd/main.go",
+      "docker-compose.yml",
+      "docs/installation.md",
+      "internal/config/config.go",
+      "internal/storage/sqlite/migrations/migrations.go",
+      "internal/storage/sqlite/migrations/runner.go",
+      "internal/storage/sqlite/playback.go",
+      "internal/storage/sqlite/playlist.go",
+      "internal/storage/sqlite/queue.go",
+      "internal/storage/sqlite/sqlite.go",
+      "internal/storage/sqlite/station.go",
+      "internal/storage/sqlite/track.go",
+      "internal/storage/storage.go"
+    ],
+    "imageDigestSource": "Docker Hub v2 tag metadata; buildx manifest inspection returned HTTP 429 without downloading layers.",
+    "imageMetadataUrl": "https://hub.docker.com/v2/repositories/cheatsnake/airstation/tags/1.4.1",
+    "repo": "cheatsnake/airstation",
+    "sha": "78c3e31e60f0f65c9f3b1c4e3cad617fb3825db1",
+    "sourceImageMatch": "Release tag and image tag agree; no claim of independently reproduced image build.",
+    "tag": "1.4.1"
+  },
+  "backrest": {
+    "archived": false,
+    "files": [
+      "Dockerfile.alpine",
+      "README.md",
+      "cmd/docker-entrypoint/main.go"
+    ],
+    "imageSourceRelationship": "Application release source and image digests are pinned separately. A matching source revision has not been attested from image metadata.",
+    "ref": "v1.14.1",
+    "repo": "garethgeorge/backrest",
+    "sha": "875c9cb51e626a75276a64da42c6a9ec0695010a"
+  },
+  "domainmod": {
+    "archiveSha256": "6e407b2fc36d2a9912dd237645f1a0bf46b618957a5ff096693ccb46239cdbd2",
+    "archived": false,
+    "buildScope": "Builds directly from the pinned application archive on PHP 8.2; does not use the archived PHP 7.4 Docker integration.",
+    "files": [
+      "README.md",
+      "_includes/config.SAMPLE.inc.php"
+    ],
+    "imageSourceRelationship": "Application release source and image digests are pinned separately. A matching source revision has not been attested from image metadata.",
+    "repo": "domainmod/domainmod",
+    "sha": "9ff9e01070484c0fa519d4c43bf4d9192e081c37"
+  },
+  "farmos": {
+    "archived": false,
+    "files": [
+      "docker/Dockerfile",
+      "docker/docker-compose.production.yml",
+      "docker/docker-entrypoint.sh",
+      "docs/hosting/docker.md"
+    ],
+    "imageSourceRelationship": "Application release source and image digests are pinned separately. A matching source revision has not been attested from image metadata.",
+    "ref": "4.0.6",
+    "repo": "farmOS/farmOS",
+    "sha": "d8ef2413a1730482c01425dd28cbe048c2b834a3"
+  },
+  "librebooking": {
+    "archived": false,
+    "containerDocumentation": {
+      "repo": "LibreBooking/docker",
+      "sha": "f24a94b45af566cb4b499b9ee6b4ec139748959e"
+    },
+    "files": [
+      "README.md",
+      ".env.example",
+      "lib/Config/Configuration.php",
+      "Presenters/Install/InstallPresenter.php",
+      "Presenters/Install/Installer.php",
+      "Presenters/Install/ConfigurePresenter.php",
+      "tpl/Install/configure.tpl"
+    ],
+    "imageSourceRelationship": "Application release source and image digests are pinned separately. A matching source revision has not been attested from image metadata.",
+    "ref": "v5.3.0",
+    "repo": "LibreBooking/app",
+    "sha": "80928da3ee8f2c8f3a1e5c3abfa19c889c183e17"
+  },
+  "mikochi": {
+    "archived": false,
+    "files": [
+      "Dockerfile",
+      "README.md",
+      "backend/auth/handlers.go",
+      "backend/auth/jwt_middleware.go",
+      "docker-compose.yml",
+      "frontend/src/pages/Login/index.jsx"
+    ],
+    "imageDigestSource": "Docker Hub v2 tag metadata; buildx manifest inspection returned HTTP 429 without downloading layers.",
+    "imageMetadataUrl": "https://hub.docker.com/v2/repositories/zer0tonin/mikochi/tags/1.11.0",
+    "repo": "zer0tonin/Mikochi",
+    "sha": "cc67722bcce3f54b3d7b4e712b4d8f9d892a156b",
+    "sourceImageMatch": "Release tag and image tag agree; no claim of independently reproduced image build.",
+    "tag": "1.11.0"
+  },
+  "mountebank": {
+    "archived": false,
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/bbyars/mountebank/blob/v2.9.4/Dockerfile",
+      "https://github.com/bbyars/mountebank/blob/v2.9.4/src/cli/cli.js",
+      "https://github.com/bbyars/mountebank/blob/v2.9.4/mbTest/cli/datadirTest.js"
+    ],
+    "imagePinMethod": "DockerHub public tag metadata; registry imagetools inspection returned HTTP 429; linux/amd64 manifest present",
+    "ref": "v2.9.4",
+    "releaseUrl": "https://github.com/bbyars/mountebank/releases/tag/v2.9.4",
+    "repo": "bbyars/mountebank",
+    "sha": "f1d84839d957b5788473d4a928251f6fdaf68210",
+    "stars": 2105
+  },
+  "movary": {
+    "archived": false,
+    "files": [
+      ".env.example",
+      "build/Dockerfile",
+      "build/config/supervisord.conf",
+      "build/scripts/entrypoint.sh",
+      "docker-compose.yml",
+      "docs/configuration.md",
+      "docs/getting-started.md",
+      "docs/install/docker.md"
+    ],
+    "imageDigestSource": "Docker Hub v2 tag metadata; buildx manifest inspection returned HTTP 429 without downloading layers.",
+    "imageMetadataUrl": "https://hub.docker.com/v2/repositories/leepeuker/movary/tags/0.72.0",
+    "repo": "leepeuker/movary",
+    "sha": "baf1d9923fdfae6210d844d37a315347f7b0773b",
+    "sourceImageMatch": "Release tag and image tag agree; no claim of independently reproduced image build.",
+    "tag": "0.72.0"
+  },
+  "pinry": {
+    "archived": false,
+    "files": [
+      "Dockerfile",
+      "Dockerfile.autobuild",
+      "docker/nginx/sites-enabled/default",
+      "docker/scripts/_start_gunicorn.sh",
+      "docker/scripts/bootstrap.sh",
+      "docker/scripts/start.sh",
+      "docker-compose.example.yml",
+      "docs/src/install-with-docker.md",
+      "pinry/settings/base.py",
+      "pinry/settings/docker.py",
+      "pinry/settings/local_settings.example.py",
+      "pinry-spa/src/components/api.js"
+    ],
+    "imageDigestSource": "Docker Hub v2 tag metadata; buildx manifest inspection returned HTTP 429 without downloading layers.",
+    "imageMetadataUrl": "https://hub.docker.com/v2/repositories/getpinry/pinry/tags/2.1.13",
+    "repo": "pinry/pinry",
+    "sha": "a21b1e73c2f889499286339b8cc59c411e40b9b1",
+    "sourceImageMatch": "Release tag and image tag agree; no claim of independently reproduced image build.",
+    "tag": "v2.1.13"
+  },
+  "plantuml": {
+    "archived": false,
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/plantuml/plantuml-server/blob/v1.2026.8/Dockerfile.jetty",
+      "https://github.com/plantuml/plantuml-server/blob/v1.2026.8/README.md",
+      "https://github.com/plantuml/plantuml-server/blob/v1.2026.8/docker-entrypoint.jetty.sh"
+    ],
+    "imagePinMethod": "DockerHub public tag metadata; registry imagetools inspection returned HTTP 429; linux/amd64 manifest present",
+    "ref": "v1.2026.8",
+    "releaseUrl": "https://github.com/plantuml/plantuml-server/releases/tag/v1.2026.8",
+    "repo": "plantuml/plantuml-server",
+    "sha": "5dda8847617e2a4978b61367a2570dcdec3f14f7",
+    "stars": 2216
+  },
+  "prism": {
+    "archived": false,
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/stoplightio/prism/blob/v5.15.10/Dockerfile",
+      "https://github.com/stoplightio/prism/blob/v5.15.10/packages/cli/src/commands/mock.ts",
+      "https://github.com/stoplightio/prism/blob/v5.15.10/packages/cli/src/commands/sharedOptions.ts"
+    ],
+    "imagePinMethod": "DockerHub public tag metadata; registry imagetools inspection returned HTTP 429; linux/amd64 manifest present",
+    "ref": "v5.15.10",
+    "releaseUrl": "https://github.com/stoplightio/prism/releases/tag/v5.15.10",
+    "repo": "stoplightio/prism",
+    "sha": "cd599a52d1725f622f464e0c7325de8664e8bc88",
+    "stars": 5034
+  },
+  "raneto": {
+    "archived": false,
+    "files": [
+      ".github/workflows/docker.release.yml",
+      "Dockerfile",
+      "README.md",
+      "app/core/configValidation.js",
+      "app/index.js",
+      "config/config.js",
+      "server.js"
+    ],
+    "imageDigestSource": "Docker Hub v2 tag metadata; buildx manifest inspection returned HTTP 429 without downloading layers.",
+    "imageMetadataUrl": "https://hub.docker.com/v2/repositories/raneto/raneto/tags/0.18.1",
+    "repo": "ryanlelek/Raneto",
+    "sha": "e90e2bca5bf1ca1413d5b06fec1e7f701abfad5b",
+    "sourceImageMatch": "Release tag and image tag agree; no claim of independently reproduced image build.",
+    "tag": "0.18.1"
+  },
+  "redoc": {
+    "archived": false,
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/Redocly/redoc/blob/v2.5.3/config/docker/Dockerfile",
+      "https://github.com/Redocly/redoc/blob/v2.5.3/config/docker/README.md",
+      "https://github.com/Redocly/redoc/blob/v2.5.3/config/docker/docker-run.sh"
+    ],
+    "imagePinMethod": "DockerHub public tag metadata; registry imagetools inspection returned HTTP 429; linux/amd64 manifest present",
+    "ref": "v2.5.3",
+    "releaseUrl": "https://github.com/Redocly/redoc/releases/tag/v2.5.3",
+    "repo": "Redocly/redoc",
+    "sha": "1b2591e87291fbf6fe1ad5dce9326a316a54609f",
+    "stars": 25916
+  },
+  "speedtest-tracker": {
+    "archived": false,
+    "containerDocumentation": {
+      "repo": "linuxserver/docker-speedtest-tracker",
+      "sha": "365a469b780500e19bf6aabb14304fef7699e69a"
+    },
+    "files": [
+      "README.md",
+      ".env.example",
+      "bootstrap/app.php",
+      "config/speedtest.php",
+      "app/Providers/AppServiceProvider.php",
+      "database/seeders/DatabaseSeeder.php"
+    ],
+    "imageSourceRelationship": "Application release source and image digests are pinned separately. A matching source revision has not been attested from image metadata.",
+    "ref": "v1.15.0",
+    "repo": "alexjustesen/speedtest-tracker",
+    "sha": "fce6eb36181ed70b5b0763c391a50b806d7e3da7"
+  },
+  "swagger-editor": {
+    "archived": false,
+    "checkedOn": "2026-09-19",
+    "configurationSources": [
+      "https://github.com/swagger-api/swagger-editor/blob/v5.8.8/Dockerfile.unprivileged",
+      "https://github.com/swagger-api/swagger-editor/blob/v5.8.8/README.md"
+    ],
+    "imagePinMethod": "DockerHub public tag metadata; registry imagetools inspection returned HTTP 429; linux/amd64 manifest present",
+    "ref": "v5.8.8",
+    "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.8.8",
+    "repo": "swagger-api/swagger-editor",
+    "sha": "19956f731ab7986d1b8497bbbeeee280749a8255",
+    "stars": 9463
+  }
+}

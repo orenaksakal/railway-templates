@@ -1,0 +1,106 @@
+{
+  "raneto": {
+    "repo": "ryanlelek/Raneto",
+    "sha": "e90e2bca5bf1ca1413d5b06fec1e7f701abfad5b",
+    "archived": false,
+    "tag": "0.18.1",
+    "files": [
+      ".github/workflows/docker.release.yml",
+      "Dockerfile",
+      "README.md",
+      "app/core/configValidation.js",
+      "app/index.js",
+      "config/config.js",
+      "server.js"
+    ],
+    "imageDigestSource": "Docker Hub v2 tag metadata; buildx manifest inspection returned HTTP 429 without downloading layers.",
+    "sourceImageMatch": "Release tag and image tag agree; no claim of independently reproduced image build.",
+    "imageMetadataUrl": "https://hub.docker.com/v2/repositories/raneto/raneto/tags/0.18.1"
+  },
+  "movary": {
+    "repo": "leepeuker/movary",
+    "sha": "baf1d9923fdfae6210d844d37a315347f7b0773b",
+    "archived": false,
+    "tag": "0.72.0",
+    "files": [
+      ".env.example",
+      "build/Dockerfile",
+      "build/config/supervisord.conf",
+      "build/scripts/entrypoint.sh",
+      "docker-compose.yml",
+      "docs/configuration.md",
+      "docs/getting-started.md",
+      "docs/install/docker.md"
+    ],
+    "imageDigestSource": "Docker Hub v2 tag metadata; buildx manifest inspection returned HTTP 429 without downloading layers.",
+    "sourceImageMatch": "Release tag and image tag agree; no claim of independently reproduced image build.",
+    "imageMetadataUrl": "https://hub.docker.com/v2/repositories/leepeuker/movary/tags/0.72.0"
+  },
+  "pinry": {
+    "repo": "pinry/pinry",
+    "sha": "a21b1e73c2f889499286339b8cc59c411e40b9b1",
+    "archived": false,
+    "tag": "v2.1.13",
+    "files": [
+      "Dockerfile",
+      "Dockerfile.autobuild",
+      "docker/nginx/sites-enabled/default",
+      "docker/scripts/_start_gunicorn.sh",
+      "docker/scripts/bootstrap.sh",
+      "docker/scripts/start.sh",
+      "docker-compose.example.yml",
+      "docs/src/install-with-docker.md",
+      "pinry/settings/base.py",
+      "pinry/settings/docker.py",
+      "pinry/settings/local_settings.example.py",
+      "pinry-spa/src/components/api.js"
+    ],
+    "imageDigestSource": "Docker Hub v2 tag metadata; buildx manifest inspection returned HTTP 429 without downloading layers.",
+    "sourceImageMatch": "Release tag and image tag agree; no claim of independently reproduced image build.",
+    "imageMetadataUrl": "https://hub.docker.com/v2/repositories/getpinry/pinry/tags/2.1.13"
+  },
+  "mikochi": {
+    "repo": "zer0tonin/Mikochi",
+    "sha": "cc67722bcce3f54b3d7b4e712b4d8f9d892a156b",
+    "archived": false,
+    "tag": "1.11.0",
+    "files": [
+      "Dockerfile",
+      "README.md",
+      "backend/auth/handlers.go",
+      "backend/auth/jwt_middleware.go",
+      "docker-compose.yml",
+      "frontend/src/pages/Login/index.jsx"
+    ],
+    "imageDigestSource": "Docker Hub v2 tag metadata; buildx manifest inspection returned HTTP 429 without downloading layers.",
+    "sourceImageMatch": "Release tag and image tag agree; no claim of independently reproduced image build.",
+    "imageMetadataUrl": "https://hub.docker.com/v2/repositories/zer0tonin/mikochi/tags/1.11.0"
+  },
+  "airstation": {
+    "repo": "cheatsnake/airstation",
+    "sha": "78c3e31e60f0f65c9f3b1c4e3cad617fb3825db1",
+    "archived": false,
+    "tag": "1.4.1",
+    "files": [
+      ".github/workflows/docker-image.yml",
+      "Dockerfile",
+      "README.md",
+      "cmd/main.go",
+      "docker-compose.yml",
+      "docs/installation.md",
+      "internal/config/config.go",
+      "internal/storage/sqlite/migrations/migrations.go",
+      "internal/storage/sqlite/migrations/runner.go",
+      "internal/storage/sqlite/playback.go",
+      "internal/storage/sqlite/playlist.go",
+      "internal/storage/sqlite/queue.go",
+      "internal/storage/sqlite/sqlite.go",
+      "internal/storage/sqlite/station.go",
+      "internal/storage/sqlite/track.go",
+      "internal/storage/storage.go"
+    ],
+    "imageDigestSource": "Docker Hub v2 tag metadata; buildx manifest inspection returned HTTP 429 without downloading layers.",
+    "sourceImageMatch": "Release tag and image tag agree; no claim of independently reproduced image build.",
+    "imageMetadataUrl": "https://hub.docker.com/v2/repositories/cheatsnake/airstation/tags/1.4.1"
+  }
+}

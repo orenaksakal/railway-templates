@@ -1,0 +1,121 @@
+{
+  "services": {
+    "3dc2e604-958d-5a72-9e50-370559f0a5f4": {
+      "name": "core",
+      "source": {
+        "image": "ghcr.io/garethgeorge/backrest:v1.14.1@sha256:b852979754281026230cc69fb11428e6d57c9a97784ab4a444ffc7934c53a215"
+      },
+      "variables": {
+        "BACKREST_PORT": {
+          "isOptional": false,
+          "description": "Backrest port for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "[::]:9898"
+        },
+        "BACKREST_DATA": {
+          "isOptional": false,
+          "description": "Backrest data for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/state"
+        },
+        "BACKREST_CONFIG": {
+          "isOptional": false,
+          "description": "Backrest config for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/config.json"
+        },
+        "BACKREST_RESTIC_COMMAND": {
+          "isOptional": false,
+          "description": "Backrest restic command for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/bin/restic"
+        },
+        "XDG_CONFIG_HOME": {
+          "isOptional": false,
+          "description": "Xdg config home for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/config"
+        },
+        "XDG_CACHE_HOME": {
+          "isOptional": false,
+          "description": "Xdg cache home for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/tmp/cache"
+        },
+        "TZ": {
+          "isOptional": false,
+          "description": "Tz for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "UTC"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "00be78aa-d23d-52b6-8939-07ba72082160": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "8c55cf73-af6b-5299-bf5b-8638eec75042": {
+      "name": "backrest",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for backrest. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "9898"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for backrest. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for backrest. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round10-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round10-gateway/Dockerfile"
+      }
+    }
+  }
+}

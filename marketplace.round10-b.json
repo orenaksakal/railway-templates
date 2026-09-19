@@ -1,0 +1,32 @@
+{
+  "swagger-editor": {
+    "name": "Swagger Editor Private API Designer",
+    "description": "Design and validate OpenAPI and AsyncAPI documents in your browser.",
+    "category": "Other",
+    "image": "https://github.com/swagger-api.png"
+  },
+  "redoc": {
+    "name": "Redoc Private API Documentation",
+    "description": "Readable OpenAPI documentation with a persistent, replaceable schema.",
+    "category": "Other",
+    "image": "https://github.com/Redocly.png"
+  },
+  "plantuml": {
+    "name": "PlantUML Private Diagram Renderer",
+    "description": "Render UML diagrams from text behind owner access and sandbox controls.",
+    "category": "Other",
+    "image": "https://github.com/plantuml.png"
+  },
+  "mountebank": {
+    "name": "Mountebank Private API Mocks",
+    "description": "Persistent service mocks with protected administration and private ports.",
+    "category": "Other",
+    "image": "https://github.com/bbyars.png"
+  },
+  "prism": {
+    "name": "Stoplight Prism OpenAPI Mock Server",
+    "description": "Generate mock API responses from a persistent OpenAPI specification.",
+    "category": "Other",
+    "image": "https://github.com/stoplightio.png"
+  }
+}

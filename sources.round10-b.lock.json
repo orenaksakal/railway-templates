@@ -1,0 +1,76 @@
+{
+  "swagger-editor": {
+    "repo": "swagger-api/swagger-editor",
+    "sha": "19956f731ab7986d1b8497bbbeeee280749a8255",
+    "ref": "v5.8.8",
+    "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.8.8",
+    "checkedOn": "2026-09-19",
+    "archived": false,
+    "stars": 9463,
+    "configurationSources": [
+      "https://github.com/swagger-api/swagger-editor/blob/v5.8.8/Dockerfile.unprivileged",
+      "https://github.com/swagger-api/swagger-editor/blob/v5.8.8/README.md"
+    ],
+    "imagePinMethod": "DockerHub public tag metadata; registry imagetools inspection returned HTTP 429; linux/amd64 manifest present"
+  },
+  "redoc": {
+    "repo": "Redocly/redoc",
+    "sha": "1b2591e87291fbf6fe1ad5dce9326a316a54609f",
+    "ref": "v2.5.3",
+    "releaseUrl": "https://github.com/Redocly/redoc/releases/tag/v2.5.3",
+    "checkedOn": "2026-09-19",
+    "archived": false,
+    "stars": 25916,
+    "configurationSources": [
+      "https://github.com/Redocly/redoc/blob/v2.5.3/config/docker/Dockerfile",
+      "https://github.com/Redocly/redoc/blob/v2.5.3/config/docker/README.md",
+      "https://github.com/Redocly/redoc/blob/v2.5.3/config/docker/docker-run.sh"
+    ],
+    "imagePinMethod": "DockerHub public tag metadata; registry imagetools inspection returned HTTP 429; linux/amd64 manifest present"
+  },
+  "plantuml": {
+    "repo": "plantuml/plantuml-server",
+    "sha": "5dda8847617e2a4978b61367a2570dcdec3f14f7",
+    "ref": "v1.2026.8",
+    "releaseUrl": "https://github.com/plantuml/plantuml-server/releases/tag/v1.2026.8",
+    "checkedOn": "2026-09-19",
+    "archived": false,
+    "stars": 2216,
+    "configurationSources": [
+      "https://github.com/plantuml/plantuml-server/blob/v1.2026.8/Dockerfile.jetty",
+      "https://github.com/plantuml/plantuml-server/blob/v1.2026.8/README.md",
+      "https://github.com/plantuml/plantuml-server/blob/v1.2026.8/docker-entrypoint.jetty.sh"
+    ],
+    "imagePinMethod": "DockerHub public tag metadata; registry imagetools inspection returned HTTP 429; linux/amd64 manifest present"
+  },
+  "mountebank": {
+    "repo": "bbyars/mountebank",
+    "sha": "f1d84839d957b5788473d4a928251f6fdaf68210",
+    "ref": "v2.9.4",
+    "releaseUrl": "https://github.com/bbyars/mountebank/releases/tag/v2.9.4",
+    "checkedOn": "2026-09-19",
+    "archived": false,
+    "stars": 2105,
+    "configurationSources": [
+      "https://github.com/bbyars/mountebank/blob/v2.9.4/Dockerfile",
+      "https://github.com/bbyars/mountebank/blob/v2.9.4/src/cli/cli.js",
+      "https://github.com/bbyars/mountebank/blob/v2.9.4/mbTest/cli/datadirTest.js"
+    ],
+    "imagePinMethod": "DockerHub public tag metadata; registry imagetools inspection returned HTTP 429; linux/amd64 manifest present"
+  },
+  "prism": {
+    "repo": "stoplightio/prism",
+    "sha": "cd599a52d1725f622f464e0c7325de8664e8bc88",
+    "ref": "v5.15.10",
+    "releaseUrl": "https://github.com/stoplightio/prism/releases/tag/v5.15.10",
+    "checkedOn": "2026-09-19",
+    "archived": false,
+    "stars": 5034,
+    "configurationSources": [
+      "https://github.com/stoplightio/prism/blob/v5.15.10/Dockerfile",
+      "https://github.com/stoplightio/prism/blob/v5.15.10/packages/cli/src/commands/mock.ts",
+      "https://github.com/stoplightio/prism/blob/v5.15.10/packages/cli/src/commands/sharedOptions.ts"
+    ],
+    "imagePinMethod": "DockerHub public tag metadata; registry imagetools inspection returned HTTP 429; linux/amd64 manifest present"
+  }
+}

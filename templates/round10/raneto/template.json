@@ -1,0 +1,136 @@
+{
+  "services": {
+    "82726986-6afa-5f12-ba80-b259abbcf0a7": {
+      "name": "app",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "HOST": {
+          "isOptional": false,
+          "description": "HTTP bind address. Keep 0.0.0.0 so Railway can reach the service.",
+          "defaultValue": "0.0.0.0"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "NODE_ENV": {
+          "isOptional": false,
+          "description": "Node.js runtime mode. Keep production for hosted deployments.",
+          "defaultValue": "production"
+        },
+        "PUBLIC_URL": {
+          "isOptional": false,
+          "description": "Public url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{raneto.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "SITE_TITLE": {
+          "isOptional": false,
+          "description": "Site title for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "My Knowledge Base"
+        },
+        "SESSION_SECRET": {
+          "isOptional": false,
+          "description": "Generated session secret. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RANETO_USERNAME": {
+          "isOptional": false,
+          "description": "Raneto username for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "owner"
+        },
+        "RANETO_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated raneto password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/round10/raneto/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round10/raneto/Dockerfile"
+      },
+      "volumeMounts": {
+        "37bc6bd2-0c0e-51a4-9c99-cfa3cbed2f7f": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "077b144d-0e1a-5a65-80aa-e5c01f08192b": {
+      "name": "raneto",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for raneto. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8080"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for raneto. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for raneto. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round10-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round10-gateway/Dockerfile"
+      }
+    }
+  }
+}

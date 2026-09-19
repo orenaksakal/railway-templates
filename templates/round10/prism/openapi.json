@@ -1,0 +1,39 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Example API",
+    "version": "1.0.0",
+    "description": "Replace this starter with your own OpenAPI document."
+  },
+  "paths": {
+    "/hello": {
+      "get": {
+        "summary": "Return a greeting",
+        "operationId": "getGreeting",
+        "responses": {
+          "200": {
+            "description": "A greeting",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                },
+                "example": {
+                  "message": "Hello from your private API mock"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

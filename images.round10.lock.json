@@ -1,0 +1,19 @@
+{
+  "bbyars/mountebank:2.9.4": "bbyars/mountebank:2.9.4@sha256:32c52e77eab3e075c485e1981512ef14fe35fb59f6bc65924b646ad373489139",
+  "cheatsnake/airstation:1.4.1": "cheatsnake/airstation:1.4.1@sha256:03914d06060e10b12045fee6080fba5838aafe528abeef8e5907ccfb2bbfafb2",
+  "farmos/farmos:4.0.6": "farmos/farmos:4.0.6@sha256:500843a3ed35d837d6f3c50a744444f61ce7b3b25bca55375d20f62f0f6a861b",
+  "getpinry/pinry:2.1.13": "getpinry/pinry:2.1.13@sha256:9a619749ec5246e04694adc479a135e654a7ac5f34c15d6d134d917a62b4889b",
+  "ghcr.io/garethgeorge/backrest:v1.14.1": "ghcr.io/garethgeorge/backrest:v1.14.1@sha256:b852979754281026230cc69fb11428e6d57c9a97784ab4a444ffc7934c53a215",
+  "leepeuker/movary:0.72.0": "leepeuker/movary:0.72.0@sha256:f5eab178e732d73acf5ec674f8657a6524c73c53bd284e68f13469de21d6fda4",
+  "librebooking/librebooking:5.3.0": "librebooking/librebooking:5.3.0@sha256:a055c211880a178a7eb048f51048bfe23808816623feb94245fe66b9fcc8dd5d",
+  "lscr.io/linuxserver/speedtest-tracker:version-v1.15.0": "lscr.io/linuxserver/speedtest-tracker:version-v1.15.0@sha256:9ebe34dd607e0b3eb8f303095d40790817e087c027cfe9224076ec8b43be5e8a",
+  "mariadb:10.11": "mariadb:10.11@sha256:7f22313fc130a377a44999965bcb0a08dd5b21e8502824c1b864f792f9bc66ab",
+  "php:8.2-apache": "php:8.2-apache@sha256:163407b1ceca31a3a17211e07ca80982438bad31280ba18093b185d93a762fd2",
+  "plantuml/plantuml-server:jetty-v1.2026.8": "plantuml/plantuml-server:jetty-v1.2026.8@sha256:5f6f99ec2fc11c8236e80630d622b0ba22b8d9301b39b18db4bb2b95cae87781",
+  "postgres:17": "postgres:17@sha256:f4c66b820c6f974249089d3d16d86a3698eae11e8746eb6644b2271031e91232",
+  "raneto/raneto:0.18.1": "raneto/raneto:0.18.1@sha256:75dc64b8c94f0ecba614a4ab08e449761ddbb1cda5613a2f57aaaf5d12caf50c",
+  "redocly/redoc:v2.5.3": "redocly/redoc:v2.5.3@sha256:2e26bb660574c9b85eacd8e67b4e7a78641f5b63252859450688aeec6d918807",
+  "stoplight/prism:5.15.10": "stoplight/prism:5.15.10@sha256:586d1f0f94f8d0eaf20b26b8b41f985f2a2d494bea297bd3988c3de3eb87094e",
+  "swaggerapi/swagger-editor:v5.8.8-unprivileged": "swaggerapi/swagger-editor:v5.8.8-unprivileged@sha256:b56bd6a78cd9ba59378353d47bb07b689c18879c677b65fa62710daeac5af80f",
+  "zer0tonin/mikochi:1.11.0": "zer0tonin/mikochi:1.11.0@sha256:09872bae1554ca9c291e33be2bbff2e0d7bbe265082d2355ef28662f7bab5320"
+}

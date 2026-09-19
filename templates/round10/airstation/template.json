@@ -1,0 +1,121 @@
+{
+  "services": {
+    "c50e34ad-d8e3-5b21-a225-dd0a9d34415f": {
+      "name": "app",
+      "source": {
+        "image": "cheatsnake/airstation:1.4.1@sha256:03914d06060e10b12045fee6080fba5838aafe528abeef8e5907ccfb2bbfafb2"
+      },
+      "variables": {
+        "AIRSTATION_HTTP_PORT": {
+          "isOptional": false,
+          "description": "Airstation http port for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "7331"
+        },
+        "AIRSTATION_DB_DIR": {
+          "isOptional": false,
+          "description": "Airstation db dir for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/database"
+        },
+        "AIRSTATION_TRACKS_DIR": {
+          "isOptional": false,
+          "description": "Airstation tracks dir for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/tracks"
+        },
+        "AIRSTATION_TMP_DIR": {
+          "isOptional": false,
+          "description": "Airstation tmp dir for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/tmp/airstation"
+        },
+        "AIRSTATION_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Generated airstation secret key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "AIRSTATION_JWT_SIGN": {
+          "isOptional": false,
+          "description": "Generated airstation jwt sign. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "AIRSTATION_SECURE_COOKIE": {
+          "isOptional": false,
+          "description": "Airstation secure cookie for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "37bc6bd2-0c0e-51a4-9c99-cfa3cbed2f7f": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "2879011f-b3ed-59c6-bba1-2858c885d072": {
+      "name": "airstation",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for airstation. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "7331"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for airstation. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for airstation. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round10-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round10-gateway/Dockerfile"
+      }
+    }
+  }
+}

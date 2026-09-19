@@ -1,0 +1,236 @@
+{
+  "services": {
+    "58a8ee9e-0773-565c-8ad1-95d3e1a249f0": {
+      "name": "mariadb",
+      "source": {
+        "image": "mariadb:10.11@sha256:7f22313fc130a377a44999965bcb0a08dd5b21e8502824c1b864f792f9bc66ab"
+      },
+      "variables": {
+        "MARIADB_DATABASE": {
+          "isOptional": false,
+          "description": "Mariadb database for mariadb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "librebooking"
+        },
+        "MARIADB_USER": {
+          "isOptional": false,
+          "description": "Mariadb user for mariadb. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "librebooking"
+        },
+        "MARIADB_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mariadb password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "MARIADB_ROOT_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated mariadb root password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/var/lib/mysql"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "0ed1fdcd-07f3-5630-9ec9-95794a648445": {
+          "mountPath": "/var/lib/mysql"
+        }
+      }
+    },
+    "857be9b2-e0c4-5837-b22a-71b8d4941f20": {
+      "name": "core",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "LB_DATABASE_NAME": {
+          "isOptional": false,
+          "description": "Lb database name for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "librebooking"
+        },
+        "LB_DATABASE_USER": {
+          "isOptional": false,
+          "description": "Lb database user for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "librebooking"
+        },
+        "LB_DATABASE_HOSTSPEC": {
+          "isOptional": false,
+          "description": "Lb database hostspec resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mariadb.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "LB_DATABASE_PASSWORD": {
+          "isOptional": false,
+          "description": "Lb database password resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{mariadb.MARIADB_PASSWORD}}"
+        },
+        "LB_INSTALL_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated installer password. Use the existing restricted database user; leave Create database and Create user unchecked. Clear this variable after setup.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "LB_ADMIN_EMAIL": {
+          "isOptional": false,
+          "description": "Required administrator email. Register the first application account with exactly this address after completing the protected installer."
+        },
+        "LB_SCRIPT_URL": {
+          "isOptional": false,
+          "description": "Lb script url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{librebooking.RAILWAY_PUBLIC_DOMAIN}}/Web"
+        },
+        "LB_DEFAULT_TIMEZONE": {
+          "isOptional": false,
+          "description": "Lb default timezone for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "UTC"
+        },
+        "LB_APP_DEBUG": {
+          "isOptional": false,
+          "description": "Lb app debug for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LB_EMAIL_ENABLED": {
+          "isOptional": false,
+          "description": "Lb email enabled for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LB_PASSWORD_DISABLE_RESET": {
+          "isOptional": false,
+          "description": "Lb password disable reset for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "LB_RESERVATION_REMINDERS_ENABLED": {
+          "isOptional": false,
+          "description": "Lb reservation reminders enabled for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LB_PRIVACY_VIEW_SCHEDULES": {
+          "isOptional": false,
+          "description": "Lb privacy view schedules for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LB_PRIVACY_ALLOW_GUEST_RESERVATIONS": {
+          "isOptional": false,
+          "description": "Lb privacy allow guest reservations for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LB_REGISTRATION_ALLOW_SELF_REGISTRATION": {
+          "isOptional": false,
+          "description": "Enabled for the first administrator registration behind the owner gateway. Set false after creating that account; administrators can add users.",
+          "defaultValue": "true"
+        },
+        "LB_UPLOADS_RESERVATION_ATTACHMENTS_ENABLED": {
+          "isOptional": false,
+          "description": "Lb uploads reservation attachments enabled for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "LB_UPLOADS_RESERVATION_ATTACHMENT_PATH": {
+          "isOptional": false,
+          "description": "Lb uploads reservation attachment path for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "/data/reservations"
+        },
+        "LB_LOGGING_LEVEL": {
+          "isOptional": false,
+          "description": "Lb logging level for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "error"
+        },
+        "LB_LOGGING_SQL": {
+          "isOptional": false,
+          "description": "Lb logging sql for core. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "false"
+        },
+        "LB_ICS_SUBSCRIPTION_KEY": {
+          "isOptional": false,
+          "description": "Generated lb ics subscription key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/round10/librebooking/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round10/librebooking/Dockerfile"
+      },
+      "volumeMounts": {
+        "00be78aa-d23d-52b6-8939-07ba72082160": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "37d29588-ef59-579e-b83b-d06f80dfa8e8": {
+      "name": "librebooking",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{core.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for librebooking. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "8080"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for librebooking. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for librebooking. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round10-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round10-gateway/Dockerfile"
+      }
+    }
+  }
+}

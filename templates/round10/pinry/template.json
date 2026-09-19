@@ -1,0 +1,120 @@
+{
+  "services": {
+    "0b8fc40e-8464-5af7-8616-e42f20a252be": {
+      "name": "app",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "PUBLIC_URL": {
+          "isOptional": false,
+          "description": "Public url resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "https://${{pinry.RAILWAY_PUBLIC_DOMAIN}}"
+        },
+        "PINRY_SECRET_KEY": {
+          "isOptional": false,
+          "description": "Generated pinry secret key. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "ADMIN_USERNAME": {
+          "isOptional": false,
+          "description": "Admin username for app. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "owner"
+        },
+        "ADMIN_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated admin password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "ADMIN_EMAIL": {
+          "isOptional": false,
+          "description": "Required email address for the initial Pinry administrator. Only used when the database has no users; email delivery is not configured."
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "templates/round10/pinry/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "requiredMountPath": "/data"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "templates/round10/pinry/Dockerfile"
+      },
+      "volumeMounts": {
+        "37bc6bd2-0c0e-51a4-9c99-cfa3cbed2f7f": {
+          "mountPath": "/data"
+        }
+      }
+    },
+    "e2e3b0db-f37d-5368-bb28-6590cd49cb25": {
+      "name": "pinry",
+      "source": {
+        "repo": "orenaksakal/railway-templates",
+        "branch": "codex/unique-template-drafts"
+      },
+      "variables": {
+        "UPSTREAM_HOST": {
+          "isOptional": false,
+          "description": "Upstream host resolved automatically from the linked service. Keep this reference when using the included topology.",
+          "defaultValue": "${{app.RAILWAY_PRIVATE_DOMAIN}}"
+        },
+        "UPSTREAM_PORT": {
+          "isOptional": false,
+          "description": "Upstream port for pinry. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "80"
+        },
+        "OWNER_AUTH": {
+          "isOptional": false,
+          "description": "Owner auth for pinry. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "true"
+        },
+        "OWNER_SCOPE": {
+          "isOptional": false,
+          "description": "Owner scope for pinry. The supplied value follows the pinned upstream deployment; change only with its configuration guide.",
+          "defaultValue": "all"
+        },
+        "ACCESS_PASSWORD": {
+          "isOptional": false,
+          "description": "Generated access password. Keep private and preserve with backups.",
+          "defaultValue": "${{secret(64, \"abcdef0123456789\")}}"
+        },
+        "PORT": {
+          "isOptional": false,
+          "description": "HTTP port inside this service. Keep the default to match its Railway public port and health check.",
+          "defaultValue": "8080"
+        },
+        "RAILWAY_DOCKERFILE_PATH": {
+          "defaultValue": "shared/round10-gateway/Dockerfile",
+          "isOptional": false,
+          "description": "Repository-relative Dockerfile used to build this service. Keep the supplied path."
+        }
+      },
+      "deploy": {
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckPath": "/healthz",
+        "healthcheckTimeout": 600
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>:8080": {
+            "port": 8080
+          }
+        }
+      },
+      "build": {
+        "builder": "RAILPACK",
+        "dockerfilePath": "shared/round10-gateway/Dockerfile"
+      }
+    }
+  }
+}
