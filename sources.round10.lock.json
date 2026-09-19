@@ -236,6 +236,7 @@
     ],
     "imageSourceRelationship": "Application release source and image digests are pinned separately. A matching source revision has not been attested from image metadata.",
     "ref": "v1.15.0",
+    "registryVerification": "Railway rejected the lscr.io reference; ghcr.io/linuxserver mirror resolves to the identical sha256:9ebe34dd607e0b3eb8f303095d40790817e087c027cfe9224076ec8b43be5e8a manifest via docker buildx imagetools inspect.",
     "repo": "alexjustesen/speedtest-tracker",
     "sha": "fce6eb36181ed70b5b0763c391a50b806d7e3da7"
   },

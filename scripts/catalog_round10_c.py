@@ -87,7 +87,7 @@ CATALOG = {
             'XDG_CONFIG_HOME': '/data/config', 'XDG_CACHE_HOME': '/tmp/cache', 'TZ': 'UTC',
         }),
     'speedtest-tracker': lambda: protected('speedtest-tracker', 80,
-        image='lscr.io/linuxserver/speedtest-tracker:version-v1.15.0', volume='/config', env={
+        image='ghcr.io/linuxserver/speedtest-tracker:version-v1.15.0', volume='/config', env={
             'PUID': 1000, 'PGID': 1000, 'TZ': 'UTC', 'APP_ENV': 'production',
             'APP_KEY': (secret(32), 'Generated 32-character Laravel encryption key. Preserve with the SQLite database; changing it invalidates encrypted application data.'),
             'APP_URL': public('speedtest-tracker'), 'APP_DEBUG': 'false',

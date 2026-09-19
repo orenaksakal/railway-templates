@@ -28,7 +28,8 @@
     "containerDocumentation": {
       "repo": "linuxserver/docker-speedtest-tracker",
       "sha": "365a469b780500e19bf6aabb14304fef7699e69a"
-    }
+    },
+    "registryVerification": "Railway rejected the lscr.io reference; ghcr.io/linuxserver mirror resolves to the identical sha256:9ebe34dd607e0b3eb8f303095d40790817e087c027cfe9224076ec8b43be5e8a manifest via docker buildx imagetools inspect."
   },
   "librebooking": {
     "repo": "LibreBooking/app",

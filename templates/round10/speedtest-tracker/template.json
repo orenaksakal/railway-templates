@@ -3,7 +3,7 @@
     "4e2616d0-25de-5ece-8a4d-6f00eb87e5cc": {
       "name": "core",
       "source": {
-        "image": "lscr.io/linuxserver/speedtest-tracker:version-v1.15.0@sha256:9ebe34dd607e0b3eb8f303095d40790817e087c027cfe9224076ec8b43be5e8a"
+        "image": "ghcr.io/linuxserver/speedtest-tracker:version-v1.15.0@sha256:9ebe34dd607e0b3eb8f303095d40790817e087c027cfe9224076ec8b43be5e8a"
       },
       "variables": {
         "PUID": {
