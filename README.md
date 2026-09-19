@@ -1,6 +1,6 @@
 # Railway self-hosting templates
 
-Sixty published deployment definitions, including **Formbricks, Firecrawl, AFFiNE, OpenProject, and ToolJet**. Each definition uses pinned images, generated per-deployment secrets, private dependencies, persistent data, and a product-specific startup adapter.
+Seventy-eight published deployment definitions, including **Formbricks, Firecrawl, AFFiNE, OpenProject, and ToolJet**. Each definition uses pinned images, generated per-deployment secrets, private dependencies, persistent data, and a product-specific startup adapter.
 
 | Template | Services | Included |
 | --- | --- | --- |
@@ -12,13 +12,13 @@ Sixty published deployment definitions, including **Formbricks, Firecrawl, AFFiN
 
 ## Status
 
-All 60 recorded marketplace listings are published. The newest twenty are listed in [RELEASES-ROUND-8.md](RELEASES-ROUND-8.md), with the marketplace-gap evidence in [SELECTION-ROUND-8.md](SELECTION-ROUND-8.md). An earlier twenty-product selection did not meet the owner's gap-or-verified-defect criterion; those drafts are marked superseded and excluded.
+All 78 recorded marketplace listings are published. The newest eighteen are listed in [RELEASES-ROUND-9.md](RELEASES-ROUND-9.md). The preceding twenty are listed in [RELEASES-ROUND-8.md](RELEASES-ROUND-8.md), with the marketplace-gap evidence in [SELECTION-ROUND-8.md](SELECTION-ROUND-8.md). An earlier twenty-product selection did not meet the owner's gap-or-verified-defect criterion; those drafts are marked superseded and excluded.
 
 See [RELEASES-ROUND-6.md](RELEASES-ROUND-6.md) for the previous fifteen published listings, [VALIDATION.md](VALIDATION.md) for the original five, [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md) for the next ten, and [RELEASES-ROUND-4.md](RELEASES-ROUND-4.md) for round four. These records distinguish local checks from Railway runtime evidence.
 
-## Recovered unpublished drafts
+## Eighteen recovered and published templates
 
-Eighteen additional definitions are prepared under `templates/round9/`; see [PREPARATION-ROUND-9.md](PREPARATION-ROUND-9.md) for the existing editor links, restored adapters, selection evidence and remaining runtime checks. The older LinkAce and DumbDrop drafts are held as duplicates of published listings. This preparation does not publish any additional templates.
+Eighteen additional definitions under `templates/round9/` are published, with exact configuration/metadata readbacks and public-page checks. See [RELEASES-ROUND-9.md](RELEASES-ROUND-9.md) for deploy links and [PREPARATION-ROUND-9.md](PREPARATION-ROUND-9.md) for restored adapters and selection evidence. The older LinkAce and DumbDrop drafts remain unpublished duplicate holds. Application deployment and recovery checks remain unverified.
 
 ## Twenty published marketplace-gap templates
 

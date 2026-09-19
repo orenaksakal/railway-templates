@@ -1,5 +1,7 @@
 # Recovered draft preparation
 
+**Published September 19, 2026.** All eighteen qualifying candidates are now published. See [RELEASES-ROUND-9.md](RELEASES-ROUND-9.md) for current status and public links. The preparation-stage record below is historical.
+
 Scope: the 20 non-superseded drafts from the workspace list. Eighteen qualify as public marketplace gaps; two are held as duplicates of the previous publication batch. The separate 20 Superseded drafts are excluded.
 
 All eighteen were updated in place and individually read back as `UNPUBLISHED` on September 19, 2026. Their full service configurations and every supplied metadata field, including each README, match the local files exactly. Adapter sources were pushed in commit `c52b862`.
