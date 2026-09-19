@@ -11,7 +11,7 @@ A protected command panel with two harmless starter actions.
 | core | Private | /config |
 | olivetin | Public HTTPS | None |
 
-The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **olivetin** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
+The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **olivetin** service. API clients can send `X-Template-Key: YOUR_ACCESS_PASSWORD`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
 
 ## Why Deploy OliveTin Private Action Panel on Railway
 

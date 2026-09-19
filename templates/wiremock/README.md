@@ -11,7 +11,7 @@ Persistent HTTP API stubs behind generated owner access.
 | core | Private | /home/wiremock |
 | wiremock | Public HTTPS | None |
 
-The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **wiremock** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
+The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **wiremock** service. API clients can send `X-Template-Key: YOUR_ACCESS_PASSWORD`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
 
 ## Why Deploy WireMock Private API Stubs on Railway
 

@@ -11,7 +11,7 @@ Bookmarks with SQLite search, persistent storage and protected setup.
 | core | Private | /data |
 | linkace | Public HTTPS | None |
 
-The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **linkace** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
+The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **linkace** service. API clients can send `X-Template-Key: YOUR_ACCESS_PASSWORD`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
 
 ## Why Deploy LinkAce Bookmark Archive on Railway
 
