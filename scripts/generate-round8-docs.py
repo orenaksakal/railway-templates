@@ -13,7 +13,7 @@ DOCS = {
         'Save a URL, import a small bookmark file, extract readable content, search it and verify data after restart. Test semantic search separately if a provider is configured.',
         'Not an upgrade path for legacy v0.5 installations. AI providers cost extra. Build dependencies and the application workflow have not been executed in Railway.'),
     'linkace': ('LinkAce Bookmark Archive', 'Other', 'Bookmarks with SQLite search, persistent storage and protected setup.',
-        'Complete LinkAce setup behind the gateway and create an administrator. This draft selects the upstream SQLite/database-search mode, with synchronous jobs, rather than the optional Meilisearch topology.',
+        'Complete LinkAce setup behind the gateway and create an administrator. This template selects the upstream SQLite/database-search mode, with synchronous jobs, rather than the optional Meilisearch topology.',
         'Save links, assign tags and lists, search them, export and reimport a small set, then verify records after a restart.',
         'Uses one replica and synchronous jobs. Large imports can block requests. SMTP, Internet Archive integration and scheduled maintenance need separate configuration and testing.'),
     'solidinvoice': ('SolidInvoice Billing Workspace', 'Other', 'Quotes and invoices with private MySQL and protected installation.',
@@ -39,7 +39,7 @@ DOCS = {
     'mockserver': ('MockServer Private Expectations', 'Starters', 'HTTP mock expectations with bounded logs and persistent configuration.',
         'Use X-Template-Key for the owner gateway and the standard MockServer HTTP API. A new volume receives an empty expectation array; existing expectations are preserved.',
         'PUT an expectation to /mockserver/expectation, invoke its path, restart and verify the expectation reloads. Test unauthorized rejection separately.',
-        'No proxy recording or external forwarding is preconfigured. Only expectations persist, not request logs. Public access uses HTTP through the gateway; other protocol modes are outside this draft.'),
+        'No proxy recording or external forwarding is preconfigured. Only expectations persist, not request logs. Public access uses HTTP through the gateway; other protocol modes are outside this template.'),
     'sqlpage': ('SQLPage Private App Starter', 'Starters', 'A private SQL-driven web app with persistent pages and SQLite.',
         'Open the starter page through the gateway. Edit /data/www/index.sql or add SQL pages through an authenticated Railway shell. The SQLite database is /data/app.db.',
         'Load the SQLite-version page, add a small table and a read-only SQL page for it, restart and confirm both the page and rows remain.',
@@ -103,7 +103,7 @@ def generate():
 
 {description}
 
-**Unpublished draft.** This candidate meets the selection criterion through a public marketplace gap: no matching listing was found on September 19, 2026 using {queries}. Searches are bounded; private, unindexed and differently named listings may exist. The selection does not claim any competitor is broken.
+**Validation scope: source review and static checks.** This template meets the selection criterion through a public marketplace gap: no matching listing was found on September 19, 2026 using {queries}. Searches are bounded; private, unindexed and differently named listings may exist. The selection does not claim any competitor is broken.
 
 ## About Hosting
 
@@ -111,7 +111,7 @@ def generate():
 | --- | --- | --- |
 {rows}
 
-The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **{slug}** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before release.
+The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **{slug}** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
 
 ## First use
 
@@ -127,7 +127,7 @@ Test a volume-preserving redeploy as well as a restart. For stateful apps, take 
 
 {limitations}
 
-This draft has source/configuration review and static checks only. No container build, Railway startup, browser/API workflow, volume recovery or cost measurement was performed. Saved editor fidelity is not deployment proof; `/healthz` proves only gateway readiness. The template has not been published. Set operator-owned provider credentials only where needed and inspect the selected upstream license before commercial use.
+This template has source/configuration review and static checks only. No container build, Railway startup, browser/API workflow, volume recovery or cost measurement was performed. Saved editor fidelity is not deployment proof; `/healthz` proves only gateway readiness. Set operator-owned provider credentials only where needed and inspect the selected upstream license before commercial use.
 
 ## Dependencies and sources
 

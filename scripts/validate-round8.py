@@ -75,13 +75,13 @@ def validate():
                     if field == 'RAILWAY_PUBLIC_DOMAIN':
                         assert by_name[target]['networking']['serviceDomains']
         readme = (ROOT / 'templates' / slug / 'README.md').read_text()
-        for required in ['marketplace gap', 'Unpublished draft', 'First use', 'Recommended acceptance checks', 'Scope and limitations']:
+        for required in ['marketplace gap', 'Validation scope: source review and static checks', 'First use', 'Recommended acceptance checks', 'Scope and limitations']:
             assert required in readme, (slug, required)
         for path in (ROOT / 'templates' / slug).glob('*.sh'):
             subprocess.run(['sh', '-n', str(path)], check=True)
     for path in (ROOT / 'scripts').glob('*round8*.py'):
         ast.parse(path.read_text())
-    print(f'PASS: 20 eligible marketplace-gap drafts / {total} services; 56 recorded name/alias checks.')
+    print(f'PASS: 20 eligible marketplace-gap templates / {total} services; 56 recorded name/alias checks.')
     print('PASS: source and image pins, deterministic configuration, private dependencies, gateway access, mounts, metadata, README and shell/Python syntax.')
     print('Not tested: image builds, Railway runtime, product workflows, persistence or recovery.')
 

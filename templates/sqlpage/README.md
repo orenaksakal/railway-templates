@@ -2,7 +2,7 @@
 
 A private SQL-driven web app with persistent pages and SQLite.
 
-**Unpublished draft.** This candidate meets the selection criterion through a public marketplace gap: no matching listing was found on September 19, 2026 using `SQLPage`, `SQL Page`. Searches are bounded; private, unindexed and differently named listings may exist. The selection does not claim any competitor is broken.
+**Validation scope: source review and static checks.** This template meets the selection criterion through a public marketplace gap: no matching listing was found on September 19, 2026 using `SQLPage`, `SQL Page`. Searches are bounded; private, unindexed and differently named listings may exist. The selection does not claim any competitor is broken.
 
 ## About Hosting
 
@@ -11,7 +11,7 @@ A private SQL-driven web app with persistent pages and SQLite.
 | core | Private | /data |
 | sqlpage | Public HTTPS | None |
 
-The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **sqlpage** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before release.
+The public gateway requires username **admin** and **ACCESS_PASSWORD** from the **sqlpage** service. API clients can send `X-Template-Key: <ACCESS_PASSWORD>`. Keep core and databases private. The gateway strips Basic Authorization, preserves Bearer authorization and WebSocket upgrades, and limits requests to 32 MiB. Verify native client compatibility before relying on it.
 
 ## First use
 
@@ -27,7 +27,7 @@ Test a volume-preserving redeploy as well as a restart. For stateful apps, take 
 
 The starter does not implement per-user application permissions. All gateway users share the app. Review SQL, query access and form validation before turning it into a business application.
 
-This draft has source/configuration review and static checks only. No container build, Railway startup, browser/API workflow, volume recovery or cost measurement was performed. Saved editor fidelity is not deployment proof; `/healthz` proves only gateway readiness. The template has not been published. Set operator-owned provider credentials only where needed and inspect the selected upstream license before commercial use.
+This template has source/configuration review and static checks only. No container build, Railway startup, browser/API workflow, volume recovery or cost measurement was performed. Saved editor fidelity is not deployment proof; `/healthz` proves only gateway readiness. Set operator-owned provider credentials only where needed and inspect the selected upstream license before commercial use.
 
 ## Dependencies and sources
 
